@@ -1,0 +1,39 @@
+{
+  "name": "milkinium",
+  "version": "1.0.0",
+  "node": "8.10.0",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "test": "JWT_SECRET=foo NODE_ENV=test jest server/tests"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "express-jwt": "^5.3.1",
+    "express-validation": "^1.0.2",
+    "immutable": "^3.8.2",
+    "joi": "^13.1.2",
+    "jsonwebtoken": "^8.2.0",
+    "log4js": "^2.5.3",
+    "mongoose": "^5.0.9",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1",
+    "redux-form": "^7.3.0",
+    "sleep": "^5.1.1",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "sinon": "^4.4.9",
+    "sinon-test": "^2.1.3",
+    "chai": "^4.1.2",
+    "jest": "^22.4.3",
+    "supertest": "^3.0.0"
+  }
+}

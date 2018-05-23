@@ -32,6 +32,7 @@
     "chai": "^4.1.2",
     "jest": "^22.4.3",
     "supertest": "^3.0.0",
-    "nodemon":"1.17.4"
+    "nodemon":"1.17.4",
+    "mockingoose": "2.10.1"
   }
 }

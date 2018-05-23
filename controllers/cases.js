@@ -58,7 +58,7 @@ exports.create = (req, res, next) => {
     const data = req.body;
     data.project = projectId;
     let caze = new Case(data);
-    caze.save()
+    return caze.save()
         .then((data) => {
             logger("info", `Case is created ${data}`);
             res.status(201).json(data)

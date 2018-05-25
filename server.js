@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const config = require('./server/config');
-const logger = require('./server/logger')('server_log');
-const dbConnect = require('./server/db').dbConnect;
+const config = require('./config');
+const logger = require('./logger')('server_log');
+const dbConnect = require('./db').dbConnect;
 
 const port = process.env.PORT || 5000;
 
@@ -21,7 +21,7 @@ module.exports = {
 };
 
 if(process.env.NODE_ENV !== 'test'){
-    const app = require('./server/app');
+    const app = require('./app');
     start(app, port);
     dbConnect(config);
 }

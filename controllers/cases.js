@@ -3,35 +3,16 @@ const Case = require('../models/cases');
 const Project = require('../models/projects');
 const logger = require('../logger')('cases_controller');
 
-const getCazeById = (cazeId) => {
-    return Case.findById(cazeId);
-};
-
-const getCasesForAProject = (projectId) => {
-    return new Promise(function(resolve, reject){
-        logger('debug', `Fetching the project data`);
-        Project.findWithCases(projectId)
-            .then((data) => {
-                logger('debug', `Got project data.`);
-                resolve(data.cases);
-            })
-            .catch((err) => {
-                logger('error', `Could not fetch project data.`);
-                reject(err);
-            })
-    })
-};
 
 // GET list of all cases.
 exports.index = (req, res, next) => {
     logger('debug', 'Getting cases.');
     const projectId = req.params.projectId;
-    const cases = getCasesForAProject(projectId);
-
+    const cases = Project.findWithCases(projectId)
     return cases
         .then((data) => {
             logger('debug', 'Got cases data')
-            res.status(200).json(data);
+            res.status(200).json(data.cases);
         })
         .catch((err) => {
             next(err);

@@ -1,5 +1,7 @@
 const mockingoose = require('mockingoose').default;
 const controller = require('../cases')
+const Promise = require('bluebird')
+jest.mock('../../models/projects')
 var MockExpressRequest = require('mock-express-request');
 var MockExpressResponse = require('mock-express-response');
 
@@ -50,5 +52,14 @@ describe('Cases', function () {
         })
     })
 
-    test('should ')
+    test('should get all cases', function(){
+        const cases = require('../../models/__mocks__/cases.json')
+        return controller.index(mockReq, mockRes, mockNext)
+        .then(() => {
+            expect()
+            expect(mockRes.statusCode).toBe(200)
+            expect(mockRes._getJSON()).toEqual(cases.cases)
+        })
+
+    })
 });

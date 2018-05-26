@@ -24,13 +24,13 @@ const getCasesForAProject = (projectId) => {
 
 // GET list of all cases.
 exports.index = (req, res, next) => {
-    logger('info', 'Getting cases.');
+    logger('debug', 'Getting cases.');
     const projectId = req.params.projectId;
-    logger('debug', 'Got project id: ' + projectId);
     const cases = getCasesForAProject(projectId);
 
-    cases
+    return cases
         .then((data) => {
+            logger('debug', 'Got cases data')
             res.status(200).json(data);
         })
         .catch((err) => {

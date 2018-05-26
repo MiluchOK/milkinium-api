@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+const logger = require('../logger')('projects_model');
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema({
@@ -20,14 +21,17 @@ ProjectSchema.virtual('cases', {
 
 ProjectSchema.statics.findWithCases = function(id){
     const self = this;
+    logger('debug', "Searching for cases with project id: " + id)
     return new Promise(function(resolve, reject){
         self.findById(id)
             .populate('cases')
             .exec()
             .then((data) => {
+                logger('debug', "Got cases for project with id: " + id + ". The data: " + data)
                 resolve(data);
             })
             .catch((err) => {
+                logger('error', err)
                 reject(err);
             })
     })

@@ -23,7 +23,7 @@ exports.index = (req, res, next) => {
 exports.show = (req, res, next) => {
     logger('info', 'Getting a case.');
     const id = req.params.caseId;
-    getCazeById(id)
+    return Case.findById(id)
         .then((caze) => {
             res.status(200).json(caze);
         })
@@ -53,7 +53,7 @@ exports.create = (req, res, next) => {
 exports.update = (req, res, next) => {
     logger('info', 'Updating a case.');
     const id = req.params.caseId;
-    getCazeById(id)
+    Case.findById(id)
         .then((data) => {
             res.status(200).json(data);
         })

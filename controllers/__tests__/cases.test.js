@@ -84,4 +84,31 @@ describe('Cases', function () {
             })
         })
     })
+
+    describe('show', function(){
+        test('should get a specific case', function(){
+            mockReq.params.caseId = '222'
+            const _doc = {
+                title: 'Foo title'
+            }
+            mockingoose.Case.toReturn(_doc, 'findOne');
+            return controller.show(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockRes.statusCode).toBe(200)
+                expect(mockRes._getJSON()).toHaveProperty("title", _doc.title)
+            })
+
+        })
+
+        test('shold call next when case retrieval fails', function(){
+            mockReq.params.caseId = '222'
+            expectedError = new Error('Some Error')
+            mockingoose.Case.toReturn(expectedError, 'findOne');
+            return controller.show(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+            })
+        })
+    })
 });

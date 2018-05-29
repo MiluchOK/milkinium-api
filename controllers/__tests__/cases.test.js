@@ -60,8 +60,13 @@ describe('Cases', function () {
 
         test('should get all cases', function(){
             const cases = require('../../models/__mocks__/cases.json')
+            Project.findWithCases.mockImplementationOnce(() => {
+                return Promise.resolve(cases)
+            })
             return controller.index(mockReq, mockRes, mockNext)
             .then(() => {
+                expect(Project.findWithCases.mock.calls.length).toBe(1)
+                expect(Project.findWithCases.mock.calls[0][0]).toBe(mockReq.params.projectId)
                 expect(mockRes.statusCode).toBe(200)
                 expect(mockRes._getJSON()).toEqual(cases.cases)
             })

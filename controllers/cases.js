@@ -53,23 +53,23 @@ exports.create = (req, res, next) => {
 exports.update = (req, res, next) => {
     logger('info', 'Updating a case.');
     const id = req.params.caseId;
-    Case.findById(id)
+    const newCazeData = req.body;
+    return Case.findOneAndUpdate({'_id': id}, newCazeData)
         .then((data) => {
             res.status(200).json(data);
         })
         .catch((err) => {
             next(err);
         });
-    res.status(404).json({message: "Not implemented"});
 };
 
 exports.destroy = (req, res, next) => {
     logger('info', 'Deleting a case.');
     const id = req.params.caseId;
-    Case.findByIdAndRemove(id)
+    return Case.findOneAndRemove({'_id': id})
         .then((data) => {
             logger('info', `Deleted case successfully. Object: ${data}`);
-            res.status(200).json({message: 'ok'})
+            res.status(200).json({success: true})
         })
         .catch((err) => {
             next(err)

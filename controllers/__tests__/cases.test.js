@@ -16,6 +16,7 @@ let mockRes;
 describe('Cases', function () {
 
     beforeEach(() => {
+        mockingoose.resetAll();
         project_title = "foo";
         mockNext = jest.fn();
         mockReq = new MockExpressRequest({
@@ -105,6 +106,55 @@ describe('Cases', function () {
             expectedError = new Error('Some Error')
             mockingoose.Case.toReturn(expectedError, 'findOne');
             return controller.show(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+            })
+        })
+    })
+
+    describe('update', function(){
+        test('should update a specific case', function(){
+            mockReq.params.caseId = '222'
+            const _doc = {
+                title: 'Foo title'
+            }
+            mockingoose.Case.toReturn(_doc, 'findOneAndUpdate');
+            return controller.update(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockRes.statusCode).toBe(200)
+                expect(mockRes._getJSON()).toHaveProperty('title', _doc.title)
+            })
+        })
+
+        test('should call next if fails', function(){
+            mockReq.params.caseId = '222'
+            const expectedError = new Error('Some errror')
+            mockingoose.Case.toReturn(expectedError, 'findOneAndUpdate');
+            return controller.update(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+            })
+        })
+    })
+
+    describe('destroy', function(){
+        test('should delete a specific case', function(){
+            mockReq.params.caseId = '222'
+            mockingoose.Case.toReturn({}, 'findOneAndRemove');
+            return controller.destroy(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockRes.statusCode).toBe(200)
+                expect(mockRes._getJSON()).toEqual({success: true})
+            })
+        })
+
+        test('should call next if fails', function(){
+            mockReq.params.caseId = '222'
+            const expectedError = new Error('Some errror')
+            mockingoose.Case.toReturn(expectedError, 'findOneAndRemove');
+            return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)
                 expect(mockNext.mock.calls[0][0]).toBe(expectedError)

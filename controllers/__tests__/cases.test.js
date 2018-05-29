@@ -1,8 +1,9 @@
 const mockingoose = require('mockingoose').default;
 const controller = require('../cases')
 const Promise = require('bluebird')
-var MockExpressRequest = require('mock-express-request');
-var MockExpressResponse = require('mock-express-response');
+let MockExpressRequest = require('mock-express-request');
+let MockExpressResponse = require('mock-express-response');
+const Project = require('../../models/projects')
 jest.mock('../../models/projects')
 
 // Mocks
@@ -67,10 +68,14 @@ describe('Cases', function () {
         })
     
         test('should call next when cases retrieval fails', function(){
-            // jest.mock('../../models/projects').failFindWithCases = true
+            expectedError = new Error('Something broke')
+            Project.findWithCases.mockImplementationOnce(() => {
+                return Promise.reject(expectedError)
+            })
             return controller.index(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
             })
         })
     })

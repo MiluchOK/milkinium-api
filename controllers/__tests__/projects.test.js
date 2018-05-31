@@ -113,23 +113,40 @@ describe('Projects', function () {
             mockingoose.Project.toReturn(_update, 'findOneAndUpdate')
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {
-                expect(mockReq.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toBe({success: true})
+                expect(mockRes.statusCode).toBe(200)
+                expect(mockRes._getJSON()).toEqual({success: true})
             })
         })
 
-        xtest('should call next if failed', function(){
-
+        test('should call next if failed', function(){
+            expectedError = new Error('Some Error')
+            mockingoose.Project.toReturn(expectedError, 'findOneAndUpdate')
+            return controller.update(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+            })
         })
     })
 
-    xdescribe('destroy', function(){
+    describe('destroy', function(){
         test('should return 200 if successfully destroyed', function(){
-
+            mockingoose.Project.toReturn({}, 'findOneAndRemove')
+            return controller.destroy(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockRes.statusCode).toBe(200)
+                expect(mockRes._getJSON()).toEqual({success: true})
+            })
         })
 
         test('should call next if failed', function(){
-
+            expectedError = new Error('Some error')
+            mockingoose.Project.toReturn(expectedError, 'findOneAndRemove')
+            return controller.destroy(mockReq, mockRes, mockNext)
+            .then(() => {
+                expect(mockNext.mock.calls.length).toBe(1)
+                expect(mockNext.mock.calls[0][0]).toEqual(expectedError)
+            })
         })
     })
 })

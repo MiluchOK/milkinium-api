@@ -41,11 +41,23 @@ exports.create = (req, res, next) => {
 };
 
 exports.update = (req, res, next) => {
-    return Promise.resolve(() => {
-        res.status(200).json({message: "fooo"})
+    const projectId = req.params.projectId
+    return Project.findByIdAndUpdate(projectId)
+    .then(() => {
+        res.status(200).json({success: true})
+    })
+    .catch((err) => {
+        next(err)
     })
 };
 
 exports.destroy = (req, res, next) => {
-    res.status(200).json({message: "fooo"});
+    const projectId = req.params.projectId
+    return Project.findOneAndRemove(projectId)
+    .then(() => {
+        res.status(200).json({success: true});
+    })
+    .catch((err) => {
+        next(err)
+    })
 };

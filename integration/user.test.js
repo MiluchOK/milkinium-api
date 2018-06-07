@@ -1,9 +1,13 @@
-describe('User', function(){
-    test('create', function(){
-        console.log('foo')
-    })
+const request = require('supertest');
+const app = global.__APP__
 
-    test('another one', function(){
-        console.log('aaa')
+describe('User', function(){
+    test('index', function(){
+        return request(app)
+            .get('/user')
+            .expect(200)
+            .then(response => {
+                expect(response.body).toBe([])
+            })
     })
 })

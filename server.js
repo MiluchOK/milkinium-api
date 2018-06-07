@@ -7,7 +7,6 @@ const port = process.env.PORT || 5000;
 
 
 const app = require('./app')
-// const listenAsync = Promise.promisify(app.listen)
 
 mongoose.connect(config.db_host)
 .then(() => {

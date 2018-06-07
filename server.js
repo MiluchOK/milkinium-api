@@ -7,12 +7,14 @@ const port = process.env.PORT || 5000;
 
 
 const app = require('./app')
-const listenAsync = Promise.promisify(app.listen)
+// const listenAsync = Promise.promisify(app.listen)
 
 mongoose.connect(config.db_host)
 .then(() => {
     logger('info', 'Connected to database.')
-    return listenAsync(port)
+    return new Promise(function(resolve, reject){
+        const server = app.listen(port, () => { resolve(server) })
+    })
 })
 .then((server) => {
     logger('info', 'Server is running on port: ' + port)

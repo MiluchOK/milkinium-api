@@ -30,7 +30,7 @@ const UserSchema = Schema({
         type: String,
         enum: ['Admin', 'Client'],
         default: 'Client'
-    }
+    },
 }, { versionKey: false });
 
 UserSchema.pre('save', (next) => {
@@ -77,6 +77,13 @@ UserSchema.methods.comparePassword = function (candidatePassword) {
             })
     });
 };
+
+UserSchema.method('toJSON', function(){
+    let obj = this.toObject();
+    obj.id = obj._id;
+    delete obj._id;
+    return obj;
+})
 
 //Exporting our model
 const UserModel = mongoose.model('Users', UserSchema);

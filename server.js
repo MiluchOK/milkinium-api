@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('./config');
+const dbConnect = require('./config/db_connect')
 const logger = require('./logger')('server_log');
 const Promise = require('bluebird')
 mongoose.Promise = require('bluebird');
@@ -8,7 +9,7 @@ const port = process.env.PORT || 5000;
 
 const app = require('./app')
 
-mongoose.connect(config.db_host)
+dbConnect.connect(config.db_host)
 .then(() => {
     logger('info', 'Connected to database.')
     return new Promise(function(resolve, reject){

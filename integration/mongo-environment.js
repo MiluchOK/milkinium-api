@@ -1,5 +1,7 @@
 // mongo-environment.js
 const NodeEnvironment = require('jest-environment-node');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -17,7 +19,6 @@ class MongoEnvironment extends NodeEnvironment {
 
   async teardown() {
     console.log('Teardown MongoDB Test Environment');
-
     await super.teardown();
   }
 

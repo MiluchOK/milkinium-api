@@ -1,21 +1,17 @@
 const request = require('supertest');
 jest.mock('../middleware/authenticate');
-const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+const dbConnect = require('../config/db_connect')
 
 let connection;
 let app;
 
 beforeAll(() => {
     app = require('../app')
-    return mongoose.connect(global.__MONGO_URI__)
-    .then((c) => {
-        connection = c;
-    })
+    return dbConnect.connect(global.__MONGO_URI__)
 })
 
 afterAll(() => {
-    return mongoose.connection.close()
+    dbConnect.teardown()
 })
 
 describe('User', function(){

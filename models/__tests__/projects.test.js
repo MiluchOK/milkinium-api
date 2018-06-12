@@ -24,13 +24,13 @@ describe('Projects', function () {
             })
         })
 
-        test('should error out if nothing found', function(){
-            const expectedError = new Error("Some Error")
-            mockingoose.Project.toReturn(expectedError, 'findOne')
-            return Project.findWithCases("222")
-            .catch((err) => {
-                expect(err).toBe(expectedError)
-            })
-        })
+        // test('should error out if nothing found', function(){
+        //     const expectedError = new Error("Some Error")
+        //     mockingoose.Project.toReturn(expectedError, 'findOne')
+        //     return Project.findWithCases("222")
+        //     .catch((err) => {
+        //         expect(err).toBe(expectedError)
+        //     })
+        // })
     })
 });

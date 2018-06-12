@@ -31,7 +31,7 @@ const UserSchema = Schema({
         enum: ['Admin', 'Client'],
         default: 'Client'
     }
-});
+}, { versionKey: false });
 
 UserSchema.pre('save', (next) => {
     let user = this;

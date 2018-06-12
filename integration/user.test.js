@@ -1,13 +1,43 @@
 const request = require('supertest');
-const app = global.__APP__
+jest.mock('../middleware/authenticate');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
+let connection;
+
+beforeAll(() => {
+    return mongoose.connect(global.__MONGO_URI__)
+    .then((c) => {
+        connection = c;
+    })
+})
+
+afterAll(() => {
+    return mongoose.connection.close()
+})
 
 describe('User', function(){
-    test('index', function(){
-        return request(app)
-            .get('/user')
+    describe('index', function(){
+        test('should return all users', function(){
+            const app = require('../app')
+            return request(app)
+            .get('/users')
             .expect(200)
             .then(response => {
-                expect(response.body).toBe([])
+                expect(response.body).toEqual([])
             })
+        })
+    })
+
+    describe('show', function(){
+        test('should return error out with 404 if requested user does not exist', function(){
+            const app = require('../app')
+            return request(app)
+            .get('/users/507f1f77bcf86cd799439011')
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({message: 'No such user.'})
+            })
+        })
     })
 })

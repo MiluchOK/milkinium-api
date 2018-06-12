@@ -21,6 +21,10 @@ exports.show = (req, res, next) => {
     const user = User.findById(id);
     user
         .then((data) => {
+            if(data == null){
+                res.status(404).json({message: 'No such user.'})
+                next()
+            }
             res.status(200).json(data)
         })
         .catch((err) => {

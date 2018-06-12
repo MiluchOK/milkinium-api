@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 let connection;
+let app;
 
 beforeAll(() => {
+    app = require('../app')
     return mongoose.connect(global.__MONGO_URI__)
     .then((c) => {
         connection = c;
@@ -19,7 +21,6 @@ afterAll(() => {
 describe('User', function(){
     describe('index', function(){
         test('should return all users', function(){
-            const app = require('../app')
             return request(app)
             .get('/users')
             .expect(200)
@@ -31,7 +32,6 @@ describe('User', function(){
 
     describe('show', function(){
         test('should return error out with 404 if requested user does not exist', function(){
-            const app = require('../app')
             return request(app)
             .get('/users/507f1f77bcf86cd799439011')
             .expect(404)

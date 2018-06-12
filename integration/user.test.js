@@ -1,8 +1,10 @@
 const request = require('supertest');
-jest.mock('../middleware/authenticate');
-const dbConnect = require('../config/db_connect')
-const User = require('../models/users');
 
+const dbConnect = require('../config/db_connect');
+const User = require('../models/users');
+jest.mock('../middleware/authenticate');
+
+let authMock;
 let connection;
 let app;
 
@@ -12,13 +14,22 @@ beforeAll(() => {
 })
 
 afterAll(() => {
-    dbConnect.teardown()
+    dbConnect.teardown();
+})
+
+beforeEach(() => {
+    jest.clearAllMocks()
+    authMock = require('../middleware/authenticate');
 })
 
 describe('User', function(){
     describe('index', function(){
-        xtest('should be auth protected', function(){
-
+        test('should be auth protected', function(){
+            return request(app)
+            .get('/users')
+            .then(() => {
+                expect(authMock.authMid.mock.calls.length).toBe(1)
+            })
         })
 
         test('should return all users', function(){
@@ -32,8 +43,12 @@ describe('User', function(){
     })
 
     describe('show', function(){
-        xtest('should be auth protected', function(){
-
+        test('should be auth protected', function(){
+            return request(app)
+            .get('/users/507f1f77bcf86cd799439011')
+            .then(() => {
+                expect(authMock.authMid.mock.calls.length).toBe(1)
+            })
         })
 
         test('should return error out with 404 if requested user does not exist', function(){
@@ -71,7 +86,6 @@ describe('User', function(){
                 .expect(200)
             })
             .then(response => {
-                console.log(response.body)
                 expect(response.body).toEqual(updatedUserData)
             })
         })

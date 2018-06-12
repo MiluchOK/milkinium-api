@@ -1,9 +1,7 @@
-const main = jest.fn()
+const main = jest.fn(((req, res, next) => { next() }))
 
 main.unless = jest.fn().mockReturnValue(
-    jest.fn((req, res, next) => { 
-        next() 
-    })
+    main
 )
 
 module.exports = {

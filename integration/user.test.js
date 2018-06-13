@@ -8,18 +8,15 @@ let authMock;
 let connection;
 let app;
 
-beforeAll(() => {
-    app = require('../app')
-    return dbConnect.connect(global.__MONGO_URI__)
-})
-
-afterAll(() => {
+afterEach(() => {
     dbConnect.teardown();
 })
 
 beforeEach(() => {
     jest.clearAllMocks()
-    authMock = require('../middleware/authenticate');
+    authMock = require('../middleware/authenticate')
+    app = require('../app')
+    return dbConnect.connect(global.__MONGO_URI__)
 })
 
 describe('User', function(){
@@ -33,11 +30,19 @@ describe('User', function(){
         })
 
         test('should return all users', function(){
-            return request(app)
-            .get('/users')
-            .expect(200)
+            const usersList = [User.createRandom(), User.createRandom()]
+            let createdUsers
+            return Promise.all(usersList)
+            .then((users) => {
+                createdUsers = users
+                return request(app)
+                .get('/users')
+                .expect(200)
+            })
             .then(response => {
-                expect(response.body).toEqual([])
+                expect(response.body).toHaveLength(usersList.length)
+                //TODO fix
+                expect(response.body).toEqual(createdUsers.reverse())
             })
         })
     })

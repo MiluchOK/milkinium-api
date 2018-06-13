@@ -2,6 +2,7 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const faker = require('faker');
 const Schema = mongoose.Schema;
 const nameSchema = require('./names');
 const logger = require('../logger')('users_model');
@@ -77,6 +78,18 @@ UserSchema.methods.comparePassword = function (candidatePassword) {
             })
     });
 };
+
+UserSchema.statics.createRandom = function(){
+    randomUserData = {
+        name: {
+            first: faker.name.firstName(),
+            last: faker.name.lastName()
+        },
+        email: faker.internet.email(),
+        password: faker.internet.password()
+    }
+    return UserModel(randomUserData).save()
+}
 
 UserSchema.method('toJSON', function(){
     let obj = this.toObject();

@@ -28,7 +28,7 @@
                                   "lastName": {
                                       "type": "string"
                                   },
-                                  "username": {
+                                  "email": {
                                       "type": "string"
                                   }
                               }

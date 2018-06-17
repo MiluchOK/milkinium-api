@@ -34,14 +34,19 @@ describe('User', function(){
             let createdUsers
             return Promise.all(usersList)
             .then((users) => {
-                createdUsers = users.map((u) => u.toJSON())
+                createdUsers = users.map((u) => (u.toJSON())).map((u) => {
+                    u.id = String(u.id)
+                    return u
+                })
                 return request(app)
                 .get('/users')
                 .expect(200)
             })
             .then(response => {
                 expect(response.body).toHaveLength(usersList.length)
-                expect(response.body).toEqual(createdUsers)
+                const sorter = (a, b) => { return ((a.email < b.email) ? -1 : ((a.email > b.email) ? 1 : 0)) }
+                console.log(createdUsers.sort(sorter)[0].id)
+                expect(response.body.sort(sorter)).toEqual(createdUsers.sort(sorter))
             })
         })
     })

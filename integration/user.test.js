@@ -23,7 +23,7 @@ describe('User', function(){
     describe('index', function(){
         test('should be auth protected', function(){
             return request(app)
-            .get('/users')
+            .get('/v1/users')
             .then(() => {
                 expect(authMock.authMid.mock.calls.length).toBe(1)
             })
@@ -39,7 +39,7 @@ describe('User', function(){
                     return u
                 })
                 return request(app)
-                .get('/users')
+                .get('/v1/users')
                 .expect(200)
             })
             .then(response => {
@@ -54,7 +54,7 @@ describe('User', function(){
     describe('show', function(){
         test('should be auth protected', function(){
             return request(app)
-            .get('/users/507f1f77bcf86cd799439011')
+            .get('/v1/users/507f1f77bcf86cd799439011')
             .then(() => {
                 expect(authMock.authMid.mock.calls.length).toBe(1)
             })
@@ -62,7 +62,7 @@ describe('User', function(){
 
         test('should return error out with 404 if requested user does not exist', function(){
             return request(app)
-            .get('/users/507f1f77bcf86cd799439011')
+            .get('/v1/users/507f1f77bcf86cd799439011')
             .expect(404)
             .then(response => {
                 expect(response.body).toEqual({message: 'No such user.'})
@@ -91,7 +91,7 @@ describe('User', function(){
             })
             .then(userId => {
                 return request(app)
-                .get(`/users/${userId}`)
+                .get(`/v1/users/${userId}`)
                 .expect(200)
             })
             .then(response => {

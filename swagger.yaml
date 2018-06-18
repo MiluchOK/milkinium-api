@@ -1,0 +1,59 @@
+swagger: "2.0"
+info:
+  title: Milkinium API
+  description: Oficial API documentation for Milkinium Test Case management system
+  version: "1.0.0"
+# the domain of the service
+host: localhost:5000
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+# will be prefixed to all paths
+basePath: /v1
+securityDefinitions:
+  apikey:
+    type: apiKey
+    name: apiKey
+    in: header
+produces:
+  - application/json
+paths:
+  /authenticate:
+    post:
+      summary: Authentication end point
+      description: The endpoint allows you to authenticate in the system
+      parameters:
+        - name: email
+          in: formData
+          description: Email of the user
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: The user password
+          required: true
+          type: string
+      responses:
+        "200":
+          description: An auth token
+
+  /users:
+    get:
+      summary: Get All Users
+      description: The endpoint returns all users
+      security: 
+        - apikey: []
+      tags: 
+        - Products
+      responses:  
+        "200":
+          description: An array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'

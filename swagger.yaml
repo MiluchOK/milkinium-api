@@ -14,7 +14,7 @@ basePath: /v1
 securityDefinitions:
   apikey:
     type: apiKey
-    name: apiKey
+    name: Authorization
     in: header
 produces:
   - application/json
@@ -23,11 +23,13 @@ paths:
     post:
       summary: Authentication end point
       description: The endpoint allows you to authenticate in the system
+      tags:
+        - Auth
       parameters:
-        - name: email
+        - name: body
           in: body
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/Auth'
       responses:
         "200":
           description: An auth token
@@ -40,14 +42,18 @@ paths:
         - apikey: []
       tags: 
         - User
-      responses:  
+      responses:
         "200":
           description: An array of users
           schema:
             type: array
             items:
               $ref: '#/definitions/User'
+            
+# Models defenitions  
 definitions:
+
+  # User model
   User:
     type: "object"
     properties:
@@ -61,7 +67,6 @@ definitions:
       avatar:
         type: "string"
       name:
-        type: "object"
         $ref: "#/definitions/Name"
       role:
         type: "string"
@@ -72,10 +77,20 @@ definitions:
     xml:
       name: "Order"
 
+  # Name defenition
   Name:
-    type: "string"
+    type: "object"
     properties:
       first: 
         type: "string"
       last: 
-        last: "string"
+        type: "string"
+        
+  # Auth data
+  Auth:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"

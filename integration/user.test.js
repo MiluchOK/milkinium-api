@@ -36,6 +36,8 @@ describe('User', function(){
             .then((users) => {
                 createdUsers = users.map((u) => (u.toJSON())).map((u) => {
                     u.id = String(u.id)
+                    delete u.password
+                    delete u.__v
                     return u
                 })
                 return request(app)
@@ -85,7 +87,7 @@ describe('User', function(){
             return User(userData).save()
             .then(savedData => {
                 updatedUserData = userData
-                updatedUserData.password = savedData.password
+                delete updatedUserData.password
                 updatedUserData.id = savedData.id
                 return savedData._id
             })

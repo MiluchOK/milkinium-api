@@ -95,6 +95,7 @@ UserSchema.method('toJSON', function(){
     let obj = this.toObject();
     obj.id = obj._id;
     delete obj._id;
+    delete obj.password;
     return obj;
 })
 

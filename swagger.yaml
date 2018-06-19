@@ -144,6 +144,23 @@ paths:
           description: A project
           schema:
             $ref: '#/definitions/Project'
+            
+    delete:
+      summary: Delete a User
+      description: Delete a User by ID
+      parameters: 
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Project
+      responses:
+        "200":
+          description: A project
       
             
 # Models defenitions  

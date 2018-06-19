@@ -49,6 +49,22 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
+
+  /user:
+    get:
+      summary: Get a user
+      description: Get a user by ID
+      security:
+        - apikey: []
+      tags:
+        - User
+      responses:
+        "200":
+          description: A user
+          shema:
+            type: object
+            items:
+              $ref: '#/definitions/User'
             
 # Models defenitions  
 definitions:

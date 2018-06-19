@@ -125,13 +125,13 @@ paths:
             items:
               $ref: '#/definitions/Project'
               
-  /projects/{userId}:
+  /projects/{projectId}:
     get:
       summary: Get a Project
       description: Get a project by ID
       parameters:
         - in: path
-          name: userId
+          name: projectId
           schema:
             type: string
           required: true
@@ -146,15 +146,35 @@ paths:
             $ref: '#/definitions/Project'
             
     delete:
-      summary: Delete a User
-      description: Delete a User by ID
+      summary: Delete a Project
+      description: Delete a Project by ID
       parameters: 
         - in: path
-          name: userId
+          name: projectId
           schema:
             type: string
           required: true
       security:
+        - apikey: []
+      tags:
+        - Project
+      responses:
+        "200":
+          description: A project
+          
+    put:
+      summary: Edit a project
+      description: Edit a project by ID
+      parameters:
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+        - in: body
+          schema:
+            $ref: '#/definitions/Project'
+      security: 
         - apikey: []
       tags:
         - Project

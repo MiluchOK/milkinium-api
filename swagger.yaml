@@ -49,8 +49,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
-
-  /user:
+              
+  /users/{userId}:
     get:
       summary: Get a user
       description: Get a user by ID
@@ -58,13 +58,34 @@ paths:
         - apikey: []
       tags:
         - User
+      parameters: 
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
       responses:
         "200":
           description: A user
-          shema:
-            type: object
-            items:
-              $ref: '#/definitions/User'
+          schema:
+            $ref: '#/definitions/User'
+            
+    delete:
+      summary: Delete a user
+      description: Delete a user by ID
+      security:
+        - apikey: []
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Success status
             
 # Models defenitions  
 definitions:

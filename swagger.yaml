@@ -25,15 +25,9 @@ paths:
       description: The endpoint allows you to authenticate in the system
       parameters:
         - name: email
-          in: formData
-          description: Email of the user
-          required: true
-          type: string
-        - name: password
-          in: formData
-          description: The user password
-          required: true
-          type: string
+          in: body
+          schema:
+            $ref: '#/definitions/User'
       responses:
         "200":
           description: An auth token
@@ -45,15 +39,43 @@ paths:
       security: 
         - apikey: []
       tags: 
-        - Products
+        - User
       responses:  
         "200":
           description: An array of users
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
+              $ref: '#/definitions/User'
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      email: 
+        type: "string"
+      password:
+        type: "string"
+      avatar:
+        type: "string"
+      name:
+        type: "object"
+        $ref: "#/definitions/Name"
+      role:
+        type: "string"
+        description: "The user role"
+        enum:
+        - "client"
+        - "admin"
+    xml:
+      name: "Order"
+
+  Name:
+    type: "string"
+    properties:
+      first: 
+        type: "string"
+      last: 
+        last: "string"

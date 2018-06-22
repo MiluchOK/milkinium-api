@@ -1,6 +1,5 @@
-require('dotenv').config();
 const express = require('express');
-const req = require('require-yml')
+const req = require('require-yml');
 const morgan = require('morgan');
 const v1 = require('express').Router();
 const bodyParser = require('body-parser');
@@ -10,7 +9,6 @@ const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 const auth = require('./middleware/authenticate');
 const logger = require('./logger')('app_log');
-
 const app = express();
 
 v1.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

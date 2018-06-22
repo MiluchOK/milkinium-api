@@ -1,8 +1,9 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const config = require('./config');
-const dbConnect = require('./config/db_connect')
+const dbConnect = require('./config/db_connect');
 const logger = require('./logger')('server_log');
-const Promise = require('bluebird')
+const Promise = require('bluebird');
 mongoose.Promise = require('bluebird');
 const port = process.env.PORT || 5000;
 

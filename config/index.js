@@ -1,4 +1,9 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
-module.exports = require('./config.json');
-
+module.exports = {
+    "db_host": process.env.DB_HOST,
+    "logger": {
+        "type": "console",
+        "level": "DEBUG"
+    }
+};

@@ -8,3 +8,12 @@ Config file:
   }
 }
 ```
+
+To start up the server:
+`yarn dev`
+
+To run the tests:
+`yarn test`
+
+Api documentation:
+`host/api-docs`

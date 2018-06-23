@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+const faker = require('faker');
 const logger = require('../logger')('projects_model');
 const Schema = mongoose.Schema;
 
@@ -9,8 +10,15 @@ const ProjectSchema = new Schema({
         required: true
     },
 }, {
-        toJSON: { virtuals: true },
-        id: false
+        toJSON: { 
+            virtuals: true,
+            transform: function(doc, ret, options){ 
+                delete ret._id;
+                return ret; 
+            },
+        },
+        id: true,
+        versionKey: false
 });
 
 ProjectSchema.virtual('cases', {
@@ -37,6 +45,12 @@ ProjectSchema.statics.findWithCases = function(id){
     })
 };
 
+ProjectSchema.statics.createRandom = function(){
+    randomData = {
+        name: faker.internet.userName()
+    }
+    return ProjectModel(randomData).save()
+}
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

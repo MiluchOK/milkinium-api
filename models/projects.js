@@ -14,11 +14,11 @@ const ProjectSchema = new Schema({
             virtuals: true,
             transform: function(doc, ret, options){ 
                 delete ret._id;
-                return ret; 
+                delete ret.__v
+                return ret;
             },
         },
-        id: true,
-        versionKey: false
+        id: true
 });
 
 ProjectSchema.virtual('cases', {

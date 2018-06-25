@@ -32,7 +32,18 @@ const UserSchema = Schema({
         enum: ['Admin', 'Client'],
         default: 'Client'
     },
-}, { versionKey: false });
+}, { 
+    toJSON: { 
+        virtuals: true,
+        transform: function(doc, ret, options){ 
+            delete ret._id;
+            delete ret.__v;
+            delete ret.password;
+            return ret;
+        },
+    },
+    id: true
+ });
 
 UserSchema.pre('save', (next) => {
     let user = this;
@@ -90,14 +101,6 @@ UserSchema.statics.createRandom = function(){
     }
     return UserModel(randomUserData).save()
 }
-
-UserSchema.method('toJSON', function(){
-    let obj = this.toObject();
-    obj.id = obj._id;
-    delete obj._id;
-    delete obj.password;
-    return obj;
-})
 
 //Exporting our model
 const UserModel = mongoose.model('Users', UserSchema);

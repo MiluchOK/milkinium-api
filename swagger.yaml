@@ -257,6 +257,27 @@ paths:
           description: Updated test case
           schema:
             $ref: '#/definitions/Case'
+            
+  /cases/{caseId}/results:
+    
+    get:
+      summary: Get all results for a case
+      description: Get all results for a case
+      parameters: 
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags:
+        - Result
+      responses:
+        200:
+          description: List of results
+          schema:
+            $ref: '#/definitions/Result'
           
       
             
@@ -319,3 +340,15 @@ definitions:
     properties:
       name:
         type: "string"
+        
+  Result:
+    type: object
+    properties:
+      id:
+        type: string
+      case_id:
+        type: string
+      status:
+        type: string
+      execution_time:
+        type: string

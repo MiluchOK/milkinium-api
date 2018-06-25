@@ -181,6 +181,83 @@ paths:
       responses:
         "200":
           description: A project
+          
+  /projects/{projectId}/cases:
+  
+    get:
+      summary: Get cases for a project
+      description: Get cases for a project
+      parameters: 
+        - in: path
+          name: projectId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags:
+        - Case
+      responses:
+        200:
+          description: List of cases
+          
+  /cases/{caseId}:
+          
+    get:
+      summary: Get a specific case
+      description: Get a case
+      parameters: 
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags:
+        - Case
+      responses:
+        200:
+          description: Case
+          schema:
+            $ref: '#/definitions/Case'
+            
+    delete:
+      summary: Delete a specific  case
+      description: Delete a specific case
+      parameters: 
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Case
+      responses:
+        200:
+          description: Status message
+          
+    put:
+      summary: Edit a specific case
+      description: Edit a specific case
+      parameters: 
+        - in: path
+          name: caseId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags:
+        - Case
+      responses:
+        200:
+          description: Updated test case
+          schema:
+            $ref: '#/definitions/Case'
+          
       
             
 # Models defenitions  
@@ -235,4 +312,10 @@ definitions:
       email:
         type: "string"
       password:
+        type: "string"
+        
+  Case:
+    type: "object"
+    properties:
+      name:
         type: "string"

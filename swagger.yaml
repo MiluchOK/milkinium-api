@@ -336,6 +336,46 @@ paths:
           description: Edited Run
           schema:
             $ref: '#/definitions/Run'
+            
+  /runs/{runId}/results:
+    get:
+      summary: Get results for a run
+      description: Get results for a run
+      parameters:
+        - in: path
+          name: runId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags: 
+        - Result
+      responses:
+        200:
+          description: Get results for a run
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Result'
+              
+    post:
+      summary: Create a result
+      description: Create a result
+      parameters:
+        - in: body
+          schema:
+            $ref: '#/definitions/Result'
+      security: 
+        - apikey: []
+      tags: 
+        - Result
+      responses:
+        200:
+          description: Created Result
+          schema:
+            $ref: '#/definitions/Result'
+            
           
       
             

@@ -258,26 +258,84 @@ paths:
           schema:
             $ref: '#/definitions/Case'
             
-  /cases/{caseId}/results:
+  /project/{projectId}/runs:
     
     get:
-      summary: Get all results for a case
-      description: Get all results for a case
+      summary: List all the runs for the project
+      description: List all the runs for the project
       parameters: 
         - in: path
-          name: caseId
+          name: projectId
           schema:
             type: string
           required: true
       security: 
         - apikey: []
-      tags:
-        - Result
+      tags: 
+        - Run
       responses:
         200:
-          description: List of results
+          description: List of runs
           schema:
-            $ref: '#/definitions/Result'
+            $ref: '#/definitions/Run'
+            
+  /runs:
+  
+    post:
+      summary: Create a new run
+      description: Create a new run
+      parameters: 
+        - in: body
+          schema:
+            $ref: '#/definitions/Run'
+      security: 
+        - apikey: []
+      tags: 
+        - Run
+      responses:
+        200:
+          description: Created Run
+          schema:
+            $ref: '#/definitions/Run'
+            
+  /runs/{runId}:
+    
+    get:
+      summary: Get a specific run
+      description: Get a specific run
+      parameters: 
+        - in: path
+          name: runId
+          schema:
+            type: string
+          required: true
+      security: 
+        - apikey: []
+      tags: 
+        - Run
+      responses:
+        200:
+          description: Run
+          schema:
+            $ref: '#/definitions/Run'
+            
+    put:
+      summary: Edit a run
+      description: Edit a run
+      parameters:
+        - in: path
+          name: runId
+          schema:
+            $ref: '#/definitions/Run'
+      security:
+        - apikey: []
+      tags:
+        - Run
+      responses:
+        200:
+          description: Edited Run
+          schema:
+            $ref: '#/definitions/Run'
           
       
             
@@ -346,9 +404,22 @@ definitions:
     properties:
       id:
         type: string
+      run_id:
+        type: string
       case_id:
         type: string
       status:
         type: string
       execution_time:
         type: string
+        
+  Run:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+        

@@ -38,6 +38,7 @@ exports.create = (req, res, next) => {
     const projectId = req.params.projectId;
     const data = req.body;
     data.project = projectId;
+    logger('info', data)
     let caze = new Case(data);
     return caze.save()
         .then((data) => {

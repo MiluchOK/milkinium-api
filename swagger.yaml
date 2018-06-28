@@ -200,6 +200,27 @@ paths:
       responses:
         200:
           description: List of cases
+
+    post:
+      summary: Create a case for a project
+      description: Create a case for a project
+      parameters:
+        - name: case
+          in: body
+          schema:
+            $ref: '#/definitions/Case'
+        - name: projectId
+            in: path
+            schema:
+              type: string
+            required: true
+      security:
+        - apikey: []
+      tags:
+        - Case
+      responses:
+        200:
+          description: Created case
           
   /cases/{caseId}:
           
@@ -436,7 +457,7 @@ definitions:
   Case:
     type: "object"
     properties:
-      name:
+      title:
         type: "string"
         
   Result:

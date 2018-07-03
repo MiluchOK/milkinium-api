@@ -61,8 +61,7 @@ paths:
       parameters: 
         - in: path
           name: userId
-          schema:
-            type: string
+          type: string
           required: true
       responses:
         "200":
@@ -80,8 +79,7 @@ paths:
       parameters:
         - in: path
           name: userId
-          schema:
-            type: string
+          type: string
           required: true
       responses:
         "200":
@@ -97,12 +95,9 @@ paths:
       parameters:
         - in: path
           name: userId
-          schema:
-            type: string
+          type: string
           required: true
-        - in: body
-          schema:
-            $ref: '#/definitions/User'
+        - $ref: '#/definitions/User'
       responses:
         "200":
           description: Updated version of the user
@@ -132,8 +127,7 @@ paths:
       parameters:
         - in: path
           name: projectId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -151,8 +145,7 @@ paths:
       parameters: 
         - in: path
           name: projectId
-          schema:
-            type: string
+          type: string
           required: true
       security:
         - apikey: []
@@ -168,12 +161,9 @@ paths:
       parameters:
         - in: path
           name: projectId
-          schema:
-            type: string
+          type: string
           required: true
-        - in: body
-          schema:
-            $ref: '#/definitions/Project'
+        - $ref: '#/definitions/Project'
       security: 
         - apikey: []
       tags:
@@ -190,8 +180,7 @@ paths:
       parameters: 
         - in: path
           name: projectId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -210,10 +199,9 @@ paths:
           schema:
             $ref: '#/definitions/Case'
         - name: projectId
-            in: path
-            schema:
-              type: string
-            required: true
+          in: path
+          type: string
+          required: true
       security:
         - apikey: []
       tags:
@@ -230,8 +218,7 @@ paths:
       parameters: 
         - in: path
           name: caseId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -249,8 +236,7 @@ paths:
       parameters: 
         - in: path
           name: caseId
-          schema:
-            type: string
+          type: string
           required: true
       security:
         - apikey: []
@@ -266,8 +252,7 @@ paths:
       parameters: 
         - in: path
           name: caseId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -287,8 +272,7 @@ paths:
       parameters: 
         - in: path
           name: projectId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -306,9 +290,7 @@ paths:
       summary: Create a new run
       description: Create a new run
       parameters: 
-        - in: body
-          schema:
-            $ref: '#/definitions/Run'
+        - $ref: '#/definitions/Run'
       security: 
         - apikey: []
       tags: 
@@ -327,8 +309,7 @@ paths:
       parameters: 
         - in: path
           name: runId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -346,8 +327,9 @@ paths:
       parameters:
         - in: path
           name: runId
-          schema:
-            $ref: '#/definitions/Run'
+          required: true
+          type: string
+        - $ref: '#/definitions/Run'
       security:
         - apikey: []
       tags:
@@ -365,8 +347,7 @@ paths:
       parameters:
         - in: path
           name: runId
-          schema:
-            type: string
+          type: string
           required: true
       security: 
         - apikey: []
@@ -384,9 +365,11 @@ paths:
       summary: Create a result
       description: Create a result
       parameters:
-        - in: body
-          schema:
-            $ref: '#/definitions/Result'
+        - in: path
+          name: runId
+          type: string
+          required: true
+        - $ref: '#/definitions/Result'
       security: 
         - apikey: []
       tags: 

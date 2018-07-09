@@ -18,4 +18,4 @@ To run the tests:
 Api documentation:
 `host/api-docs`
 
-![alt text](https://ibb.co/c9jaU8)
+![Screenshot](data-model.png)

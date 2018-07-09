@@ -284,24 +284,27 @@ paths:
           schema:
             $ref: '#/definitions/Run'
             
-  /runs:
+  /runs/{runId}:
   
     post:
-      summary: Create a new run
-      description: Create a new run
-      parameters: 
-        - $ref: '#/definitions/Run'
-      security: 
-        - apikey: []
-      tags: 
-        - Run
-      responses:
-        200:
-          description: Created Run
-          schema:
-            $ref: '#/definitions/Run'
-            
-  /runs/{runId}:
+        summary: Create a new run
+        description: Create a new run
+        parameters: 
+          - in: path
+            name: runId
+            type: string
+            required: true
+          
+          - $ref: '#/definitions/Run'
+        security: 
+          - apikey: []
+        tags: 
+          - Run
+        responses:
+          200:
+            description: Created Run
+            schema:
+              $ref: '#/definitions/Run'
     
     get:
       summary: Get a specific run

@@ -34,11 +34,9 @@ exports.show = (req, res, next) => {
 
 
 exports.create = (req, res, next) => {
-    logger('info', `Creating a user with ${req.body}`);
     let user = new User(req.body);
     user.save()
         .then((data) => {
-            logger("info", `User is created ${data}`);
             res.status(201).json(data)
         })
         .catch((err) => {
@@ -48,7 +46,6 @@ exports.create = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     const userId = req.params.userId;
-    logger('info', `Updating a user with id ${userId}.`);
     User.findById(userId)
         .then((user) => {
             user.update(req.body)

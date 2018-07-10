@@ -16,6 +16,7 @@ createToken = (data) => {
 exports.issueToken = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    logger('info', `Issuing token for ${email}`)
     const user = User.findOne({email: email}).exec();
 
     user

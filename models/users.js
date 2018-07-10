@@ -47,8 +47,6 @@ const UserSchema = Schema({
 
 UserSchema.pre('save', (next) => {
     let user = this;
-    logger('info', `Salting password for ${user}`);
-
     return next();
 });
 
@@ -76,22 +74,19 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.methods.comparePassword = function (candidatePassword) {
     const selfPassword = this.password;
-    logger('debug', `Comparing password: ${candidatePassword} and hash ${this.password}`);
     return new Promise((resolve, reject) => {
         bcrypt.compare(candidatePassword, selfPassword)
             .then((res) => {
-                logger('debug', 'Resolving password compare with ' + res);
                 resolve(res);
             })
             .catch((err) => {
-                logger('debug', `Error comparing passwords. ${err}`);
                 reject(err);
             })
     });
 };
 
-UserSchema.statics.createRandom = function(){
-    randomUserData = {
+UserSchema.statics.createRandom = function(args){
+    let randomUserData = {
         name: {
             first: faker.name.firstName(),
             last: faker.name.lastName()
@@ -99,6 +94,7 @@ UserSchema.statics.createRandom = function(){
         email: faker.internet.email(),
         password: faker.internet.password()
     }
+    randomUserData = Object.assign(randomUserData, args)
     return UserModel(randomUserData).save()
 }
 

@@ -14,7 +14,7 @@ const app = express();
 v1.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 v1.use(bodyParser.json());
 v1.use(morgan('tiny'));
-v1.use((auth.authMid).unless({path: ['/v1/authenticate']}));
+v1.use((auth.authMid).unless({path: [{methods: ['POST'], url: '/v1/authenticate' }]}))
 v1.use('/', routes);
 v1.use(errorHandler);
 

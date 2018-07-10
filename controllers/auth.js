@@ -45,7 +45,7 @@ exports.issueToken = (req, res, next) => {
         });
 };
 
-exports.refreshToken = (req, res) => {
+exports.refreshToken = (req, res, next) => {
     logger('info', 'Refreshing a token');
     const data = req.user;
     let token = createToken(data);

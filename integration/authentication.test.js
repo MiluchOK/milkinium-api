@@ -71,7 +71,7 @@ describe('Authentication', function(){
                 .get('/v1/authenticate')
                 .expect(401)
                 .then((response) => {
-                    expect(response.body).toEqual({error: "Unauthorized"})
+                    expect(response.body).toEqual({error: "No authorization token was found"})
                 })
             })
         })

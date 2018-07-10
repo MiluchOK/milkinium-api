@@ -61,7 +61,27 @@ describe('Authentication', function(){
     describe('get', function(){
         describe('valid credentials', function(){
             test('should reset token', function(){
-
+                const password = 'fooo'
+                return User.createRandom({password: password})
+                .then(newUser => {
+                    return request(app)
+                    .post('/v1/authenticate')
+                    .send({
+                        email: newUser.email,
+                        password: password
+                    })
+                })
+                .then(response => {
+                    const token = response.body.token
+                    console.log(token)
+                    return request(app)
+                    .get('/v1/authenticate')
+                    .set('Authorization', token)
+                    .expect(200)
+                })
+                .then((response) => {
+                    expect(response.body).toHaveProperty('token')
+                })
             })
         })
 

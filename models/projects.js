@@ -24,30 +24,6 @@ const ProjectSchema = new Schema({
         id: true
 });
 
-// ProjectSchema.virtual('cases', {
-//   ref: 'Case',
-//   localField: '_id',
-//   foreignField: 'project'
-// });
-
-// ProjectSchema.statics.findWithCases = function(id){
-//     const self = this;
-//     logger('debug', "Searching for cases with project id: " + id)
-//     return new Promise(function(resolve, reject){
-//         self.findById(id)
-//             .populate('cases')
-//             .exec()
-//             .then((data) => {
-//                 logger('debug', "Got cases for project with id: " + id + ". The data: " + data)
-//                 resolve(data);
-//             })
-//             .catch((err) => {
-//                 logger('error', err)
-//                 reject(err);
-//             })
-//     })
-// };
-
 ProjectSchema.statics.createRandom = function(){
     randomData = {
         name: faker.internet.userName()

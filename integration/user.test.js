@@ -9,7 +9,7 @@ let connection;
 let app;
 
 afterEach(() => {
-    dbConnect.teardown();
+    return dbConnect.teardown();
 })
 
 beforeEach(() => {

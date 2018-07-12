@@ -8,7 +8,7 @@ let app;
 let user;
 
 afterEach(() => {
-    dbConnect.teardown();
+    return dbConnect.teardown();
 })
 
 beforeEach(() => {

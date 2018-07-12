@@ -6,6 +6,6 @@ module.exports = {
         return mongoose.connect(mongoUrl)
     },
     teardown: function(){
-        mongoose.connection.close()
+        return mongoose.connection.close()
     }
 }

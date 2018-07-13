@@ -8,9 +8,9 @@ const logger = require('../logger')('cases_controller');
 exports.index = (req, res, next) => {
     logger('debug', 'Getting cases.');
     const projectId = req.params.projectId;
-    return Project.findById(projectId)
+    return Project.findById(projectId).populate('cases').exec()
         .then((data) => {
-            logger('debug', 'Got cases data')
+            logger('debug', 'Got cases data: ' + data)
             res.status(200).json(data.cases);
         })
         .catch((err) => {

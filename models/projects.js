@@ -4,14 +4,11 @@ const faker = require('faker');
 const logger = require('../logger')('projects_model');
 const Schema = mongoose.Schema;
 
-const ProjectSchema = new Schema({
+let ProjectSchema = new Schema({
     name: {
         type: String,
         required: true
-    },
-    cases: {
-        
-    },
+    }
 }, {
         toJSON: { 
             virtuals: true,
@@ -24,12 +21,23 @@ const ProjectSchema = new Schema({
         id: true
 });
 
+ProjectSchema.virtual('cases', {
+    ref: 'Case',
+    localField: '_id',
+    foreignField: 'project',
+    justOne: false
+});
+
 ProjectSchema.statics.createRandom = function(){
     randomData = {
         name: faker.internet.userName()
     }
     return ProjectModel(randomData).save()
 }
+
+ProjectSchema.pre('findOne', function() {
+    this.populate('cases');
+  });
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

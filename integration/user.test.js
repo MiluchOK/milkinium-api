@@ -40,7 +40,9 @@ describe('User', function(){
                 .expect(200)
             })
             .then(response => {
-                expect(response.body.map(u => u.email).sort()).toEqual(createdUsers.map(u => u.email).sort())
+                expect(response.body.map(u => u.email).sort()).toEqual(
+                    expect.arrayContaining(createdUsers.map(u => u.email).sort()),
+                );
             })
         })
     })

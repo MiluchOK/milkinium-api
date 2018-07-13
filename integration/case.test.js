@@ -46,8 +46,9 @@ describe('Case', function(){
                 .expect(200)
             })
             .then((response) => {
-                expect(response.body.map(c => c.name).sort()).toEqual(createdCases.map(c => c.name).sort())
-                console.log(response.body[0])
+                expect(response.body.cases.map(u => u.name).sort()).toEqual(
+                    expect.arrayContaining(createdCases.map(u => u.name).sort()),
+                );
             })
         })
     })

@@ -42,9 +42,9 @@ describe('Project', function(){
                 .expect(200)
             })
             .then((response) => {
-                expect(response.body).toHaveLength(createdProjects.length)
-                const sorter = (a, b) => { return ((a.email < b.email) ? -1 : ((a.email > b.email) ? 1 : 0)) }
-                expect(response.body.sort(sorter)).toEqual(createdProjects.sort(sorter))
+                expect(response.body.map(p => p.name).sort()).toEqual(
+                    expect.arrayContaining(createdProjects.map(p => p.name).sort()),
+                );
             })
         })
     })

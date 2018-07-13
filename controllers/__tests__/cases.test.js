@@ -4,7 +4,6 @@ const Promise = require('bluebird')
 let MockExpressRequest = require('mock-express-request');
 let MockExpressResponse = require('mock-express-response');
 const Project = require('../../models/projects')
-jest.mock('../../models/projects')
 
 // Mocks
 let project_title;
@@ -61,23 +60,17 @@ describe('Cases', function () {
 
         test('should get all cases', function(){
             const cases = require('../../models/__mocks__/cases.json')
-            Project.findWithCases.mockImplementationOnce(() => {
-                return Promise.resolve(cases)
-            })
+            mockingoose.Project.toReturn(cases, 'findOne');
             return controller.index(mockReq, mockRes, mockNext)
             .then(() => {
-                expect(Project.findWithCases.mock.calls.length).toBe(1)
-                expect(Project.findWithCases.mock.calls[0][0]).toBe(mockReq.params.projectId)
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toEqual(cases.cases)
+                expect(mockRes._getJSON()).toEqual(cases)
             })
         })
     
         test('should call next when cases retrieval fails', function(){
             expectedError = new Error('Something broke')
-            Project.findWithCases.mockImplementationOnce(() => {
-                return Promise.reject(expectedError)
-            })
+            mockingoose.Project.toReturn(expectedError, 'findOne');
             return controller.index(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const toJson = require('../toJson')
 
 const CaseSchema = new Schema({
     title: {
@@ -11,6 +12,9 @@ const CaseSchema = new Schema({
         ref: 'Project',
         required: true
     }
+}, {
+    toJSON: toJson,
+    id: true
 });
 
 module.exports = CaseSchema;

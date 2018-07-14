@@ -52,4 +52,39 @@ describe('Case', function(){
             })
         })
     })
+
+
+    describe('show', function(){
+        test('should return a specific case', function(){
+            let createdCase
+            return Case.createRandom({project: project._id})
+            .then((c) => {
+                return request(app)
+                createdCase = c
+                .get(`/v1/projects/${project._id}/cases/${createdCase._id}`)
+                .expect(200)
+            })
+            .then((response) => {
+                expect(response.body).toEqual(createdCase)
+            })
+        })
+    })
+
+    describe('create', function(){
+        test('should create a case for a project', function(){
+            const caseData = {title: 'foooo'}
+            return request(app)
+            .post(`/v1/projects/${project._id}/cases`)
+            .send(caseData)
+            .expect(201)
+            .then((response) => {
+                
+                expect(response.body).toEqual({
+                    id: expect.any(String),
+                    project: project._id.toString(),
+                    title: caseData.title
+                  })
+            })
+        })
+    })
 })

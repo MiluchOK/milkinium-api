@@ -73,7 +73,7 @@ describe('User', function(){
                 },
                 email: 'fofofo@gmail.com',
                 password: 'sdfsd34234',
-                role: 'Client'
+                role: 'client'
             }
 
             let updatedUserData

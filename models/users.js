@@ -30,8 +30,8 @@ const UserSchema = Schema({
     },
     role: {
         type: String,
-        enum: ['Admin', 'Client'],
-        default: 'Client'
+        enum: ['admin', 'client'],
+        default: 'client'
     },
 }, { 
     toJSON: { 

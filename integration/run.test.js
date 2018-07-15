@@ -46,6 +46,7 @@ describe('Run', function(){
                 .expect(200)
             })
             .then((response) => {
+                expect(response.body.runs.length).toEqual(createdRuns.length)
                 expect(response.body.runs.map(u => u.title).sort()).toEqual(
                     expect.arrayContaining(createdRuns.map(u => u.title).sort()),
                 );
@@ -65,13 +66,13 @@ describe('Run', function(){
                 .expect(200)
             })
             .then((response) => {
-                expect(response.body).toEqual(createdCase)
+                expect(response.body).toEqual(createdRun)
             })
         })
     })
 
     describe('create', function(){
-        test('should create a case for a run', function(){
+        test('should create a run for a project', function(){
             const runData = {title: 'foooo'}
             return request(app)
             .post(`/v1/projects/${project._id}/runs`)
@@ -81,7 +82,7 @@ describe('Run', function(){
                 expect(response.body).toEqual({
                     id: expect.any(String),
                     project: project._id.toString(),
-                    title: caseData.title
+                    title: runData.title
                   })
             })
         })

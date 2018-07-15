@@ -4,9 +4,9 @@ const logger = require('../logger')('runs_controller');
 // GET list of all runs.
 exports.index = (req, res, next) => {
     const pid = req.params.projectId
-    return Run.find({projectId: pid})
+    return Run.find({project: pid})
     .then((data) => {
-        res.status(200).json(data);
+        res.status(200).json({runs: data});
     })
     .catch((err) => {
         next(err)
@@ -28,7 +28,8 @@ exports.show = (req, res, next) => {
 
 // CREATE a run
 exports.create = (req, res, next) => {
-    const runData = req.body;
+    const pid = req.params.projectId
+    const runData = Object.assign(req.body, {project: pid});
     const run = new Run(runData);
 
     return run.save()

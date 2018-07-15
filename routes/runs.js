@@ -1,7 +1,7 @@
 const routes = require('express').Router();
-const routesController = require('../controllers/routes');
+const runsController = require('../controllers/runs');
 
 
-routes.get('/:runId', routesController.show);
+routes.get('/:runId', runsController.show);
 
 module.exports = routes;

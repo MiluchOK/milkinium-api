@@ -34,6 +34,7 @@ paths:
         "200":
           description: An auth token
 
+
   /users:
     get:
       summary: Get All Users
@@ -45,6 +46,26 @@ paths:
       responses:
         "200":
           description: An array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+
+    post:
+      summary: Create a User
+      description: The endpoint to create a user
+      security: 
+        - apikey: []
+      tags: 
+        - User
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        "200":
+          description: The created user
           schema:
             type: array
             items:

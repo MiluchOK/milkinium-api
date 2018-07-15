@@ -6,7 +6,7 @@ const validUserData = {
         last: 'Foo'
     },
     email: 'exampleMail@gmail.com',
-    role: 'Client',
+    role: 'client',
     avatar: 'http://fooo.com?someimage=1',
     password: 'tesT1234'
 }

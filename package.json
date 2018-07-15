@@ -28,7 +28,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "sleep": "^5.1.1",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "swagger-ui-express": "3.0.10"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
@@ -40,8 +41,7 @@
     "mockingoose": "2.10.1",
     "jest": "^22.1.2",
     "mongodb-memory-server": "1.8.0",
-    "mock-express-response": "0.2.2",
-    "swagger-ui-express": "3.0.10"
+    "mock-express-response": "0.2.2"
   },
   "jest": {
     "testEnvironment": "node"

@@ -284,6 +284,40 @@ paths:
           description: Updated test case
           schema:
             $ref: '#/definitions/Case'
+
+  /runs/{runId}/tests:
+
+    get:
+      summary: Get tests for the test run
+      description: List all the tests for a run
+      parameters:
+        - in: path
+        name: runId
+        type: string
+        required: true
+      security:
+        - apikey: []
+      tags:
+        - Run
+      responses:
+        200:
+          description: List of tests
+    
+    post:
+      summary: Add a test to run
+      description: Add a test to run
+      parameters:
+        - in: path
+        name: runId
+        type: string
+        required: true
+      security:
+          - apikey: []
+      tags:
+        - Run
+      responses:
+        200:
+          description: Success status
             
   /project/{projectId}/runs:
     

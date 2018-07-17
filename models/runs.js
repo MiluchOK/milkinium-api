@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const logger = require('../logger')('runs_model');
 const Schema = mongoose.Schema;
+const Case = require('./cases');
 const toJson = require('./toJson')
 
 let RunSchema = new Schema({
@@ -19,6 +20,13 @@ let RunSchema = new Schema({
         id: true
 });
 
+ProjectSchema.virtual('tests', {
+    ref: 'Test',
+    localField: '_id',
+    foreignField: 'run',
+    justOne: false
+});
+
 RunSchema.statics.createRandom = function(args){
     randomData = {
         title: faker.internet.userName()
@@ -26,6 +34,22 @@ RunSchema.statics.createRandom = function(args){
     randomData = Object.assign(randomData, args)
     return RunModel(randomData).save()
 }
+
+RunSchema.methods.getTests = function(){
+    return this.tests;
+}
+
+RunSchema.methods.addCase = function(caseId){
+    return Case.findById(caseId)
+    .then(caze => {
+        return caze.createTest(runId)
+    })
+}
+
+
+RunSchema.pre('findOne', function() {
+    this.populate('tests');
+  });
 
 //Exporting our model
 const RunModel = mongoose.model('Run', RunSchema);

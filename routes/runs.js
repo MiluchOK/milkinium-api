@@ -3,5 +3,7 @@ const runsController = require('../controllers/runs');
 
 
 routes.get('/:runId', runsController.show);
+routes.get('/:runId/tests', runsController.listTests);
+routes.post('/:runId/tests', testsController.addCase);
 
 module.exports = routes;

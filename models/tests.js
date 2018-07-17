@@ -13,6 +13,11 @@ let TestSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Case',
         required: true
+    },
+    run: {
+        type: Schema.Types.ObjectId,
+        ref: 'Run',
+        required: true
     }
 }, {
         toJSON: toJson,

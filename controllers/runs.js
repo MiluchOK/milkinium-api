@@ -40,3 +40,34 @@ exports.create = (req, res, next) => {
         next(err);
     });
 };
+
+// List tests
+exports.listTests = (req, res, next) => {
+    const runId = req.params.runId
+    return Run.findById(runId)
+    .then(run => {
+        return run.getTests()
+    })
+    .then(testsData => {
+        res.status(200).json(testsData)
+    })
+    .catch(err => {
+        next(err)
+    })
+}
+
+// Add a case to run
+exports.addCase = (req, res, next) => {
+    const runId = req.params.runId
+    const caseId = req.params.caseId
+    return Run.findById(runId)
+    .then(run => {
+        return run.addCase(caseId)
+    })
+    .then(() => {
+        res.status(200).json({success: true})
+    })
+    .catch(err => {
+        next(err)
+    })
+}

@@ -19,7 +19,7 @@ routes.get('/projects/:projectId/cases/:caseId', validate(caseValidator.getCase)
 routes.put('/cases/:projectId/:caseId', casesController.update);
 routes.delete('/cases/:caseId', casesController.destroy);
 
-
+// Runs
 routes.get('/projects/:projectId/runs', runsController.index);
 routes.post('/projects/:projectId/runs', runsController.create);
 routes.use('/runs', runRoutes);

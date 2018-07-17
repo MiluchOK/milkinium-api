@@ -2,6 +2,8 @@ const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const faker = require('faker');
 const logger = require('../logger')('projects_model');
+const Run = require('./runs');
+const Case = require('./cases');
 const Schema = mongoose.Schema;
 
 let ProjectSchema = new Schema({
@@ -33,6 +35,14 @@ ProjectSchema.statics.createRandom = function(){
         name: faker.internet.userName()
     }
     return ProjectModel(randomData).save()
+}
+
+ProjectSchema.methods.createRun = function(runData){
+    return Run.create(Object.assign(runData, {project: this._id}))
+}
+
+ProjectSchema.methods.createCase = function(caseData){
+    return Case.create(Object.assign(caseData, {project: this._id}))
 }
 
 ProjectSchema.pre('findOne', function() {

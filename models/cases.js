@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
 const CaseSchema = require('./schemas/caseSchema')
+const Test = require('./tests');
 
 CaseSchema.statics.createRandom = function(args){
     let randomCaseData = {
@@ -8,6 +9,15 @@ CaseSchema.statics.createRandom = function(args){
     }
     randomCaseData = Object.assign(randomCaseData, args)
     return CaseModel(randomCaseData).save()
+}
+
+
+CaseSchema.methods.createTest = function(runId){
+    return Test.create({
+        title: this.title,
+        run: runId,
+        case: this._id
+    })
 }
 
 //Exporting our model

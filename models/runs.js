@@ -20,7 +20,7 @@ let RunSchema = new Schema({
         id: true
 });
 
-ProjectSchema.virtual('tests', {
+RunSchema.virtual('tests', {
     ref: 'Test',
     localField: '_id',
     foreignField: 'run',

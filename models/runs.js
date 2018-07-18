@@ -49,7 +49,12 @@ RunSchema.methods.addCase = function(caseId){
 
 RunSchema.pre('findOne', function() {
     this.populate('tests');
-  });
+});
+
+RunSchema.post('save', function() {
+    console.log("================================================================================================")
+    this.populate('tests');
+});
 
 //Exporting our model
 const RunModel = mongoose.model('Run', RunSchema);

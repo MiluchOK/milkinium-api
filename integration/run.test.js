@@ -82,7 +82,8 @@ describe('Run', function(){
                 expect(response.body).toEqual({
                     id: expect.any(String),
                     project: project._id.toString(),
-                    title: runData.title
+                    title: runData.title,
+                    tests: []
                   })
             })
         })

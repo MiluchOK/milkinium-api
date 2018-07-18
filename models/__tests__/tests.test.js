@@ -1,10 +1,11 @@
 const Test = require('../../models/tests');
 const mongoose = require('mongoose');
 
-const requiredFields = ['title', 'case']
+const requiredFields = ['title', 'case', 'run']
 const validTestData = {
     title: 'Case1',
-    case: mongoose.Types.ObjectId()
+    case: mongoose.Types.ObjectId(),
+    run: mongoose.Types.ObjectId()
 }
 
 describe('Tests', function () {

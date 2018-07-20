@@ -73,12 +73,18 @@ describe('Test', function(){
 
 
         test('should add tests to a run', function(){
+            const expectedTest = {
+                id: expect.any(String),
+                case: caze._id.toString(),
+                run: run._id.toString(),
+                title: caze.title
+            }
             return request(app)
             .post(`/v1/runs/${run._id}/tests`)
             .send({cases: [caze._id]})
             .expect(200)
             .then((response) => {
-                expect(response.body).toEqual({tests: [{}]})
+                expect(response.body).toEqual({tests: [expectedTest]})
             })
         })
     })

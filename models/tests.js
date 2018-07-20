@@ -20,7 +20,17 @@ let TestSchema = new Schema({
         required: true
     }
 }, {
-        toJSON: toJson,
+        toJSON: { 
+            virtuals: true,
+            transform: function(doc, ret, options){ 
+                delete ret._id;
+                delete ret.__v;
+                if(ret.tests == null){
+                    ret.tests = []
+                }
+                return ret;
+            },
+        },
         id: true
 });
 

@@ -13,7 +13,17 @@ let ProjectSchema = new Schema({
         required: true
     }
 }, {
-        toJSON: toJson,
+        toJSON: { 
+            virtuals: true,
+            transform: function(doc, ret, options){ 
+                delete ret._id;
+                delete ret.__v;
+                if(ret.cases == null){
+                    ret.cases = []
+                }
+                return ret;
+            },
+        },
         id: true
 });
 
@@ -41,7 +51,13 @@ ProjectSchema.methods.createCase = function(caseData){
 
 ProjectSchema.pre('findOne', function() {
     this.populate('cases');
-  });
+});
+
+// ProjectSchema.post('save', function() {
+//     if(!this.cases){
+//         this.cases = [];
+//     }
+// });
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

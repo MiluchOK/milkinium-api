@@ -91,21 +91,6 @@ describe('Run', function(){
                     title: runData.title,
                     tests: []
                   })
-                  return response.body
-            })
-            .then((body) => {
-                return Run.findById(body.id)
-            })
-            .then(r => {
-                r.addCase(caze)
-                return r
-            })
-            .then((r) => {
-                return Run.findById(r._id)
-            })
-            .then(r => {
-                expect(r.tests).toHaveLength(1)
-                expect(r.tests).toHaveLength({})
             })
         })
     })

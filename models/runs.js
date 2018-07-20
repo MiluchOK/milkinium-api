@@ -61,10 +61,6 @@ RunSchema.pre('findOne', function() {
     this.populate('tests');
 });
 
-RunSchema.pre('save', function() {
-    this.populate('tests');
-});
-
 //Exporting our model
 const RunModel = mongoose.model('Run', RunSchema);
 module.exports = RunModel;

@@ -1,4 +1,5 @@
 const request = require('supertest');
+const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const dbConnect = require('../config/db_connect');
 const Project = require('../models/projects');
@@ -32,8 +33,11 @@ beforeEach(() => {
     })
     .then((c) => {
         caze = c
-        run = project.createRun({title: "Run1"})
-        return run;
+        return project.createRun({title: "Run1"})
+    })
+    .then(r => {
+        run = r
+        return r
     })
 })
 
@@ -48,29 +52,33 @@ describe('Test', function(){
         })
 
         test('should return all tests for a run', function(){
-            let createdProjects;
-            return Promise.all([Project.createRandom(), Project.createRandom()])
-            .then((projects) => {
-                createdProjects = projects.map((p) => { return p.toJSON() })
+            return run.addCase(caze._id)
+            .then(() => {
                 return request(app)
                 .get(`/v1/runs/${run._id}/tests`)
                 .expect(200)
             })
             .then((response) => {
-                expect(response.body.map(p => p.name).sort()).toEqual(
-                    expect.arrayContaining(createdProjects.map(p => p.name).sort()),
-                );
+                expect(response.body.tests).toHaveLength(1)
+                const targetTest = response.body.tests[0]
+                targetTest.id = targetTest.id.toString()
+                expect(targetTest).toEqual({
+                    id: targetTest.id,
+                    title: caze.title,
+                    case: caze._id.toString(),
+                    run: run._id.toString()
+                })
             })
         })
 
 
-        test('should add a test to a run', function(){
+        test('should add tests to a run', function(){
             return request(app)
-            .post(`/v1/runs/${run.Id}/tests`)
-            .send([caze])
+            .post(`/v1/runs/${run._id}/tests`)
+            .send({cases: [caze._id]})
             .expect(200)
             .then((response) => {
-                expect(response.body).toEqual({cases: [caze]})
+                expect(response.body).toEqual({tests: [{}]})
             })
         })
     })

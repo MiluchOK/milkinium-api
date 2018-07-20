@@ -53,11 +53,6 @@ ProjectSchema.pre('findOne', function() {
     this.populate('cases');
 });
 
-// ProjectSchema.post('save', function() {
-//     if(!this.cases){
-//         this.cases = [];
-//     }
-// });
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

@@ -49,23 +49,36 @@ exports.listTests = (req, res, next) => {
         return run.getTests()
     })
     .then(testsData => {
-        res.status(200).json(testsData)
+        res.status(200).json({tests: testsData})
     })
     .catch(err => {
         next(err)
     })
 }
 
-// Add a case to run
+// Add cases to run
 exports.addCase = (req, res, next) => {
     const runId = req.params.runId
-    const caseId = req.params.caseId
+    const casesList = req.body.cases
+    let run
     return Run.findById(runId)
-    .then(run => {
-        return run.addCase(caseId)
+    .then(r => {
+        run = r
+        let addPromises = []
+        casesList.forEach(c => { 
+            addPromises.push(r.addCase(c))
+        })
+        return Promise.all(addPromises)
     })
     .then(() => {
-        res.status(200).json({success: true})
+        return Run.findById(runId)
+    })
+    .then((r) => {
+        run = r
+        return run.getTests()
+    })
+    .then((tests) => {
+        res.status(200).json({tests: tests})
     })
     .catch(err => {
         next(err)

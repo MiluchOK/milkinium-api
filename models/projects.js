@@ -1,6 +1,7 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const faker = require('faker');
+const toJson = require('./toJson');
 const logger = require('../logger')('projects_model');
 const Run = require('./runs');
 const Case = require('./cases');
@@ -12,14 +13,7 @@ let ProjectSchema = new Schema({
         required: true
     }
 }, {
-        toJSON: { 
-            virtuals: true,
-            transform: function(doc, ret, options){ 
-                delete ret._id;
-                delete ret.__v
-                return ret;
-            },
-        },
+        toJSON: toJson,
         id: true
 });
 

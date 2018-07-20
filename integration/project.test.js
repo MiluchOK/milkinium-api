@@ -7,6 +7,7 @@ jest.mock('../middleware/authenticate');
 let authMock;
 let connection;
 let app;
+const endpoint = '/v1/projects'
 
 afterEach(() => {
     return dbConnect.teardown();
@@ -21,8 +22,6 @@ beforeEach(() => {
 
 describe('Project', function(){
     describe('index', function(){
-
-        const endpoint = '/v1/projects'
 
         test('should be protected', function(){
             return request(app)
@@ -47,5 +46,24 @@ describe('Project', function(){
                 );
             })
         })
+    })
+
+    describe('create', function(){
+
+        test('should create a project', function(){
+            const projectData = {name: 'foo1'}
+            return request(app)
+            .post(endpoint)
+            .send(projectData)
+            .expect(201)
+            .then((response) => {
+                expect(response.body).toEqual({
+                    id: expect.any(String),
+                    cases: [],
+                    name: projectData.name
+                  })
+            })
+        })
+
     })
 })

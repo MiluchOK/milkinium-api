@@ -2,6 +2,7 @@ const request = require('supertest');
 
 const dbConnect = require('../config/db_connect');
 const Run = require('../models/runs');
+const Case = require('../models/cases');
 const Project = require('../models/projects');
 jest.mock('../middleware/authenticate');
 
@@ -74,10 +75,15 @@ describe('Run', function(){
     describe('create', function(){
         test('should create a run for a project', function(){
             const runData = {title: 'foooo'}
-            return request(app)
-            .post(`/v1/projects/${project._id}/runs`)
-            .send(runData)
-            .expect(201)
+            let caze
+            return Case.createRandom({project: project})
+            .then(c => {
+                caze = c
+                return request(app)
+                .post(`/v1/projects/${project._id}/runs`)
+                .send(runData)
+                .expect(201)
+            })
             .then((response) => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
@@ -85,6 +91,21 @@ describe('Run', function(){
                     title: runData.title,
                     tests: []
                   })
+                  return response.body
+            })
+            .then((body) => {
+                return Run.findById(body.id)
+            })
+            .then(r => {
+                r.addCase(caze)
+                return r
+            })
+            .then((r) => {
+                return Run.findById(r._id)
+            })
+            .then(r => {
+                expect(r.tests).toHaveLength(1)
+                expect(r.tests).toHaveLength({})
             })
         })
     })

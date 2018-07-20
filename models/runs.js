@@ -42,7 +42,7 @@ RunSchema.methods.getTests = function(){
 RunSchema.methods.addCase = function(caseId){
     return Case.findById(caseId)
     .then(caze => {
-        return caze.createTest(runId)
+        return caze.createTest(this._id)
     })
 }
 
@@ -51,8 +51,7 @@ RunSchema.pre('findOne', function() {
     this.populate('tests');
 });
 
-RunSchema.post('save', function() {
-    console.log("================================================================================================")
+RunSchema.pre('save', function() {
     this.populate('tests');
 });
 

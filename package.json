@@ -9,6 +9,7 @@
     "integration": "JWT_SECRET=foo jest integration --runInBand --config integration/jest.config.js",
     "coverage": "yarn unittest --coverage"
   },
+  "engines" : { "node" : "8.10" },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",

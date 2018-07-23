@@ -13,8 +13,7 @@ const CaseSchema = new Schema({
         required: true
     }
 }, {
-    toJSON: toJson,
-    id: true
+    toJSON: toJson
 });
 
 module.exports = CaseSchema;

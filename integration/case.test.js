@@ -59,13 +59,17 @@ describe('Case', function(){
             let createdCase
             return Case.createRandom({project: project._id})
             .then((c) => {
-                return request(app)
                 createdCase = c
-                .get(`/v1/projects/${project._id}/cases/${createdCase._id}`)
+                return request(app)
+                .get(`/v1/cases/${createdCase._id}`)
                 .expect(200)
             })
             .then((response) => {
-                expect(response.body).toEqual(createdCase)
+                expect(response.body).toEqual({
+                    id: createdCase._id.toString(),
+                    project: createdCase.project.toString(),
+                    title: createdCase.title
+                })
             })
         })
     })

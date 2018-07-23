@@ -9,15 +9,19 @@ const logger = require('../logger')('routes_index');
 const caseValidator = require('../validators/cases');
 const casesController = require('../controllers/cases');
 const runsController = require('../controllers/runs');
+const casesRouter = require('./cases');
 
 logger('debug', "In routes.");
 routes.use('/', roots);
 routes.use('/', auth);
+// Users
 routes.use('/users', users);
+// Projects
 routes.use('/projects', projects);
-routes.get('/projects/:projectId/cases/:caseId', validate(caseValidator.getCase), casesController.show);
-routes.put('/cases/:projectId/:caseId', casesController.update);
-routes.delete('/cases/:caseId', casesController.destroy);
+// Cases
+routes.use('/cases', casesRouter);
+routes.get('/projects/:projectId/cases', casesController.index);
+routes.post('/projects/:projectId/cases', casesController.create);
 
 // Runs
 routes.get('/projects/:projectId/runs', runsController.index);

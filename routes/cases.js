@@ -3,7 +3,6 @@ const logger = require('../logger')('cases_route');
 const casesController = require('../controllers/cases');
 
 
-routes.get('/', casesController.index);
-routes.post('/', casesController.create);
+routes.get('/:caseId', casesController.show);
 
 module.exports = routes;

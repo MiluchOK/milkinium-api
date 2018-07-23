@@ -9,8 +9,6 @@ const logger = require('../logger')('users_model');
 const passwordSalting = require('./support/salt')
 
 
-
-
 const UserSchema = Schema({
     name: {
         type: nameSchema,
@@ -19,7 +17,8 @@ const UserSchema = Schema({
     email: {
         type: String,
         lowercase: true,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -75,5 +74,5 @@ UserSchema.statics.createRandom = function(args){
 }
 
 //Exporting our model
-const UserModel = mongoose.model('Users', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 module.exports = UserModel;

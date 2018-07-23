@@ -9,7 +9,9 @@
     "integration": "JWT_SECRET=foo jest integration --runInBand --config integration/jest.config.js",
     "coverage": "yarn unittest --coverage"
   },
-  "engines" : { "node" : "8.10" },
+  "engines": {
+    "node": "8.10"
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
@@ -29,6 +31,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "require-yml": "1.3.1",
+    "seed-mongoose": "^0.5.0",
     "sleep": "^5.1.1",
     "swagger-ui-express": "3.0.10",
     "uuid": "^3.2.1"

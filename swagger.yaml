@@ -305,40 +305,40 @@ paths:
           schema:
             $ref: '#/definitions/Case'
 
-  # /runs/{runId}/tests:
-  #   get:
-  #     summary: Get tests for the test run
-  #     description: List all the tests for a run
-  #     parameters:
-  #       - in: path
-  #       name: runId
-  #       type: string
-  #       required: true
-  #     security:
-  #       - apikey: []
-  #     tags:
-  #       - Run
-  #     responses:
-  #       200:
-  #         description: List of tests
+  /runs/{runId}/tests:
+    get:
+      summary: Get tests for the test run
+      description: List all the tests for a run
+      parameters:
+        - in: path
+          name: runId
+          type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Run
+      responses:
+        200:
+          description: List of tests
     
-  #   post:
-  #     summary: Add a test to run
-  #     description: Add a test to run
-  #     parameters:
-  #       - in: path
-  #       name: runId
-  #       type: string
-  #       required: true
-  #     security:
-  #         - apikey: []
-  #     tags:
-  #       - Run
-  #     responses:
-  #       200:
-  #         description: Success status
+    post:
+      summary: Add a test to run
+      description: Add a test to run
+      parameters:
+        - in: path
+          name: runId
+          type: string
+          required: true
+      security:
+          - apikey: []
+      tags:
+        - Run
+      responses:
+        200:
+          description: Success status
             
-  /project/{projectId}/runs:
+  /projects/{projectId}/runs:
     
     get:
       summary: List all the runs for the project
@@ -366,14 +366,16 @@ paths:
             name: projectId
             type: string
             required: true
-          
-          - $ref: '#/definitions/Run'
+          - name: body
+            in: body
+            schema:
+              $ref: '#/definitions/Run'
         security: 
           - apikey: []
         tags: 
           - Run
         responses:
-          200:
+          201:
             description: Created Run
             schema:
               $ref: '#/definitions/Run'
@@ -539,7 +541,7 @@ definitions:
     properties:
       id:
         type: string
-      name:
+      title:
         type: string
       description:
         type: string

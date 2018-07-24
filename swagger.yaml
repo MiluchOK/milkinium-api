@@ -323,13 +323,19 @@ paths:
           description: List of tests
     
     post:
-      summary: Add a test to run
-      description: Add a test to run
+      summary: Add tests to run
+      description: Add tests to run
       parameters:
         - in: path
           name: runId
           type: string
           required: true
+        - name: body
+          in: body
+          description: The list of Case Ids
+          required: true
+          schema:
+            $ref: '#/definitions/AddCasesBody'
       security:
           - apikey: []
       tags:
@@ -521,6 +527,14 @@ definitions:
     properties:
       title:
         type: "string"
+
+  AddCasesBody:
+    type: object
+    properties:
+      cases:
+        type: array
+        items: 
+          type: string
         
   Result:
     type: object

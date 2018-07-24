@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
+const errorMessages = require('../errors').tests;
+const Error = require('../errors/codedError');
 const logger = require('../logger')('runs_model');
 const Schema = mongoose.Schema;
 const Case = require('./cases');
@@ -50,6 +52,9 @@ RunSchema.methods.getTests = function(){
 }
 
 RunSchema.methods.addCase = function(caseId){
+    if(this.tests != null && this.tests.filter(t => t.case === caseId).length !== 0){
+        throw new Error(errorMessages.duplicateCasesForRun, 400)
+    }
     return Case.findById(caseId)
     .then(caze => {
         return caze.createTest(this._id)

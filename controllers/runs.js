@@ -60,6 +60,7 @@ exports.listTests = (req, res, next) => {
 exports.addCase = (req, res, next) => {
     const runId = req.params.runId
     const casesList = req.body.cases
+    logger('info', casesList)
     let run
     return Run.findById(runId)
     .then(r => {

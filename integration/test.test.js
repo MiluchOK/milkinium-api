@@ -1,6 +1,7 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
+const errors = require('../errors').tests;
 const dbConnect = require('../config/db_connect');
 const Project = require('../models/projects');
 const Case = require('../models/cases');
@@ -85,6 +86,36 @@ describe('Test', function(){
             .expect(200)
             .then((response) => {
                 expect(response.body).toEqual({tests: [expectedTest]})
+            })
+        })
+
+        describe('should not be able to add the same case twice', function(){
+
+            test('in the same batch', function(){
+                return request(app)
+                .post(`/v1/runs/${run._id}/tests`)
+                .send({cases: [caze._id, caze._id]})
+                .expect(400)
+                .then(response => {
+                    expect(response.body).toEqual({error: errors.duplicateCasesForRun})
+                })
+            })
+
+            test('as 2 separate requests', function(){
+                return request(app)
+                .post(`/v1/runs/${run._id}/tests`)
+                .send({cases: [caze._id]})
+                .expect(200)
+                .then(() => {
+                    return request(app)
+                    .post(`/v1/runs/${run._id}/tests`)
+                    .send({cases: [caze._id]})
+                    .expect(400)
+                })
+                .then(response => {
+                    expect(response.body).toEqual({})
+                })
+
             })
         })
     })

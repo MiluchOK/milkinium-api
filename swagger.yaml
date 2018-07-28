@@ -425,13 +425,13 @@ paths:
           schema:
             $ref: '#/definitions/Run'
             
-  /runs/{runId}/results:
+  /{testId}/results:
     get:
-      summary: Get results for a run
-      description: Get results for a run
+      summary: Get results for a test
+      description: Get results for a test
       parameters:
         - in: path
-          name: runId
+          name: testId
           type: string
           required: true
       security: 
@@ -447,11 +447,11 @@ paths:
               $ref: '#/definitions/Result'
               
     post:
-      summary: Create a result
-      description: Create a result
+      summary: Create a result for a test
+      description: Create a result for a test
       parameters:
         - in: path
-          name: runId
+          name: testId
           type: string
           required: true
         - $ref: '#/definitions/Result'
@@ -541,12 +541,10 @@ definitions:
     properties:
       id:
         type: string
-      run_id:
-        type: string
-      case_id:
+      test_id:
         type: string
       status:
-        type: string
+        $ref: "#/definitions/Status"
       execution_time:
         type: string
         
@@ -560,3 +558,10 @@ definitions:
       description:
         type: string
         
+  Status:
+    type: object
+    properties:
+      id:
+        type: string
+      label:
+        type: string

@@ -35,8 +35,7 @@ let RunSchema = new Schema({
 RunSchema.virtual('tests', {
     ref: 'Test',
     localField: '_id',
-    foreignField: 'run',
-    justOne: false
+    foreignField: 'run'
 });
 
 RunSchema.statics.createRandom = function(args){
@@ -48,14 +47,20 @@ RunSchema.statics.createRandom = function(args){
 }
 
 RunSchema.methods.getTests = function(){
-    return this.tests;
+    return this.execPopulate('tests')
+    .then(run => {
+        return run.tests || []
+    })
 }
 
 RunSchema.methods.addCase = function(caseId){
-    if(this.tests != null && this.tests.filter(t => t.case === caseId).length !== 0){
-        throw new Error(errorMessages.duplicateCasesForRun, 400)
-    }
-    return Case.findById(caseId)
+    return this.getTests()
+    .then(currentTests => {
+        if(currentTests.map(t => t.case.toString()).includes(caseId)){
+            throw new Error(errorMessages.duplicateCasesForRun, 400)
+        }
+        return Case.findById(caseId)
+    })
     .then(caze => {
         return caze.createTest(this._id)
     })

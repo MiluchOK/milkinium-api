@@ -97,7 +97,7 @@ describe('Test', function(){
                 .send({cases: [caze._id, caze._id]})
                 .expect(400)
                 .then(response => {
-                    expect(response.body).toEqual({error: errors.duplicateCasesForRun})
+                    expect(response.body).toEqual({error: "validation error"})
                 })
             })
 
@@ -113,7 +113,7 @@ describe('Test', function(){
                     .expect(400)
                 })
                 .then(response => {
-                    expect(response.body).toEqual({})
+                    expect(response.body).toEqual({error: errors.duplicateCasesForRun})
                 })
 
             })

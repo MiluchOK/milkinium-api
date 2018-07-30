@@ -6,6 +6,7 @@ const dbConnect = require('../config/db_connect');
 const Project = require('../models/projects');
 const Case = require('../models/cases');
 const Ttest = require('../models/tests');
+const Status = require('../models/status');
 jest.mock('../middleware/authenticate');
 
 let authMock;
@@ -16,6 +17,7 @@ let caze;
 let run;
 let ttest;
 let result;
+let status;
 
 afterEach(() => {
     return dbConnect.teardown();
@@ -43,7 +45,11 @@ beforeEach(() => {
     })
     .then(t => {
         ttest = t
-        return t.addResult({status: {label: "Passed"}})
+        return Status.create({label: "PASSED"})
+    })
+    .then(s => {
+        status = s
+        return ttest.addResult({status: s})
     })
 })
 
@@ -57,29 +63,22 @@ describe('Result', function(){
             })
         })
 
-        test('should return all results for a test', function(){
-            // return run.addCase(caze._id)
-            // .then(() => {
-            //     return request(app)
-            //     .get(`/v1/runs/${run._id}/tests`)
-            //     .expect(200)
-            // })
-            // .then((response) => {
-            //     expect(response.body.tests).toHaveLength(1)
-            //     const targetTest = response.body.tests[0]
-            //     targetTest.id = targetTest.id.toString()
-            //     expect(targetTest).toEqual({
-            //         id: targetTest.id,
-            //         title: caze.title,
-            //         case: caze._id.toString(),
-            //         run: run._id.toString()
-            //     })
-            // })
-
+        test.only('should return a list of results', function(){
             return request(app)
-            .get(`/v1/${ttest._id}/results`)
-            .then((response) => {
-                expect(response.body).toEqual({results: []})
+            .get(`/v1/tests/${ttest._id}/results`)
+            .expect(200)
+            .then(response => {
+                const results = response.body
+                expect(results.results).toHaveLength(1)
+
+
+                expect(results.results[0]).toEqual({
+                    id: expect.any(String),
+                    status: {
+                        id: status._id.toString(),
+                        label: status.label
+                    }
+                })
             })
         })
 

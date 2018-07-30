@@ -425,7 +425,7 @@ paths:
           schema:
             $ref: '#/definitions/Run'
             
-  /{testId}/results:
+  /tests/{testId}/results:
     get:
       summary: Get results for a test
       description: Get results for a test

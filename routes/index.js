@@ -9,6 +9,7 @@ const logger = require('../logger')('routes_index');
 const caseValidator = require('../validators/cases');
 const casesController = require('../controllers/cases');
 const runsController = require('../controllers/runs');
+const resultsRouter = require('./results');
 const casesRouter = require('./cases');
 
 logger('debug', "In routes.");
@@ -27,5 +28,8 @@ routes.post('/projects/:projectId/cases', casesController.create);
 routes.get('/projects/:projectId/runs', runsController.index);
 routes.post('/projects/:projectId/runs', runsController.create);
 routes.use('/runs', runRoutes);
+
+// Results
+routes.use('/tests', resultsRouter);
 
 module.exports = routes;

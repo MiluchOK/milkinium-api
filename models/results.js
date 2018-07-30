@@ -1,20 +1,6 @@
 const mongoose = require('mongoose');
-const faker = require('faker');
-const logger = require('../logger')('tests_model');
-const Schema = mongoose.Schema;
-const StatusSchema = require('./schemas/statusSchema');
-const toJson = require('./toJson')
-
-let TestSchema = new Schema({
-    status: {
-        type: StatusSchema,
-        required: true
-    }
-}, {
-        toJSON: toJson,
-        id: true
-});
+const ResultSchema = require('./schemas/resultsSchema');
 
 //Exporting our model
-const TestModel = mongoose.model('Test', TestSchema);
-module.exports = TestModel;
+const ResultModel = mongoose.model('Result', ResultSchema);
+module.exports = ResultModel;

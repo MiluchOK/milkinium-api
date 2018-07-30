@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const logger = require('../logger')('tests_model');
 const Schema = mongoose.Schema;
-const StatusSchema = require('./schemas/StatusSchema');
+const StatusSchema = require('./schemas/statusSchema');
 const toJson = require('./toJson')
 
 let TestSchema = new Schema({

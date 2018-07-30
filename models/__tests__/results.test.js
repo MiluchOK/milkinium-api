@@ -3,7 +3,9 @@ const Result = require('../../models/results');
 
 const requiredFields = ['status']
 const validResultData = {
-    status: "23rj4oiu3nr"
+    status: {
+        label: "Passed"
+    }
 }
 
 describe('Results', function () {

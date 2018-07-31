@@ -5,7 +5,7 @@ const logger = require('../logger')('results_controller');
 // GET list of all runs.
 exports.index = (req, res, next) => {
     const testId = req.params.testId
-    Test.findById(testId)
+    return Test.findById(testId)
     .then(test => {
         return test.getResults()
     })
@@ -19,5 +19,18 @@ exports.index = (req, res, next) => {
 
 
 exports.create = (req, res, next) => {
-    res.status(200).send({message: 'No implemmented'})
+    const testId = req.params.testId
+    const resultData = req.body
+
+    return Test.findById(testId)
+    .then(test => {
+        console.log(resultData)
+        return test.addResult(resultData)
+    })
+    .then(test => {
+        res.status(200).send(test)
+    })
+    .catch(err => {
+        next(err)
+    })
 }

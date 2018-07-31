@@ -63,15 +63,13 @@ describe('Result', function(){
             })
         })
 
-        test.only('should return a list of results', function(){
+        test('should return a list of results', function(){
             return request(app)
             .get(`/v1/tests/${ttest._id}/results`)
             .expect(200)
             .then(response => {
                 const results = response.body
                 expect(results.results).toHaveLength(1)
-
-
                 expect(results.results[0]).toEqual({
                     id: expect.any(String),
                     status: {
@@ -83,20 +81,21 @@ describe('Result', function(){
         })
 
 
-        // test('should add result to a test', function(){
-        //     const expectedTest = {
-        //         id: expect.any(String),
-        //         case: caze._id.toString(),
-        //         run: run._id.toString(),
-        //         title: caze.title
-        //     }
-        //     return request(app)
-        //     .post(`/v1/runs/${run._id}/tests`)
-        //     .send({cases: [caze._id]})
-        //     .expect(200)
-        //     .then((response) => {
-        //         expect(response.body).toEqual({tests: [expectedTest]})
-        //     })
-        // })
+        test('should add a result to a test', function(){
+            return request(app)
+            .post(`/v1/tests/${ttest._id}/results`)
+            .send({
+                status: {
+                    label: "SOME WEIRD STATUS"
+            }})
+            .expect(200)
+            .then((response) => {
+                expect(response.body).toEqual({
+                    status: {
+                        label: "SOME WEIRD STATUS"
+                    }
+                })
+            })
+        })
     })
 })

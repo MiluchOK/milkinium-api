@@ -29,6 +29,9 @@ let TestSchema = new Schema({
 TestSchema.methods.addResult = function(result){
     this.results.push(result)
     return this.save()
+    .then(doc => {
+        return result
+    })
 }
 
 TestSchema.methods.getResults = function(){

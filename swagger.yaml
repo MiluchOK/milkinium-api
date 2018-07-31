@@ -454,7 +454,10 @@ paths:
           name: testId
           type: string
           required: true
-        - $ref: '#/definitions/Result'
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Result'
       security: 
         - apikey: []
       tags: 

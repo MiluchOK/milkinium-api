@@ -46,8 +46,9 @@ RunSchema.statics.createRandom = function(args){
     return RunModel(randomData).save()
 }
 
-RunSchema.methods.getTests = function(){
-    return this.execPopulate('tests')
+RunSchema.methods.getTests = function(args){
+    return this.populate({path: 'tests', select: 'title case'})
+    .execPopulate()
     .then(run => {
         return run.tests || []
     })

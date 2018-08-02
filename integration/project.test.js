@@ -1,12 +1,11 @@
 const request = require('supertest');
-
 const dbConnect = require('../config/db_connect');
 const Project = require('../models/projects');
+const app = require('../app');
 jest.mock('../middleware/authenticate');
 
+
 let authMock;
-let connection;
-let app;
 const endpoint = '/v1/projects'
 
 afterEach(() => {
@@ -14,9 +13,7 @@ afterEach(() => {
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
     authMock = require('../middleware/authenticate')
-    app = require('../app')
     return dbConnect.connect(global.__MONGO_URI__)
 })
 

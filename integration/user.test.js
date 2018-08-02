@@ -3,19 +3,16 @@ const request = require('supertest');
 const dbConnect = require('../config/db_connect');
 const User = require('../models/users');
 jest.mock('../middleware/authenticate');
+const app = require('../app');
 
 let authMock;
-let connection;
-let app;
 
 afterEach(() => {
     return dbConnect.teardown();
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
     authMock = require('../middleware/authenticate')
-    app = require('../app')
     return dbConnect.connect(global.__MONGO_URI__)
 })
 

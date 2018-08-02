@@ -1,3 +1,4 @@
 module.exports = {
-    testPathIgnorePatterns: ["/integration"]
+    testPathIgnorePatterns: ["/integration"],
+    testMatch: [ "**/?(*.)+(spec|test).js?(x)" ]
 }

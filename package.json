@@ -6,7 +6,7 @@
     "dev": "nodemon server.js",
     "test": "yarn unittest && yarn integration",
     "unittest": "JWT_SECRET=foo NODE_ENV=test jest --config unittest.config.js",
-    "integration": "JWT_SECRET=foo jest integration --runInBand --config integration/jest.config.js",
+    "integration": "JWT_SECRET=foo jest integration --runInBand --config integration/integrationtest.config.js",
     "coverage": "yarn unittest --coverage"
   },
   "engines": {

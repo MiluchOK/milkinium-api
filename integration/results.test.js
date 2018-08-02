@@ -11,7 +11,7 @@ jest.mock('../middleware/authenticate');
 
 let authMock;
 let connection;
-let app;
+const app = require('../app');
 let project;
 let caze;
 let run;
@@ -24,9 +24,7 @@ afterEach(() => {
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
     authMock = require('../middleware/authenticate')
-    app = require('../app')
     return dbConnect.connect(global.__MONGO_URI__)
     .then(connection => {
         return Project.create({name: "foo1"})

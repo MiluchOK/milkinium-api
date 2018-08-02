@@ -2,18 +2,13 @@ const request = require('supertest');
 
 const dbConnect = require('../config/db_connect');
 const User = require('../models/users');
-
-let connection;
-let app;
-let user;
+const app = require('../app');
 
 afterEach(() => {
     return dbConnect.teardown();
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
-    app = require('../app')
     return dbConnect.connect(global.__MONGO_URI__)
 })
 

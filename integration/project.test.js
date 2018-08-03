@@ -8,13 +8,8 @@ jest.mock('../middleware/authenticate');
 let authMock;
 const endpoint = '/v1/projects'
 
-afterEach(() => {
-    return dbConnect.teardown();
-})
-
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
-    return dbConnect.connect(global.__MONGO_URI__)
 })
 
 describe('Project', function(){

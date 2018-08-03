@@ -7,13 +7,8 @@ const app = require('../app');
 
 let authMock;
 
-afterEach(() => {
-    return dbConnect.teardown();
-})
-
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
-    return dbConnect.connect(global.__MONGO_URI__)
 })
 
 describe('User', function(){

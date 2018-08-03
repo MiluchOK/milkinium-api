@@ -1,7 +1,8 @@
 // mongo-environment.js
 const NodeEnvironment = require('jest-environment-node');
 const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+const Promise = require('bluebird');
+mongoose.Promise = Promise;
 
 class MongoEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -10,10 +11,8 @@ class MongoEnvironment extends NodeEnvironment {
 
   async setup() {
     console.log('Setup MongoDB Test Environment');
-
     this.global.__MONGO_URI__ = await global.__MONGOD__.getConnectionString();
     this.global.__MONGO_DB_NAME__ = global.__MONGO_DB_NAME__;
-    
     await super.setup();
   }
 

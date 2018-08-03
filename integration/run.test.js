@@ -10,16 +10,9 @@ let authMock;
 const app = require('../app');
 let project;
 
-afterEach(() => {
-    return dbConnect.teardown();
-})
-
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
-    return dbConnect.connect(global.__MONGO_URI__)
-    .then(connection => {
-        return Project.create({name: "foo1"})
-    })
+    return Project.create({name: "foo1"})
     .then(p => {
         project = p
     })

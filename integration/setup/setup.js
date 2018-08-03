@@ -11,6 +11,7 @@ const mongod = new MongodbMemoryServer.default({
 });
 
 module.exports = async function() {
+  console.log("SETUP ======================================")
   global.__MONGOD__ = mongod;
   global.__MONGO_DB_NAME__ = MONGO_DB_NAME;
 };

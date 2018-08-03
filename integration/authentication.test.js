@@ -1,16 +1,6 @@
 const request = require('supertest');
-
-const dbConnect = require('../config/db_connect');
 const User = require('../models/users');
 const app = require('../app');
-
-afterEach(() => {
-    return dbConnect.teardown();
-})
-
-beforeEach(() => {
-    return dbConnect.connect(global.__MONGO_URI__)
-})
 
 describe('Authentication', function(){
     describe('post', function(){

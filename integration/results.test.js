@@ -1,34 +1,19 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
-const Promise = require('bluebird');
-const errors = require('../errors').tests;
-const dbConnect = require('../config/db_connect');
 const Project = require('../models/projects');
-const Case = require('../models/cases');
-const Ttest = require('../models/tests');
 const Status = require('../models/status');
 jest.mock('../middleware/authenticate');
 
 let authMock;
-let connection;
 const app = require('../app');
 let project;
 let caze;
-let run;
 let ttest;
-let result;
 let status;
 
-afterEach(() => {
-    return dbConnect.teardown();
-})
 
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
-    return dbConnect.connect(global.__MONGO_URI__)
-    .then(connection => {
-        return Project.create({name: "foo1"})
-    })
+    return Project.create({name: "foo1"})
     .then(p => {
         project = p
         return project.createCase({title: "case1"})

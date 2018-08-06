@@ -53,7 +53,8 @@ const UserSchema = Schema({
 UserSchema.pre('save', passwordSalting);
 
 const duplicationHandler = function(error, doc, next){
-    if (error.name === 'BulkWriteError' && error.code === 11000) {
+    console.log(error)
+    if (error.name === 'BulkWriteError' || error.name === 'MongoError' && error.code === 11000) {
         //TODO Change the message name to something more robust
         next(new CodedError('Cannot have duplicate email', 422));
     } else {

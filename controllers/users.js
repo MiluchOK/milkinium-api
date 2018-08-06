@@ -43,16 +43,15 @@ exports.create = (req, res, next) => {
 exports.update = (req, res, next) => {
     const userId = req.params.userId;
     User.sureFindById(userId)
-        .then((user) => {
-            user.update(req.body)
-                .then((r) => {
-                    res.status(200).json({message: 'Updated'})
-                })
-        })
-        .catch((err) => {
-            logger('error', err);
-            res.status(400).json({message: 'Could not update.', err: err})
-        })
+    .then(user => {
+        return user.update(req.body)
+    })
+    .then((updatedUser) => {
+        res.status(200).json({message: 'success'})
+    })
+    .catch((err) => {
+        next(err)
+    })
 };
 
 exports.destroy = (req, res, next) => {

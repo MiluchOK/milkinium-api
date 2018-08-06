@@ -146,10 +146,10 @@ describe('User', function(){
         })
     })
 
-    describe('update', function(){
+    describe('delete', function(){
         let endpoint = (userId) => (`/v1/users/${userId}`)
 
-        test('should allow updating a user info', function(){
+        test('should allow deleting a user', function(){
             return User.createRandom()
             .then(user => {
                 return request(app)
@@ -169,9 +169,51 @@ describe('User', function(){
                 expect(response.body).toEqual({error: 'No such user'})
             })
         })
+    })
+
+    describe('update', function(){
+        let endpoint = (userId) => (`/v1/users/${userId}`)
+
+        test('should allow updating a user email', function(){
+            const newEmail = "testemailupdate@gmail.com"
+            let originalUser;
+            return User.createRandom()
+            .then(user => {
+                originalUser = user
+                return request(app)
+                .put(endpoint(user._id))
+                .send({email: newEmail})
+                .expect(200)
+            })
+            .then(response => {
+                const updatedUser = Object.assign({}, originalUser.toJSON())
+                updatedUser['email'] = newEmail
+                expect(response.body).toEqual({message: 'success'})
+            })
+        
+        })
+
+        test('should throw 404 if target user does not exist', function(){
+            return request(app)
+            .put(endpoint('507f1f77bcf86cd799439011'))
+            .send({email: 'something@gmail.com'})
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'No such user'})
+            })
+        })
 
         test('should not allow to change email to something existing in the system', function(){
-
+            return Promise.all([User.createRandom(), User.createRandom()])
+            .then(users => {
+                return request(app)
+                .put(endpoint(users[0]._id))
+                .send({email: users[1].email})
+                .expect(422)
+                .then(response => {
+                    expect(response.body).toEqual({error: 'Cannot have duplicate email'})
+                })
+            })
         })
     })
 })

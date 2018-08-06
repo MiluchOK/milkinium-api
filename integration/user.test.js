@@ -51,7 +51,7 @@ describe('User', function(){
             })
         })
 
-        test('should return error out with 404 if requested user does not exist', function(){
+        test('should error out with 404 if requested user does not exist', function(){
             return request(app)
             .get('/v1/users/507f1f77bcf86cd799439011')
             .expect(404)
@@ -71,22 +71,23 @@ describe('User', function(){
                 role: 'client'
             }
 
-            let updatedUserData
-
             return User(userData).save()
-            .then(savedData => {
-                updatedUserData = userData
-                delete updatedUserData.password
-                updatedUserData.id = savedData.id
-                return savedData._id
-            })
-            .then(userId => {
+            .then(savedUser => {
                 return request(app)
-                .get(`/v1/users/${userId}`)
+                .get(`/v1/users/${savedUser._id}`)
                 .expect(200)
             })
             .then(response => {
-                expect(response.body).toEqual(updatedUserData)
+                const returnedUser = response.body
+                expect(returnedUser).toEqual({
+                    id: expect.any(String),
+                    name: {
+                        first: userData.name.first,
+                        last: userData.name.last
+                    },
+                    email: userData.email,
+                    role: userData.role
+                })
             })
         })
     })

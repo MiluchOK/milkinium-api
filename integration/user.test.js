@@ -43,9 +43,12 @@ describe('User', function(){
     })
 
     describe('show', function(){
+
+        let endpoint = (userId) => (`/v1/users/${userId}`)
+
         test('should be auth protected', function(){
             return request(app)
-            .get('/v1/users/507f1f77bcf86cd799439011')
+            .get(endpoint('507f1f77bcf86cd799439011'))
             .then(() => {
                 expect(authMock.authMid.mock.calls.length).toBe(1)
             })
@@ -53,7 +56,7 @@ describe('User', function(){
 
         test('should error out with 404 if requested user does not exist', function(){
             return request(app)
-            .get('/v1/users/507f1f77bcf86cd799439011')
+            .get(endpoint('507f1f77bcf86cd799439011'))
             .expect(404)
             .then(response => {
                 expect(response.body).toEqual({message: 'No such user.'})
@@ -74,7 +77,7 @@ describe('User', function(){
             return User(userData).save()
             .then(savedUser => {
                 return request(app)
-                .get(`/v1/users/${savedUser._id}`)
+                .get(endpoint(savedUser._id))
                 .expect(200)
             })
             .then(response => {
@@ -88,6 +91,57 @@ describe('User', function(){
                     email: userData.email,
                     role: userData.role
                 })
+            })
+        })
+    })
+
+
+    describe('create', function(){
+
+        let endpoint = `/v1/users`
+
+        test('should be auth protected', function(){
+            return request(app)
+            .post(endpoint)
+            .then(() => {
+                expect(authMock.authMid.mock.calls.length).toBe(1)
+            })
+        })
+
+        test('should create a valid user', function(){
+            const newUserData = User.createRandomData()
+            return request(app)
+            .post(endpoint)
+            .send(newUserData)
+            .expect(201)
+            .then((response) => {
+                const createdUser = response.body
+                expect(createdUser).toEqual({
+                    id: expect.any(String),
+                    name: {
+                        first: newUserData.name.first,
+                        last: newUserData.name.last
+                    },
+                    email: newUserData.email,
+                    role: newUserData.role
+                })
+            })
+        })
+
+        test.only('should not allow to create a user with a clamed email', function(){
+            return User.createRandom()
+            .then(user => {
+                return user.email
+            })
+            .then(claimedEmail => {
+                const claimedData = User.createRandomData({email: claimedEmail})
+                return request(app)
+                .post(endpoint)
+                .send(claimedData)
+                .expect(422)
+            })
+            .then(response => {
+                expect(response.body.error).toEqual("Cannot have duplicate email")
             })
         })
     })

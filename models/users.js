@@ -9,6 +9,7 @@ const nameSchema = require('./names');
 const logger = require('../logger')('users_model');
 const passwordSalting = require('./support/salt')
 const errorMessages = require('../errors').users
+const CodedError = require('../errors').codedError
 
 
 const UserSchema = Schema({
@@ -51,6 +52,23 @@ const UserSchema = Schema({
 
 UserSchema.pre('save', passwordSalting);
 
+const duplicationHandler = function(error, doc, next){
+    if (error.name === 'BulkWriteError' && error.code === 11000) {
+        console.log(error)
+      next(new CodedError(error.message, 422));
+    } else {
+      next();
+    }
+}
+
+UserSchema.post('save', function(error, doc, next) {
+    duplicationHandler(error, doc, next)
+});
+
+UserSchema.post('update', function(error, doc, next) {
+    duplicationHandler(error, doc, next)
+});
+
 UserSchema.methods.comparePassword = function (candidatePassword) {
     const selfPassword = this.password;
     return new Promise((resolve, reject) => {
@@ -64,16 +82,22 @@ UserSchema.methods.comparePassword = function (candidatePassword) {
     });
 };
 
-UserSchema.statics.createRandom = function(args){
+
+UserSchema.statics.createRandomData = function(args){
     let randomUserData = {
         name: {
             first: faker.name.firstName(),
             last: faker.name.lastName()
         },
-        email: faker.internet.email(),
-        password: faker.internet.password()
+        email: faker.internet.email().toLowerCase(),
+        password: faker.internet.password(),
+        role: 'client'
     }
-    randomUserData = Object.assign(randomUserData, args)
+    return Object.assign(randomUserData, args)
+}
+
+UserSchema.statics.createRandom = function(args){
+    const randomUserData = this.createRandomData(args)
     return UserModel(randomUserData).save()
 }
 

@@ -149,6 +149,14 @@ describe('User', function(){
     describe('delete', function(){
         let endpoint = (userId) => (`/v1/users/${userId}`)
 
+        test('should be auth protected', function(){
+            return request(app)
+            .post(endpoint('sjdhf8394hf34'))
+            .then(() => {
+                expect(authMock.authMid.mock.calls.length).toBe(1)
+            })
+        })
+
         test('should allow deleting a user', function(){
             return User.createRandom()
             .then(user => {
@@ -173,6 +181,14 @@ describe('User', function(){
 
     describe('update', function(){
         let endpoint = (userId) => (`/v1/users/${userId}`)
+
+        test('should be auth protected', function(){
+            return request(app)
+            .post(endpoint('sjdhf8394hf34'))
+            .then(() => {
+                expect(authMock.authMid.mock.calls.length).toBe(1)
+            })
+        })
 
         test('should allow updating a user email', function(){
             const newEmail = "testemailupdate@gmail.com"

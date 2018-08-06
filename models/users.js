@@ -54,10 +54,10 @@ UserSchema.pre('save', passwordSalting);
 
 const duplicationHandler = function(error, doc, next){
     if (error.name === 'BulkWriteError' && error.code === 11000) {
-        console.log(error)
-      next(new CodedError(error.message, 422));
+        //TODO Change the message name to something more robust
+        next(new CodedError('Cannot have duplicate email', 422));
     } else {
-      next();
+        next();
     }
 }
 
@@ -104,3 +104,5 @@ UserSchema.statics.createRandom = function(args){
 //Exporting our model
 const UserModel = mongoose.model('User', UserSchema);
 module.exports = UserModel;
+
+

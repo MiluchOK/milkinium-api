@@ -1,6 +1,7 @@
 //Users model
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+const validator = require('validator');
 const faker = require('faker');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
@@ -18,6 +19,7 @@ const UserSchema = Schema({
         type: String,
         lowercase: true,
         required: true,
+        validate: [ validator.isEmail, 'invalid email' ],
         unique: true
     },
     password: {

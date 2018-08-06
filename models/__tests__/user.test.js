@@ -47,4 +47,14 @@ describe('Users', function () {
            avatar: validUserData.avatar
        })
    })
+
+   test('should not allow malformed emails', function(done){
+       const data = Object.assign(validUserData, {email: 'foo'})
+       const userWithBrokenEmail = new User(data)
+       userWithBrokenEmail.validate()
+       .catch(err => {
+           expect(err.errors['email']).toBeTruthy()
+           done()
+       })
+   })
 });

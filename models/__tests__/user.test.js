@@ -36,7 +36,6 @@ describe('Users', function () {
 
    test('should strip out password when converted to json', function(){
        const validUserJSON = new User(validUserData).toJSON()
-       console.log(typeof validUserJSON.id)
        expect(validUserJSON).toEqual({
            id: expect.any(String),
            email: validUserData.email,

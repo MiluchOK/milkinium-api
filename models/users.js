@@ -101,6 +101,18 @@ UserSchema.statics.createRandom = function(args){
     return UserModel(randomUserData).save()
 }
 
+UserSchema.statics.sureFindById = function(id){
+    return this.findById(id)
+    .then(data => {
+        if(data == null){
+            throw new CodedError('No such user', 404)
+        }
+        else{
+            return data
+        }
+    })
+}
+
 //Exporting our model
 const UserModel = mongoose.model('User', UserSchema);
 module.exports = UserModel;

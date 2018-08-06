@@ -18,18 +18,14 @@ exports.index = (req, res, next) => {
 exports.show = (req, res, next) => {
     const id = req.params.userId;
     logger('info', `Getting a users with id ${id}`);
-    const user = User.findById(id);
+    const user = User.sureFindById(id);
     user
-        .then((data) => {
-            if(data == null){
-                res.status(404).json({message: 'No such user.'})
-                next()
-            }
-            res.status(200).json(data)
-        })
-        .catch((err) => {
-            next(err);
-        })
+    .then((data) => {
+        res.status(200).json(data)
+    })
+    .catch((err) => {
+        next(err);
+    })
 };
 
 
@@ -46,7 +42,7 @@ exports.create = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     const userId = req.params.userId;
-    User.findById(userId)
+    User.sureFindById(userId)
         .then((user) => {
             user.update(req.body)
                 .then((r) => {
@@ -62,12 +58,14 @@ exports.update = (req, res, next) => {
 exports.destroy = (req, res, next) => {
     const id = req.params.userId;
     logger('info', `Removing a users with id ${id}`);
-    User.findById(id).remove().exec()
-        .then(() => {
-            logger('warn', `Deleted user by id ${id}`);
-            res.status(200).json({message: 'Deleted'})
-        })
-        .catch((err) => {
-            next(err);
-        })
+    User.sureFindById(id)
+    .then((user) => {
+        return user.remove()
+    })
+    .then(() => {
+        res.status(200).json({message: 'Deleted'})
+    })
+    .catch((err) => {
+        next(err);
+    })
 }

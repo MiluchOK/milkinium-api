@@ -59,7 +59,7 @@ describe('User', function(){
             .get(endpoint('507f1f77bcf86cd799439011'))
             .expect(404)
             .then(response => {
-                expect(response.body).toEqual({message: 'No such user.'})
+                expect(response.body).toEqual({error: 'No such user'})
             })
         })
 
@@ -128,7 +128,7 @@ describe('User', function(){
             })
         })
 
-        test.only('should not allow to create a user with a clamed email', function(){
+        test('should not allow to create a user with a clamed email', function(){
             return User.createRandom()
             .then(user => {
                 return user.email
@@ -143,6 +143,35 @@ describe('User', function(){
             .then(response => {
                 expect(response.body.error).toEqual("Cannot have duplicate email")
             })
+        })
+    })
+
+    describe('update', function(){
+        let endpoint = (userId) => (`/v1/users/${userId}`)
+
+        test('should allow updating a user info', function(){
+            return User.createRandom()
+            .then(user => {
+                return request(app)
+                .delete(endpoint(user._id))
+                .expect(200)
+            })
+            .then(response => {
+                expect(response.body).toEqual({message: "Deleted"})
+            })
+        })
+
+        test('should throw 404 if target user does not exist', function(){
+            return request(app)
+            .delete(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'No such user'})
+            })
+        })
+
+        test('should not allow to change email to something existing in the system', function(){
+
         })
     })
 })

@@ -5,7 +5,7 @@ const validUserData = {
         first: 'Alex',
         last: 'Foo'
     },
-    email: 'exampleMail@gmail.com',
+    email: 'examplemail@gmail.com',
     role: 'client',
     avatar: 'http://fooo.com?someimage=1',
     password: 'tesT1234'
@@ -31,5 +31,20 @@ describe('Users', function () {
                 done()
             })
         })
+   })
+
+   test('should strip out password when converted to json', function(){
+       const validUserJSON = new User(validUserData).toJSON()
+       console.log(typeof validUserJSON.id)
+       expect(validUserJSON).toEqual({
+           id: expect.any(String),
+           email: validUserData.email,
+           name: {
+               first: validUserData.name.first,
+               last: validUserData.name.last
+           },
+           role: validUserData.role,
+           avatar: validUserData.avatar
+       })
    })
 });

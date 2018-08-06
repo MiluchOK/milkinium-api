@@ -7,7 +7,7 @@ exports.index = (req, res, next) => {
     const users = User.find({});
     users
         .then((data) => {
-            res.status(200).json(data);
+            res.status(200).json({'users': data});
         })
         .catch((err) => {
             next(err);

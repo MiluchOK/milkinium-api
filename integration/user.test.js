@@ -32,9 +32,12 @@ describe('User', function(){
                 .expect(200)
             })
             .then(response => {
-                expect(response.body.map(u => u.email).sort()).toEqual(
-                    expect.arrayContaining(createdUsers.map(u => u.email).sort()),
-                );
+                expect(response.body).toHaveProperty('users')
+                const returned_users = response.body.users
+                expect(returned_users.length).toBeGreaterThanOrEqual(usersList.length)
+                createdUsers.forEach(element => {
+                    expect(returned_users).toContainObject(element.toJSON()) 
+                });
             })
         })
     })

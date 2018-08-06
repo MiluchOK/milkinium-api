@@ -1,5 +1,4 @@
-const Result = require('../models/results');
-const Test = require('../models/tests');
+const Test = require('../models').test;
 const logger = require('../logger')('results_controller');
 
 // GET list of all runs.

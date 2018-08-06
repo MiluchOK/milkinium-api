@@ -4,7 +4,7 @@
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const logger = require('../logger')('auth_controller');
-const User = require('../models/users');
+const User = require('../models').user;
 
 createToken = (data) => {
     const secret = process.env.JWT_SECRET;

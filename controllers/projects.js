@@ -1,4 +1,4 @@
-const Project = require('../models/projects');
+const Project = require('../models').project;
 const logger = require('../logger')('projects_controller');
 
 // GET list of all projects.

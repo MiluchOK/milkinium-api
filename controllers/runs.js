@@ -1,4 +1,4 @@
-const Run = require('../models/runs');
+const Run = require('../models').run;
 const logger = require('../logger')('runs_controller');
 
 // GET list of all runs.

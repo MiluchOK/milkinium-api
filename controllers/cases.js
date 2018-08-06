@@ -1,6 +1,5 @@
-const Promise = require('bluebird');
-const Case = require('../models/cases');
-const Project = require('../models/projects');
+const Case = require('../models').case;
+const Project = require('../models').project;
 const logger = require('../logger')('cases_controller');
 
 

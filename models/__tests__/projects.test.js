@@ -1,5 +1,5 @@
 const mockingoose = require('mockingoose').default;
-const Project = require('../../models/projects');
+const Project = require('../../models').project;
 
 const requiredFields = ['name']
 const validProjectData = {

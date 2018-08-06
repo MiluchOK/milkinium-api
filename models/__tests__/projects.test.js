@@ -13,7 +13,7 @@ describe('Projects', function () {
     })
 
     requiredFields.forEach((field) => {
-        it(`should not allow to create a project without required '${field}' field`, (done) => {
+        test(`should not allow to create a project without required '${field}' field`, (done) => {
             let invalidProjectData = Object.assign({}, validProjectData)
             delete invalidProjectData[field]
             new Project(invalidProjectData).validate()
@@ -22,5 +22,15 @@ describe('Projects', function () {
                 done()
             })
         })
+   })
+
+   test('should not allow to create a project with an empty name', function(done){
+       const data = { name: ' ' }
+       new Project(data).validate()
+       .catch(err => {
+           expect(err.errors['name']).toBeTruthy()
+           expect(err.errors['name'].toString()).toEqual('Path `name` is required.')
+           done()
+       })
    })
 });

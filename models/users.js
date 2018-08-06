@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 const nameSchema = require('./names');
 const logger = require('../logger')('users_model');
 const passwordSalting = require('./support/salt')
+const errorMessages = require('../errors').users
 
 
 const UserSchema = Schema({
@@ -19,7 +20,7 @@ const UserSchema = Schema({
         type: String,
         lowercase: true,
         required: true,
-        validate: [ validator.isEmail, 'invalid email' ],
+        validate: [ validator.isEmail, errorMessages.invalidEmail ],
         unique: true
     },
     password: {
@@ -27,7 +28,8 @@ const UserSchema = Schema({
         required: true
     },
     avatar: {
-        type: String
+        type: String,
+        validate: [validator.isURL, errorMessages.invalidAvatar]
     },
     role: {
         type: String,

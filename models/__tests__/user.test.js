@@ -1,4 +1,5 @@
 const User = require('../../models/users');
+const errors = require('../../errors').users;
 
 const validUserData = {
     name: {
@@ -49,11 +50,25 @@ describe('Users', function () {
    })
 
    test('should not allow malformed emails', function(done){
-       const data = Object.assign(validUserData, {email: 'foo'})
+       const data = Object.assign({}, validUserData)
+       data['email'] = 'foo'
        const userWithBrokenEmail = new User(data)
        userWithBrokenEmail.validate()
        .catch(err => {
            expect(err.errors['email']).toBeTruthy()
+           expect(err.errors['email'].toString()).toEqual(errors.invalidEmail)
+           done()
+       })
+   })
+
+   test('should not allow malformed image link', function(done){
+       const data = Object.assign({}, validUserData)
+       data['avatar'] = 'fofofoof'
+       const userWithInvalidAvatar = new User(data)
+       userWithInvalidAvatar.validate()
+       .catch(err => {
+           expect(err.errors['avatar']).toBeTruthy()
+           expect(err.errors['avatar'].toString()).toEqual(errors.invalidAvatar)
            done()
        })
    })

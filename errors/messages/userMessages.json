@@ -1,0 +1,4 @@
+{
+    "invalidAvatar": "Avatar must be a url to the resource",
+    "invalidEmail": "Invalid email"
+}

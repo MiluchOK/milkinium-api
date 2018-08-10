@@ -23,7 +23,6 @@ exports.create = (req, res, next) => {
 
     return Test.findById(testId)
     .then(test => {
-        console.log(resultData)
         return test.addResult(resultData)
     })
     .then(test => {

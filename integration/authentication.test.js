@@ -58,7 +58,6 @@ describe('Authentication', function(){
                 })
                 .then(response => {
                     const token = response.body.token
-                    console.log(token)
                     return request(app)
                     .get('/v1/authenticate')
                     .set('Authorization', token)

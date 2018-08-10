@@ -1,3 +1,7 @@
+const mongoose = require('mongoose')
+const sureFirePlugin = require('./plugins/sureFind')
+mongoose.plugin(sureFirePlugin)
+
 const caze = require('./cases')
 const project = require('./projects')
 const run = require('./runs')
@@ -11,3 +15,5 @@ module.exports = {
     test: test,
     user: user
 }
+
+

@@ -1,4 +1,4 @@
-const Case = require('../../models/cases');
+const Case = require('../../models').case;
 const mongoose = require('mongoose');
 
 const requiredFields = ['title', 'project']

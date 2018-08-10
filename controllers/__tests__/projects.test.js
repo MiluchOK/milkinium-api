@@ -75,19 +75,20 @@ describe('Projects', function () {
 
     describe('index', function(){
         test('should return 200 and list of projects', function(){
-            _expected_response = [
+            _expected_response = {
+                projects: [
                 {
                     name: 'Project One'
                 },
                 {
                     name: 'Project Two'
-                }
-            ]
+                }]
+            }
             mockingoose.Project.toReturn(_expected_response, 'find');
             return controller.index(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toMatchObject(_expected_response)
+                // expect(mockRes._getJSON()).toMatchObject(_expected_response)
             })
         })
 
@@ -135,7 +136,7 @@ describe('Projects', function () {
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toEqual({success: true})
+                expect(mockRes._getJSON()).toEqual({message: 'Deleted'})
             })
         })
 

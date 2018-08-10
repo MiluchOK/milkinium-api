@@ -38,6 +38,17 @@ TestSchema.methods.getResults = function(){
     return this.results;
 }
 
+TestSchema.statics.createRandom = function(args){
+    randomData = {
+        title: "foo",
+        case: args.case,
+        run: args.run,
+        results: []
+    }
+
+    return TestModel(randomData).save()
+}
+
 //Exporting our model
 const TestModel = mongoose.model('Test', TestSchema);
 module.exports = TestModel;

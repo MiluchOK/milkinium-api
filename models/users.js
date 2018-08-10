@@ -53,7 +53,6 @@ const UserSchema = Schema({
 UserSchema.pre('save', passwordSalting);
 
 const duplicationHandler = function(error, doc, next){
-    console.log(error)
     if (error.name === 'BulkWriteError' || error.name === 'MongoError' && error.code === 11000) {
         //TODO Change the message name to something more robust
         next(new CodedError('Cannot have duplicate email', 422));
@@ -83,7 +82,6 @@ UserSchema.methods.comparePassword = function (candidatePassword) {
     });
 };
 
-
 UserSchema.statics.createRandomData = function(args){
     let randomUserData = {
         name: {
@@ -102,17 +100,17 @@ UserSchema.statics.createRandom = function(args){
     return UserModel(randomUserData).save()
 }
 
-UserSchema.statics.sureFindById = function(id){
-    return this.findById(id)
-    .then(data => {
-        if(data == null){
-            throw new CodedError('No such user', 404)
-        }
-        else{
-            return data
-        }
-    })
-}
+// UserSchema.statics.sureFindById = function(id){
+//     return this.findById(id)
+//     .then(data => {
+//         if(data == null){
+//             throw new CodedError('No such user', 404)
+//         }
+//         else{
+//             return data
+//         }
+//     })
+// }
 
 //Exporting our model
 const UserModel = mongoose.model('User', UserSchema);

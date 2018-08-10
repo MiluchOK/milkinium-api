@@ -1,7 +1,7 @@
 const request = require('supertest');
 
 const dbConnect = require('../config/db_connect');
-const User = require('../models/users');
+const User = require('../models').user;
 jest.mock('../middleware/authenticate');
 const app = require('../app');
 
@@ -59,7 +59,7 @@ describe('User', function(){
             .get(endpoint('507f1f77bcf86cd799439011'))
             .expect(404)
             .then(response => {
-                expect(response.body).toEqual({error: 'No such user'})
+                expect(response.body).toEqual({error: 'Not Found'})
             })
         })
 
@@ -174,7 +174,7 @@ describe('User', function(){
             .delete(endpoint('507f1f77bcf86cd799439011'))
             .expect(404)
             .then(response => {
-                expect(response.body).toEqual({error: 'No such user'})
+                expect(response.body).toEqual({error: 'Not Found'})
             })
         })
     })
@@ -215,7 +215,7 @@ describe('User', function(){
             .send({email: 'something@gmail.com'})
             .expect(404)
             .then(response => {
-                expect(response.body).toEqual({error: 'No such user'})
+                expect(response.body).toEqual({error: 'Not Found'})
             })
         })
 

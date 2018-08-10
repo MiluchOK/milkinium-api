@@ -5,7 +5,7 @@ const logger = require('../logger')('projects_controller');
 exports.index = (req, res, next) => {
     return Project.find({})
     .then((data) => {
-        res.status(200).json(data);
+        res.status(200).json({projects: data});
     })
     .catch((err) => {
         next(err)
@@ -53,9 +53,12 @@ exports.update = (req, res, next) => {
 
 exports.destroy = (req, res, next) => {
     const projectId = req.params.projectId
-    return Project.findOneAndRemove(projectId)
+    return Project.sureFindById(projectId)
+    .then(project => {
+        return project.remove()
+    })
     .then(() => {
-        res.status(200).json({success: true});
+        res.status(200).json({message: 'Deleted'});
     })
     .catch((err) => {
         next(err)

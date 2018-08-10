@@ -132,7 +132,7 @@ describe('Projects', function () {
 
     describe('destroy', function(){
         test('should return 200 if successfully destroyed', function(){
-            mockingoose.Project.toReturn({}, 'findOneAndRemove')
+            mockingoose.Project.toReturn({}, 'findOne')
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
@@ -142,7 +142,7 @@ describe('Projects', function () {
 
         test('should call next if failed', function(){
             expectedError = new Error('Some error')
-            mockingoose.Project.toReturn(expectedError, 'findOneAndRemove')
+            mockingoose.Project.toReturn(expectedError, 'findOne')
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)

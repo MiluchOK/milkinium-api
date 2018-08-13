@@ -4,7 +4,7 @@ module.exports = {
     "db_host": process.env.DB_HOST,
     "logger": {
         "type": "console",
-        "level": "OFF"
+        "level": process.env.DEBUG_LEVEL || "DEBUG"
         // "level": "DEBUG"
     }
 };

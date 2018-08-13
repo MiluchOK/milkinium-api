@@ -15,7 +15,7 @@ exports.index = (req, res, next) => {
 // GET a specific project
 exports.show = (req, res, next) => {
     const projectId = req.params.projectId
-    return Project.findById(projectId)
+    return Project.sureFindById(projectId)
     .then((data) => {
         res.status(200).json(data);
     })
@@ -31,20 +31,24 @@ exports.create = (req, res, next) => {
 
     return project.save()
     .then((data) => {
-        logger('debug', 'Saved a project')
         res.status(201).json(data);
     })
     .catch((err) => {
-        logger('debug', 'Failed to save a project')
         next(err);
     });
 };
 
 exports.update = (req, res, next) => {
     const projectId = req.params.projectId
-    return Project.findByIdAndUpdate(projectId)
+    const projectUpdate = req.body
+    logger('debug', projectUpdate)
+    return Project.sureFindById(projectId)
+    .then(project => {
+        logger('debug', `Found project: ${project}`)
+        return project.update(projectUpdate)
+    })
     .then(() => {
-        res.status(200).json({success: true})
+        res.status(200).json({message: 'success'})
     })
     .catch((err) => {
         next(err)

@@ -79,6 +79,81 @@ describe('Project', function(){
                 expect(response.body).toEqual({error: "Not Found"})
             })
         })
+    })
 
+    describe('show', function(){
+
+        let endpoint = (projectId) => (`/v1/projects/${projectId}`)
+
+        test('should allow to get a project by id', function(){
+            let createdProject;
+            return Project.create({name: "fooProject"})
+            .then(project => {
+                createdProject = project
+                return request(app)
+                .get(endpoint(project._id))
+                .expect(200)
+            })
+            .then(response => {
+                const returnedProject = response.body
+                expect(returnedProject).toEqual({
+                    id: expect.any(String),
+                    name: createdProject.name,
+                    cases: []
+                })
+            })
+        })
+
+        test('should return 404 if non existent user is being retrieved', function(){
+            return request(app)
+            .get(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                const errorMessage = response.body
+                expect(errorMessage).toEqual({error: 'Not Found'})
+            })
+        })
+    })
+
+    describe('update', function(){
+
+        let endpoint = (projectId) => (`/v1/projects/${projectId}`)
+
+        test('should allow to update a project info', function(){
+            let createdProject;
+            const updateInfo = {name: 'differentName'}
+            return Project.create({name: 'fooProject'})
+            .then(project => {
+                createdProject = project
+                return request(app)
+                .put(endpoint(project._id))
+                .send(updateInfo)
+                .expect(200)
+            })
+            .then(response => {
+                const responseMessage = response.body
+                expect(responseMessage).toEqual({message: 'success'})
+            })
+            .then(() => {
+                return Project.findById(createdProject._id)
+            })
+            .then(proj => {
+                expect(proj.toJSON()).toEqual({
+                    id: expect.any(String),
+                    name: updateInfo.name,
+                    cases: []
+                })
+            })
+        })
+
+        test('should return 404 if non existent user is tried to be updated', function(){
+            return request(app)
+            .put(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                const errorMessage = response.body
+                expect(errorMessage).toEqual({error: 'Not Found'})
+            })
+        })
     })
 })

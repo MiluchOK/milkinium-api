@@ -111,17 +111,18 @@ describe('Projects', function () {
             }
             mockReq.body = _update
             mockReq.params.projectId = targetProject
-            mockingoose.Project.toReturn(_update, 'findOneAndUpdate')
+            mockingoose.Project.toReturn({name: 'fooo'}, 'findOne')
+            mockingoose.Project.toReturn(_update, 'update')
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toEqual({success: true})
+                expect(mockRes._getJSON()).toEqual({message: 'success'})
             })
         })
 
         test('should call next if failed', function(){
             expectedError = new Error('Some Error')
-            mockingoose.Project.toReturn(expectedError, 'findOneAndUpdate')
+            mockingoose.Project.toReturn(expectedError, 'findOne')
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)

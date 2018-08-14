@@ -32,6 +32,7 @@ describe('Cases', function () {
     describe('create', function(){
 
         test('should be creatable', function() {
+            mockingoose.Project.toReturn({}, 'findOne')
             const result = controller.create(mockReq, mockRes, mockNext)
             return result
             .then(() => {
@@ -42,7 +43,7 @@ describe('Cases', function () {
 
         test('should call next with the error on save error', function(){
             const err = new Error('Save Failed');
-            mockingoose.Case.toReturn({}, 'find')
+            mockingoose.Project.toReturn({}, 'findOne')
             mockingoose.Case.toReturn(err, 'save');
             nextMock = jest.fn();
             result = controller.create(mockReq, mockRes, nextMock)

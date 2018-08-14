@@ -46,11 +46,16 @@ exports.create = (req, res, next) => {
 };
 
 exports.update = (req, res, next) => {
+    logger('info', 'In update')
     const id = req.params.caseId;
     const newCazeData = req.body;
-    return Case.findOneAndUpdate({'_id': id}, newCazeData)
+    return Case.sureFindById(id)
+    .then(caze => {
+        logger('info', caze)
+        return caze.update(newCazeData)
+    })
     .then((data) => {
-        res.status(200).json(data);
+        res.status(200).json({message: 'success'});
     })
     .catch((err) => {
         next(err);

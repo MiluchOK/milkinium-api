@@ -50,6 +50,13 @@ ProjectSchema.methods.createCase = function(caseData){
     return Case.create(Object.assign(caseData, {project: this._id}))
 }
 
+ProjectSchema.methods.getCases = function(){
+    return this.populate('cases').execPopulate()
+    .then((project) => {
+        return project.cases || []
+    })
+}
+
 ProjectSchema.pre('findOne', function() {
     this.populate('cases');
 });

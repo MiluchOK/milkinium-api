@@ -139,6 +139,40 @@ describe('Case', function(){
             })
         })
     })
+
+    describe('update', function(){
+
+        let endpoint = (caseId) => (`/v1/cases/${caseId}`)
+        const caseData = {title: 'foooo'}
+        const updateCaseData = {title: 'foooRandom'}
+
+        test.only('should allow to update a case', function(){
+            let createdCase;
+            return project.createCase(caseData)
+            .then(caze => {
+                createdCase = caze
+                return request(app)
+                .put(endpoint(caze._id))
+                .send(updateCaseData)
+                .expect(200)
+            })
+            .then(response => {
+                expect(response.body).toEqual({message: 'success'})
+            })
+            .then(() => {
+                return project.getCases()
+            })
+            .then(cases => {
+                expect(cases).toHaveLength(1)
+                expect(cases[0].toJSON()).toEqual({
+                    id: createdCase.id,
+                    project: createdCase.project,
+                    title: updateCaseData.title
+                })
+            })
+        })
+
+    })
 })
 
 

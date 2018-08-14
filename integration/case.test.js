@@ -146,7 +146,7 @@ describe('Case', function(){
         const caseData = {title: 'foooo'}
         const updateCaseData = {title: 'foooRandom'}
 
-        test.only('should allow to update a case', function(){
+        test('should allow to update a case', function(){
             let createdCase;
             return project.createCase(caseData)
             .then(caze => {
@@ -172,6 +172,14 @@ describe('Case', function(){
             })
         })
 
+        test('should return 404 if the case to update does not exist', function(){
+            return request(app)
+            .put(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'Not Found'})
+            })
+        })
     })
 })
 

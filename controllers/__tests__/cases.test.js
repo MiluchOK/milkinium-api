@@ -111,18 +111,20 @@ describe('Cases', function () {
             const _doc = {
                 title: 'Foo title'
             }
-            mockingoose.Case.toReturn(_doc, 'findOneAndUpdate');
+            mockingoose.Case.toReturn({}, 'findOne')
+            mockingoose.Case.toReturn(_doc, 'update');
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toHaveProperty('title', _doc.title)
+                expect(mockRes._getJSON()).toEqual({message: 'success'})
             })
         })
 
         test('should call next if fails', function(){
             mockReq.params.caseId = '222'
             const expectedError = new Error('Some errror')
-            mockingoose.Case.toReturn(expectedError, 'findOneAndUpdate');
+            mockingoose.Case.toReturn({}, 'findOne');
+            mockingoose.Case.toReturn(expectedError, 'update');
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)

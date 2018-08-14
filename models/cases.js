@@ -20,9 +20,6 @@ CaseSchema.methods.createTest = function(runId){
     })
 }
 
-// const sureFindPlugin = require('./plugins/sureFind')
-// CaseSchema.plugin(sureFindPlugin)
-
 //Exporting our model
 const CaseModel = mongoose.model('Case', CaseSchema);
 module.exports = CaseModel;

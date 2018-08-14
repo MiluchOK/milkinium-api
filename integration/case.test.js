@@ -1,15 +1,15 @@
 const request = require('supertest');
-const Case = require('../models/cases');
-const Project = require('../models/projects');
+const Case = require('../models').case;
+const Project = require('../models').project;
 jest.mock('../middleware/authenticate');
+const app = require('../app');
 
 let authMock;
-const app = require('../app');
 let project;
 
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
-    return Project.create({name: "foo1"})
+    return Project.createRandom()
     .then(p => {
         project = p
     })
@@ -17,43 +17,54 @@ beforeEach(() => {
 
 describe('Case', function(){
     describe('index', function(){
-        test('should be protected', function(){
-            return request(app)
-            .get(`/v1/projects/${project._id}/cases`)
-            .then(() => {
-                expect(authMock.authMid.mock.calls.length).toBe(1)
-            })
-        })
+
+        const endpoint = (projectId) => (`/v1/projects/${projectId}/cases`)
 
         test('should return all cases for a project', function(){
             let createdCases;
-            return Promise.all([Case.createRandom({project: project._id}), Case.createRandom({project: project._id})])
-            .then((cases) => {
+            const promises = [Case.createRandom({project: project._id}), Case.createRandom({project: project._id})]
+            return Promise.all(promises)
+            .then(cases => {
                 createdCases = cases
                 return request(app)
-                .get(`/v1/projects/${project._id}/cases`)
+                .get(endpoint(project._id))
                 .expect(200)
             })
-            .then((response) => {
-                expect(response.body.cases.map(u => u.name).sort()).toEqual(
-                    expect.arrayContaining(createdCases.map(u => u.name).sort()),
-                );
+            .then(response => {
+                expect(response.body).toHaveProperty('cases')
+                const responseCases = response.body.cases
+                expect(responseCases).toHaveLength(promises.length)
+                createdCases.forEach(caze => {
+                    expect(responseCases).toContainObject(JSON.parse(JSON.stringify(caze)))
+                });
+            })
+        })
+
+        test('should return 404 for accessing not existing project', function(){
+            return request(app)
+            .get(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: "Not Found"})
             })
         })
     })
 
 
     describe('show', function(){
+
+        let endpoint = (caseId) => (`/v1/cases/${caseId}`)
+
         test('should return a specific case', function(){
             let createdCase
             return Case.createRandom({project: project._id})
-            .then((c) => {
-                createdCase = c
+            .then(caze => {
+                createdCase = caze
                 return request(app)
-                .get(`/v1/cases/${createdCase._id}`)
+                .get(endpoint(caze._id))
                 .expect(200)
             })
-            .then((response) => {
+            .then(response => {
                 expect(response.body).toEqual({
                     id: createdCase._id.toString(),
                     project: createdCase.project.toString(),
@@ -61,23 +72,66 @@ describe('Case', function(){
                 })
             })
         })
+
+        test('should return 404 when a non-existent case is accessed', function(){
+            return request(app)
+            .get(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'Not Found'})
+            })
+        })
     })
 
     describe('create', function(){
+
+        let endpoint = (projectId) => (`/v1/projects/${projectId}/cases`)
+        const caseData = {title: 'foooo'}
+
         test('should create a case for a project', function(){
-            const caseData = {title: 'foooo'}
             return request(app)
-            .post(`/v1/projects/${project._id}/cases`)
+            .post(endpoint(project._id))
             .send(caseData)
             .expect(201)
-            .then((response) => {
-                
+            .then(response => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
                     project: project._id.toString(),
                     title: caseData.title
-                  })
+                })
+            })
+        })
+
+        test('should not create a case for a non-existing project', function(){
+            return request(app)
+            .post(endpoint('507f1f77bcf86cd799439011'))
+            .send(caseData)
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'Not Found'})
+            })
+        })
+    })
+
+    describe('delete', function(){
+
+        const caseData = {title: 'foooo'}
+        let endpoint = (caseId) => (`/v1/cases/${caseId}`)
+
+        test('should allow to delete a specific test case', function(){
+            return project.createCase(caseData)
+            .then(caze => {
+                return request(app)
+                .delete(endpoint(caze._id))
+                .expect(200)
+            })
+            .then(response => {
+                expect(response.body).toEqual({message: "Deleted"})
             })
         })
     })
 })
+
+
+
+

@@ -42,12 +42,10 @@ describe('Cases', function () {
 
         test('should call next with the error on save error', function(){
             const err = new Error('Save Failed');
+            mockingoose.Case.toReturn({}, 'find')
             mockingoose.Case.toReturn(err, 'save');
-    
             nextMock = jest.fn();
-    
             result = controller.create(mockReq, mockRes, nextMock)
-    
             return result
             .then(() => {
                 expect(nextMock.mock.calls.length).toBe(1)
@@ -139,7 +137,7 @@ describe('Cases', function () {
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
-                expect(mockRes._getJSON()).toEqual({success: true})
+                expect(mockRes._getJSON()).toEqual({message: "Deleted"})
             })
         })
 

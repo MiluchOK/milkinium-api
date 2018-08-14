@@ -13,14 +13,6 @@ beforeEach(() => {
 
 describe('User', function(){
     describe('index', function(){
-        test('should be auth protected', function(){
-            return request(app)
-            .get('/v1/users')
-            .then(() => {
-                expect(authMock.authMid.mock.calls.length).toBe(1)
-            })
-        })
-
         test('should return all users', function(){
             const usersList = [User.createRandom(), User.createRandom()]
             let createdUsers

@@ -4,5 +4,6 @@ const casesController = require('../controllers/cases');
 
 
 routes.get('/:caseId', casesController.show);
+routes.delete('/:caseId', casesController.destroy);
 
 module.exports = routes;

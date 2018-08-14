@@ -16,10 +16,10 @@ exports.index = (req, res, next) => {
 exports.show = (req, res, next) => {
     const projectId = req.params.projectId
     return Project.sureFindById(projectId)
-    .then((data) => {
+    .then(data => {
         res.status(200).json(data);
     })
-    .catch((err) => {
+    .catch(err => {
         next(err)
     })
 };
@@ -30,10 +30,10 @@ exports.create = (req, res, next) => {
     const project = new Project(projectData);
 
     return project.save()
-    .then((data) => {
+    .then(data => {
         res.status(201).json(data);
     })
-    .catch((err) => {
+    .catch(err => {
         next(err);
     });
 };
@@ -41,16 +41,14 @@ exports.create = (req, res, next) => {
 exports.update = (req, res, next) => {
     const projectId = req.params.projectId
     const projectUpdate = req.body
-    logger('debug', projectUpdate)
     return Project.sureFindById(projectId)
     .then(project => {
-        logger('debug', `Found project: ${project}`)
         return project.update(projectUpdate)
     })
     .then(() => {
         res.status(200).json({message: 'success'})
     })
-    .catch((err) => {
+    .catch(err => {
         next(err)
     })
 };

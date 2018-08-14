@@ -59,7 +59,10 @@ exports.update = (req, res, next) => {
 
 exports.destroy = (req, res, next) => {
     const id = req.params.caseId;
-    return Case.findByIdAndRemove(id)
+    return Case.sureFindById(id)
+    .then(caze => {
+        return caze.remove()
+    })
     .then((data) => {
         res.status(200).json({message: "Deleted"})
     })

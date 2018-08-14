@@ -134,7 +134,8 @@ describe('Cases', function () {
     describe('destroy', function(){
         test('should delete a specific case', function(){
             mockReq.params.caseId = '222'
-            mockingoose.Case.toReturn({}, 'findOneAndRemove');
+            mockingoose.Case.toReturn({}, 'findOne');
+            mockingoose.Case.toReturn({}, 'remove');
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
@@ -145,7 +146,8 @@ describe('Cases', function () {
         test('should call next if fails', function(){
             mockReq.params.caseId = '222'
             const expectedError = new Error('Some errror')
-            mockingoose.Case.toReturn(expectedError, 'findOneAndRemove');
+            mockingoose.Case.toReturn(expectedError, 'findOne');
+            mockingoose.Case.toReturn(expectedError, 'remove');
             return controller.destroy(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockNext.mock.calls.length).toBe(1)

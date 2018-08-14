@@ -129,6 +129,15 @@ describe('Case', function(){
                 expect(response.body).toEqual({message: "Deleted"})
             })
         })
+
+        test('should return 404 if non-existent case is tried to be deleted', function(){
+            return request(app)
+            .delete(endpoint('507f1f77bcf86cd799439011'))
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: 'Not Found'})
+            })
+        })
     })
 })
 

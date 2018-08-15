@@ -84,22 +84,46 @@ describe('Project', function(){
     describe('show', function(){
 
         let endpoint = (projectId) => (`/v1/projects/${projectId}`)
+        let createdProject;
 
-        test('should allow to get a project by id', function(){
-            let createdProject;
-            return Project.create({name: "fooProject"})
+        beforeEach(() => {
+            return Project.createRandom()
             .then(project => {
                 createdProject = project
-                return request(app)
-                .get(endpoint(project._id))
-                .expect(200)
             })
+        })
+
+        test('should allow to get a project by id', function(){
+            return request(app)
+            .get(endpoint(createdProject._id))
+            .expect(200)
             .then(response => {
                 const returnedProject = response.body
                 expect(returnedProject).toEqual({
                     id: expect.any(String),
                     name: createdProject.name,
                     cases: []
+                })
+            })
+        })
+
+        test('should show case ids that belongs to the project', function(){
+            const casesData = [{title: 'fooCase1'}, {title: 'fooCase2'}]
+            const cases = casesData.map(caze => createdProject.createCase(caze))
+            let createdCases;
+            return Promise.all(cases)
+            .then(cs => {
+                createdCases = cs.map(c => c.toJSON())
+                return request(app)
+                .get(endpoint(createdProject._id))
+                .expect(200)
+            })
+            .then(response => {
+                const responseCases = response.body.cases
+                expect(responseCases).toHaveLength(createdCases.length)
+                createdCases.forEach(createdCase => {
+                    createdCase.project = createdCase.project.toString()
+                    expect(responseCases).toContainObject(createdCase)
                 })
             })
         })

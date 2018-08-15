@@ -33,6 +33,25 @@ describe('Project', function(){
                 });
             })
         })
+
+        test.only('should not return cases for projects', function(){
+            const caseData = {title: 'foooo'}
+            let createdProject;
+            return Project.createRandom()
+            .then(project => {
+                createdProject = project
+                return project.createCase(caseData)
+            })
+            .then(caze => {
+                return request(app)
+                .get(endpoint)
+                .expect(200)
+            })
+            .then(response => {
+                expect(response.body.projects[0]).not.toHaveProperty('cases')
+            })
+        })
+
     })
 
     describe('create', function(){

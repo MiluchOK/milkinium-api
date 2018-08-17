@@ -1,8 +1,5 @@
-const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const faker = require('faker');
-const toJson = require('./toJson');
-const logger = require('../logger')('projects_model');
 const Run = require('./runs');
 const Case = require('./cases');
 const Schema = mongoose.Schema;
@@ -14,12 +11,12 @@ let ProjectSchema = new Schema({
         required: true
     }
 }, {
+        versionKey: false,
         toJSON: { 
             virtuals: true,
             transform: function(doc, ret, options){ 
                 delete ret._id;
-                delete ret.__v;
-                if(ret.cases == null){
+                if(ret.hasOwnProperty('cases') && ret.cases == null){
                     ret.cases = []
                 }
                 return ret;
@@ -58,9 +55,14 @@ ProjectSchema.methods.getCases = function(){
 }
 
 ProjectSchema.pre('findOne', function() {
-    this.populate('cases');
+    this.populate('cases')
 });
 
+ProjectSchema.post('save', function(doc, next) {
+    doc.populate('user').execPopulate().then(function() {
+      next();
+    });
+  });
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

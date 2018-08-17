@@ -4,8 +4,14 @@ const logger = require('../logger')('projects_controller');
 // GET list of all projects.
 exports.index = (req, res, next) => {
     return Project.find({})
+    .populate('cases')
     .then((data) => {
-        res.status(200).json({projects: data});
+        const responseData = data.map(p => {
+            let modified = p.toJSON()
+            modified.cases = modified.cases.map(c => c.id)
+            return modified
+        })
+        res.status(200).json({projects: responseData});
     })
     .catch((err) => {
         next(err)

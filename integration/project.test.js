@@ -33,6 +33,28 @@ describe('Project', function(){
                 });
             })
         })
+
+        test('should return cases ids for projects', function(){
+            const caseData = {title: 'foooo'}
+            let createdProject;
+            let createdCase;
+            return Project.createRandom()
+            .then(project => {
+                createdProject = project
+                return project.createCase(caseData)
+            })
+            .then(caze => {
+                createdCase = caze
+                return request(app)
+                .get(endpoint)
+                .expect(200)
+            })
+            .then(response => {
+                const targetProject = response.body.projects.find(p => p.id === createdProject.id)
+                expect(targetProject.cases).toEqual([createdCase.id])
+            })
+        })
+
     })
 
     describe('create', function(){

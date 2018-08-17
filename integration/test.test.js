@@ -76,9 +76,12 @@ describe('create', function(){
     })
 
     describe('should not be able to add the same case twice', function(){
+
+        const endpoint = (runId) => (`/v1/runs/${runId}/tests`)
+
         test('in the same batch', function(){
             return request(app)
-            .post(`/v1/runs/${run._id}/tests`)
+            .post(endpoint(run._id))
             .send({cases: [caze._id, caze._id]})
             .expect(400)
             .then(response => {
@@ -88,12 +91,12 @@ describe('create', function(){
     
         test('as 2 separate requests', function(){
             return request(app)
-            .post(`/v1/runs/${run._id}/tests`)
+            .post(endpoint(run._id))
             .send({cases: [caze._id]})
             .expect(200)
             .then(() => {
                 return request(app)
-                .post(`/v1/runs/${run._id}/tests`)
+                .post(endpoint(run._id))
                 .send({cases: [caze._id]})
                 .expect(400)
             })
@@ -101,5 +104,10 @@ describe('create', function(){
                 expect(response.body).toEqual({error: errors.duplicateCasesForRun})
             })
         })
+    })
+
+    describe('should not delete cases that were already added', function(){
+        return request(app)
+        .post(``)
     })
 })

@@ -57,7 +57,7 @@ describe('Test', function(){
             })
         })
 
-
+    describe('create', function(){
         test('should add tests to a run', function(){
             const expectedTest = {
                 id: expect.any(String),
@@ -73,9 +73,10 @@ describe('Test', function(){
                 expect(response.body).toEqual({tests: [expectedTest]})
             })
         })
+    })
+
 
         describe('should not be able to add the same case twice', function(){
-
             test('in the same batch', function(){
                 return request(app)
                 .post(`/v1/runs/${run._id}/tests`)
@@ -85,7 +86,7 @@ describe('Test', function(){
                     expect(response.body).toEqual({error: "validation error"})
                 })
             })
-
+    
             test('as 2 separate requests', function(){
                 return request(app)
                 .post(`/v1/runs/${run._id}/tests`)
@@ -100,7 +101,6 @@ describe('Test', function(){
                 .then(response => {
                     expect(response.body).toEqual({error: errors.duplicateCasesForRun})
                 })
-
             })
         })
     })

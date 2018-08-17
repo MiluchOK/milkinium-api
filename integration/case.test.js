@@ -36,6 +36,12 @@ describe('Case', function(){
                 expect(responseCases).toHaveLength(promises.length)
                 createdCases.forEach(caze => {
                     expect(responseCases).toContainObject(JSON.parse(JSON.stringify(caze)))
+                    const targetResponseCaze = responseCases.find(c => c.id == caze.id)
+                    expect(targetResponseCaze).toEqual({
+                        id: caze.id.toString(),
+                        title: caze.title,
+                        project: caze.project.toString()
+                    })
                 });
             })
         })

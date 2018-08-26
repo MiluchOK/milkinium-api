@@ -104,10 +104,21 @@ describe('create', function(){
                 expect(response.body).toEqual({error: errors.duplicateCasesForRun})
             })
         })
-    })
 
-    describe('should not delete cases that were already added', function(){
-        return request(app)
-        .post(``)
+        test('should not delete cases that were already added', function(){
+            const newCaseData = {title: "newCase"}
+            return run.addCase(caze)
+            .then(() => project.createCase(newCaseData))
+            .then(newCase => {
+                return request(app)
+                .post(endpoint(run._id))
+                .send({cases: [newCase.id]})
+                .expect(200)
+            })
+            .then(response => {
+                expect(response.body).toHaveProperty('tests')
+                expect(response.body.tests).toHaveLength(2)
+            })
+        })
     })
 })

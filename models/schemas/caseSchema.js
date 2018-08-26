@@ -11,7 +11,11 @@ const CaseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Project',
         required: true
-    }
+    },
+    steps: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Step'
+    }]
 }, {
     toJSON: toJson
 });

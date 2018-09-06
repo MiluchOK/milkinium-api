@@ -13,8 +13,9 @@ const CaseSchema = new Schema({
         required: true
     },
     steps: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Step'
+        type: Schema.Types.ObjectId,
+        ref: 'StepTemplate',
+        required: true
     }]
 }, {
     toJSON: toJson

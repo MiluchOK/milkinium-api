@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const CaseSchema = require('./schemas/caseSchema')
 const Test = require('./tests');
+const CodedError = require('../errors').codedError;
 
 CaseSchema.statics.createRandom = function(args){
     let randomCaseData = {
@@ -18,6 +19,18 @@ CaseSchema.methods.createTest = function(runId){
         run: runId,
         case: this._id
     })
+}
+
+CaseSchema.methods.addStepTemplate = function(stepTemplateId){
+    return this.stepTemplates.push(stepTemplateId)
+}
+
+CaseSchema.methods.removeStepTemplate = function(stepTemplateId){
+    const elementIndex = this.stepTemplates.indexOf(stepTemplateId)
+    if(elementIndex === -1){
+        throw new CodedError('Step template not found', 404)
+    }
+    return this.stepTemplates.splice(elementIndex, 1)
 }
 
 //Exporting our model

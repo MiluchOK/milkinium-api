@@ -150,7 +150,7 @@ describe('Case', function(){
 
         let endpoint = (caseId) => (`/v1/cases/${caseId}`)
         const caseData = {title: 'foooo'}
-        const updateCaseData = {title: 'foooRandom'}
+        const updateCaseData = {title: 'foooRandom', steps: []}
 
         test('should allow to update a case', function(){
             let createdCase;
@@ -173,6 +173,7 @@ describe('Case', function(){
                 expect(cases[0].toJSON()).toEqual({
                     id: createdCase.id,
                     project: createdCase.project,
+                    steps: [],
                     title: updateCaseData.title
                 })
             })

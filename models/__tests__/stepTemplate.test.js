@@ -1,4 +1,4 @@
-const Step = require('../../models/stepModel');
+const StepTemplate = require('../../models/stepTemplateModel');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const validStepData = {
@@ -8,10 +8,10 @@ const validStepData = {
 
 const requiredFields = ['body']
 
-describe('Steps', function () {
+describe('StepTemplate', function () {
 
-    test('should allow to create a valid step', function(){
-        return new Step(validStepData).validate()
+    test('should allow to create a valid step template', function(){
+        return new StepTemplate(validStepData).validate()
     })
 
 
@@ -19,7 +19,7 @@ describe('Steps', function () {
         it(`should not allow to create a step without required '${field}' field`, (done) => {
             let invalidStepData = Object.assign({}, validStepData)
             delete invalidStepData[field]
-            new Step(invalidStepData).validate()
+            new StepTemplate(invalidStepData).validate()
             .catch((err) => {
                 expect(err.errors[field]).toBeTruthy()
                 done()

@@ -39,6 +39,7 @@ describe('Case', function(){
                     const targetResponseCaze = responseCases.find(c => c.id == caze.id)
                     expect(targetResponseCaze).toEqual({
                         id: caze.id.toString(),
+                        steps: [],
                         title: caze.title,
                         project: caze.project.toString()
                     })
@@ -73,6 +74,7 @@ describe('Case', function(){
             .then(response => {
                 expect(response.body).toEqual({
                     id: createdCase._id.toString(),
+                    steps: [],
                     project: createdCase.project.toString(),
                     title: createdCase.title
                 })
@@ -102,6 +104,7 @@ describe('Case', function(){
             .then(response => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
+                    steps: [],
                     project: project._id.toString(),
                     title: caseData.title
                 })

@@ -10,3 +10,5 @@ const StepTemplateSchema = new Schema({
 }, {
     toJSON: toJson
 });
+
+module.exports = StepTemplateSchema

@@ -1,17 +1,24 @@
 const request = require('supertest');
 const Case = require('../models').case;
 const Project = require('../models').project;
+const StepTemplate = require('../models').stepTemplate;
 jest.mock('../middleware/authenticate');
 const app = require('../app');
 
 let authMock;
 let project;
+let stepTemplate;
 
 beforeEach(() => {
     authMock = require('../middleware/authenticate')
     return Project.createRandom()
     .then(p => {
         project = p
+        return p
+    })
+    .then(project => {
+        stepTemplate = StepTemplate.createRandom()
+        return stepTemplate
     })
 })
 
@@ -22,7 +29,10 @@ describe('Case', function(){
 
         test('should return all cases for a project', function(){
             let createdCases;
-            const promises = [Case.createRandom({project: project._id}), Case.createRandom({project: project._id})]
+            const promises = [
+                Case.createRandom({project: project._id}),
+                Case.createRandom({project: project._id})
+            ]
             return Promise.all(promises)
             .then(cases => {
                 createdCases = cases
@@ -94,7 +104,7 @@ describe('Case', function(){
     describe('create', function(){
 
         let endpoint = (projectId) => (`/v1/projects/${projectId}/cases`)
-        const caseData = {title: 'foooo'}
+        const caseData = {title: 'foooo', steps: [stepTemplate.id]}
 
         test('should create a case for a project', function(){
             return request(app)

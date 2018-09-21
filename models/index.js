@@ -11,10 +11,10 @@ const stepTemplate = require('./stepTemplateModel')
 const step = require('./stepModel')
 
 module.exports = {
+    test: test,
     case: caze,
     project: project,
     run: run,
-    test: test,
     user: user,
     stepTemplate: stepTemplate,
     step: step

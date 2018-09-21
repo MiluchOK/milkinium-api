@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const errorMessages = require('../errors').tests;
 const Error = require('../errors/codedError');
-const logger = require('../logger')('runs_model');
 const Schema = mongoose.Schema;
-const Case = require('./cases');
-const toJson = require('./toJson')
+const Case = require('./index').case;
 
 let RunSchema = new Schema({
     title: {

@@ -19,6 +19,11 @@ exports.index = (req, res, next) => {
 exports.show = (req, res, next) => {
     const id = req.params.caseId;
     return Case.sureFindById(id)
+    .then((unpopuilatedCaze) => {
+        return unpopuilatedCaze
+        .populate('steps')
+        .execPopulate()
+    })
     .then((caze) => {
         res.status(200).json(caze);
     })

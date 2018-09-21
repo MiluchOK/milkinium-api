@@ -5,7 +5,6 @@ const StepTemplate = require('../models').stepTemplate;
 jest.mock('../middleware/authenticate');
 const app = require('../app');
 
-let authMock;
 let project;
 let stepTemplate;
 
@@ -14,11 +13,11 @@ beforeEach(() => {
     return Project.createRandom()
     .then(p => {
         project = p
-        return p
+        return StepTemplate.createRandom()
     })
-    .then(project => {
-        stepTemplate = StepTemplate.createRandom()
-        return stepTemplate
+    .then(st => {
+        stepTemplate = st
+        return st
     })
 })
 
@@ -29,9 +28,10 @@ describe('Case', function(){
 
         test('should return all cases for a project', function(){
             let createdCases;
+            const overwrite = {project: project._id, steps: [stepTemplate.id]};
             const promises = [
-                Case.createRandom({project: project._id}),
-                Case.createRandom({project: project._id})
+                Case.createRandom(overwrite),
+                Case.createRandom(overwrite)
             ]
             return Promise.all(promises)
             .then(cases => {
@@ -49,7 +49,7 @@ describe('Case', function(){
                     const targetResponseCaze = responseCases.find(c => c.id == caze.id)
                     expect(targetResponseCaze).toEqual({
                         id: caze.id.toString(),
-                        steps: [],
+                        steps: [stepTemplate.id],
                         title: caze.title,
                         project: caze.project.toString()
                     })
@@ -74,7 +74,8 @@ describe('Case', function(){
 
         test('should return a specific case', function(){
             let createdCase
-            return Case.createRandom({project: project._id})
+            const overwrite = {project: project._id, steps: [stepTemplate.id]};
+            return Case.createRandom(overwrite)
             .then(caze => {
                 createdCase = caze
                 return request(app)
@@ -84,7 +85,7 @@ describe('Case', function(){
             .then(response => {
                 expect(response.body).toEqual({
                     id: createdCase._id.toString(),
-                    steps: [],
+                    steps: [stepTemplate.toJSON()],
                     project: createdCase.project.toString(),
                     title: createdCase.title
                 })
@@ -102,19 +103,19 @@ describe('Case', function(){
     })
 
     describe('create', function(){
-
+        
         let endpoint = (projectId) => (`/v1/projects/${projectId}/cases`)
-        const caseData = {title: 'foooo', steps: [stepTemplate.id]}
+        const caseData = {title: 'foooo', steps: []}
 
         test('should create a case for a project', function(){
             return request(app)
-            .post(endpoint(project._id))
-            .send(caseData)
+            .post(endpoint(project.id))
+            .send(Object.assign(caseData, {steps: [stepTemplate.id]}))
             .expect(201)
             .then(response => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
-                    steps: [],
+                    steps: [stepTemplate.id],
                     project: project._id.toString(),
                     title: caseData.title
                 })
@@ -162,7 +163,7 @@ describe('Case', function(){
     describe('update', function(){
 
         let endpoint = (caseId) => (`/v1/cases/${caseId}`)
-        const caseData = {title: 'foooo'}
+        const caseData = {title: 'foooo', steps: []}
         const updateCaseData = {title: 'foooRandom', steps: []}
 
         test('should allow to update a case', function(){

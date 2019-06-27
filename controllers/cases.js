@@ -1,6 +1,8 @@
 const Case = require('../models').case;
 const Project = require('../models').project;
+const StepTemplate = require('../models').stepTemplate;
 const logger = require('../logger')('cases_controller');
+const Promise = require('bluebird');
 
 
 // GET list of all cases.
@@ -37,9 +39,21 @@ exports.create = (req, res, next) => {
     const projectId = req.params.projectId;
     const data = req.body;
     data.project = projectId;
+    let targetProject;
 
     return Project.sureFindById(projectId)
-    .then(targetProject => {
+    .then(project => {
+        targetProject = project
+        let allSteps = []
+        data.steps.map(s => {
+            allSteps.push(StepTemplate.create(s))
+        })
+        return Promise.all(allSteps)
+    })
+    .then(steps => {
+        data.steps = steps.map(s => s._id)
+        console.log("Creating data")
+        console.log(data.steps)
         return targetProject.createCase(data)
     })
     .then(caze => {

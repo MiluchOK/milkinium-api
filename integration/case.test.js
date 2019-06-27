@@ -75,6 +75,7 @@ describe('Case', function(){
         test('should return a specific case', function(){
             let createdCase
             const overwrite = {project: project._id, steps: [stepTemplate.id]};
+            console.log(overwrite)
             return Case.createRandom(overwrite)
             .then(caze => {
                 createdCase = caze

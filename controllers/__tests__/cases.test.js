@@ -88,6 +88,8 @@ describe('Cases', function () {
             return controller.show(mockReq, mockRes, mockNext)
             .then(() => {
                 expect(mockRes.statusCode).toBe(200)
+                console.log("FOOOOOOO")
+                console.log(mockRes)
                 expect(mockRes._getJSON()).toHaveProperty("title", _doc.title)
             })
 

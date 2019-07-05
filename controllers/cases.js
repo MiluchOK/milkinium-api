@@ -72,7 +72,7 @@ exports.update = (req, res, next) => {
         return caze.update(newCazeData)
     })
     .then(data => {
-        res.status(200).json({message: 'success'});
+        res.status(200).json(newCazeData);
     })
     .catch(err => {
         next(err);

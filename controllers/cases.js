@@ -72,7 +72,16 @@ exports.update = (req, res, next) => {
         return caze.update(newCazeData)
     })
     .then(data => {
-        res.status(200).json(newCazeData);
+        console.log(data)
+        return Case.sureFindById(id)
+    })
+    .then(caze => {
+        return caze
+        .populate('steps')
+        .execPopulate()
+    })
+    .then(caze => {
+        return res.status(200).json(caze);
     })
     .catch(err => {
         next(err);

@@ -36,6 +36,7 @@ exports.show = (req, res, next) => {
 
 
 exports.create = (req, res, next) => {
+    console.log("Creating a project.")
     const projectId = req.params.projectId;
     const data = req.body;
     data.project = projectId;
@@ -43,20 +44,23 @@ exports.create = (req, res, next) => {
 
     return Project.sureFindById(projectId)
     .then(project => {
+        console.log("SureFound by id.")
         targetProject = project
         let allSteps = []
+        console.log("Looping over the steps.")
         data.steps.map(s => {
             allSteps.push(StepTemplate.create(s))
         })
+        console.log("All steps: " + allSteps)
         return Promise.all(allSteps)
     })
     .then(steps => {
+        console.log("Looking up steps to create.")
         data.steps = steps.map(s => s._id)
-        console.log("Creating data")
-        console.log(data.steps)
         return targetProject.createCase(data)
     })
     .then(caze => {
+        console.log("Returning status code and data.")
         res.status(201).json(caze)
     })
     .catch(err => {

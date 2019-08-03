@@ -16,17 +16,22 @@ describe('Cases', function () {
 
     beforeEach(() => {
         mockingoose.resetAll();
-        project_title = "foo";
+        case_title = "foo";
         mockNext = jest.fn();
+        mockNext.mockImplementation((error) => {
+            throw error
+        })
         mockReq = new MockExpressRequest({
             params: {
                 projectId: '111'
             },
             body: {
-                title: project_title,
+                title: case_title,
+                steps: []
             }
         });
         mockRes = new MockExpressResponse();
+        mockRes.statusCode = 500
     });
 
     describe('create', function(){
@@ -37,7 +42,7 @@ describe('Cases', function () {
             return result
             .then(() => {
                 expect(mockRes.statusCode).toBe(201);
-                expect(mockRes._getJSON()).toHaveProperty('title', project_title)
+                expect(mockRes._getJSON()).toHaveProperty('title', case_title)
             })
         })
 
@@ -69,11 +74,12 @@ describe('Cases', function () {
     
         test('should call next when cases retrieval fails', function(){
             expectedError = new Error('Something broke')
+            const customNextMock = jest.fn()
             mockingoose.Project.toReturn(expectedError, 'findOne');
-            return controller.index(mockReq, mockRes, mockNext)
+            return controller.index(mockReq, mockRes, customNextMock)
             .then(() => {
-                expect(mockNext.mock.calls.length).toBe(1)
-                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+                expect(customNextMock.mock.calls.length).toBe(1)
+                expect(customNextMock.mock.calls[0][0]).toBe(expectedError)
             })
         })
     })
@@ -96,11 +102,12 @@ describe('Cases', function () {
         test('shold call next when case retrieval fails', function(){
             mockReq.params.caseId = '222'
             expectedError = new Error('Some Error')
+            const customNextMock = jest.fn()
             mockingoose.Case.toReturn(expectedError, 'findOne');
-            return controller.show(mockReq, mockRes, mockNext)
+            return controller.show(mockReq, mockRes, customNextMock)
             .then(() => {
-                expect(mockNext.mock.calls.length).toBe(1)
-                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+                expect(customNextMock.mock.calls.length).toBe(1)
+                expect(customNextMock.mock.calls[0][0]).toBe(expectedError)
             })
         })
     })
@@ -122,13 +129,14 @@ describe('Cases', function () {
 
         test('should call next if fails', function(){
             mockReq.params.caseId = '222'
+            const customNextMock = jest.fn()
             const expectedError = new Error('Some errror')
             mockingoose.Case.toReturn({}, 'findOne');
             mockingoose.Case.toReturn(expectedError, 'update');
-            return controller.update(mockReq, mockRes, mockNext)
+            return controller.update(mockReq, mockRes, customNextMock)
             .then(() => {
-                expect(mockNext.mock.calls.length).toBe(1)
-                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+                expect(customNextMock.mock.calls.length).toBe(1)
+                expect(customNextMock.mock.calls[0][0]).toBe(expectedError)
             })
         })
     })
@@ -148,12 +156,13 @@ describe('Cases', function () {
         test('should call next if fails', function(){
             mockReq.params.caseId = '222'
             const expectedError = new Error('Some errror')
+            const customNextMock = jest.fn()
             mockingoose.Case.toReturn(expectedError, 'findOne');
             mockingoose.Case.toReturn(expectedError, 'remove');
-            return controller.destroy(mockReq, mockRes, mockNext)
+            return controller.destroy(mockReq, mockRes, customNextMock)
             .then(() => {
-                expect(mockNext.mock.calls.length).toBe(1)
-                expect(mockNext.mock.calls[0][0]).toBe(expectedError)
+                expect(customNextMock.mock.calls.length).toBe(1)
+                expect(customNextMock.mock.calls[0][0]).toBe(expectedError)
             })
         })
     })

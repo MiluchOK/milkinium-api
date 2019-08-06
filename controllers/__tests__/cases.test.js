@@ -116,9 +116,10 @@ describe('Cases', function () {
         test('should update a specific case', function(){
             mockReq.params.caseId = '222'
             const _doc = {
-                title: 'Foo title'
+                title: 'Foo title',
+                steps: []
             }
-            mockingoose.Case.toReturn({}, 'findOne')
+            mockingoose.Case.toReturn({title: 'something'}, 'findOne')
             mockingoose.Case.toReturn(_doc, 'update');
             return controller.update(mockReq, mockRes, mockNext)
             .then(() => {

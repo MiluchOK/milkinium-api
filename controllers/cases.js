@@ -71,21 +71,21 @@ exports.create = (req, res, next) => {
 exports.update = (req, res, next) => {
     const id = req.params.caseId;
     const newCazeData = req.body;
-    return Case.sureFindById(id)
+
+    let allSteps = []
+    newCazeData.steps.map(s => {
+        allSteps.push(StepTemplate.create(s))
+    })
+    return Promise.all(allSteps)
+    .then(steps => {
+        newCazeData.steps = steps.map(s => s.id)
+        return Case.sureFindById(id)
+    })
     .then(caze => {
         return caze.update(newCazeData)
     })
     .then(data => {
-        console.log(data)
-        return Case.sureFindById(id)
-    })
-    .then(caze => {
-        return caze
-        .populate('steps')
-        .execPopulate()
-    })
-    .then(caze => {
-        return res.status(200).json(caze);
+        return res.status(200).json({message: 'success'});
     })
     .catch(err => {
         next(err);

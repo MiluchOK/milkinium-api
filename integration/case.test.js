@@ -105,17 +105,21 @@ describe('Case', function(){
     describe('create', function(){
         
         let endpoint = (projectId) => (`/v1/projects/${projectId}/cases`)
-        const caseData = {title: 'foooo', steps: []}
+        const caseData = {title: 'foooo', steps: [
+            {
+                body: "foo"
+            }
+        ]}
 
         test('should create a case for a project', function(){
             return request(app)
             .post(endpoint(project.id))
-            .send(Object.assign(caseData, {steps: [stepTemplate.id]}))
+            .send(caseData)
             .expect(201)
             .then(response => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
-                    steps: [stepTemplate.id],
+                    steps: [expect.any(String)],
                     project: project._id.toString(),
                     title: caseData.title
                 })
@@ -196,6 +200,10 @@ describe('Case', function(){
         test('should return 404 if the case to update does not exist', function(){
             return request(app)
             .put(endpoint('507f1f77bcf86cd799439011'))
+            .send({
+                title: "foo",
+                steps: []
+            })
             .expect(404)
             .then(response => {
                 expect(response.body).toEqual({error: 'Not Found'})

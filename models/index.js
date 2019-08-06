@@ -9,6 +9,7 @@ const test = require('./tests')
 const user = require('./users')
 const stepTemplate = require('./stepTemplateModel')
 const step = require('./stepModel')
+const suite = require('./suitesModel')
 
 module.exports = {
     case: caze,
@@ -17,7 +18,8 @@ module.exports = {
     test: test,
     user: user,
     stepTemplate: stepTemplate,
-    step: step
+    step: step,
+    suite: suite
 }
 
 

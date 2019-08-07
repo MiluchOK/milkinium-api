@@ -1,6 +1,5 @@
 const mockingoose = require('mockingoose').default;
 const controller = require('../projects')
-const Promise = require('bluebird')
 let MockExpressRequest = require('mock-express-request');
 let MockExpressResponse = require('mock-express-response');
 

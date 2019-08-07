@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const Run = require('./runs');
 const Case = require('./cases');
+const Suite = require('./suitesModel');
 const Schema = mongoose.Schema;
 
 let ProjectSchema = new Schema({
@@ -19,6 +20,9 @@ let ProjectSchema = new Schema({
                 if(ret.hasOwnProperty('cases') && ret.cases == null){
                     ret.cases = []
                 }
+                if(ret.hasOwnProperty('suites') && ret.cases == null){
+                    ret.cases = []
+                }
                 return ret;
             },
         },
@@ -31,6 +35,13 @@ ProjectSchema.virtual('cases', {
     foreignField: 'project',
     justOne: false
 });
+
+ProjectSchema.virtual('suites', {
+    ref: 'Suite',
+    localField: '_id',
+    foreignField: 'project',
+    justOne: false
+})
 
 ProjectSchema.statics.createRandom = function(){
     randomData = {
@@ -47,6 +58,11 @@ ProjectSchema.methods.createCase = function(caseData){
     return Case.create(Object.assign(caseData, {project: this._id}))
 }
 
+ProjectSchema.methods.addSuite = function(suiteData){
+    const data = Object.assign(suiteData, {project: this._id})
+    return Suite.create(data)
+}
+
 ProjectSchema.methods.getCases = function(){
     return this.populate('cases').execPopulate()
     .then((project) => {
@@ -56,6 +72,7 @@ ProjectSchema.methods.getCases = function(){
 
 ProjectSchema.pre('findOne', function() {
     this.populate('cases')
+    this.populate('suites')
 });
 
 ProjectSchema.post('save', function(doc, next) {

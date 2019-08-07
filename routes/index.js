@@ -9,8 +9,10 @@ const logger = require('../logger')('routes_index');
 const caseValidator = require('../validators/cases');
 const casesController = require('../controllers/cases');
 const runsController = require('../controllers/runs');
+const suitesController = require('../controllers/suitesController');
 const resultsRouter = require('./results');
 const casesRouter = require('./cases');
+const suitesRouter = require('./suitesRouter');
 
 logger('debug', "In routes.");
 routes.use('/', roots);
@@ -28,6 +30,11 @@ routes.post('/projects/:projectId/cases', casesController.create);
 routes.get('/projects/:projectId/runs', runsController.index);
 routes.post('/projects/:projectId/runs', runsController.create);
 routes.use('/runs', runRoutes);
+
+// Suites
+routes.use('/suites', suitesRouter)
+routes.get('/projects/:projectId/suites', suitesController.index)
+routes.post('/projects/:projectId/suites', suitesController.create)
 
 // Results
 routes.use('/tests', resultsRouter);

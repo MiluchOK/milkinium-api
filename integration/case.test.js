@@ -51,7 +51,8 @@ describe('Case', function(){
                         id: caze.id.toString(),
                         steps: [stepTemplate.id],
                         title: caze.title,
-                        project: caze.project.toString()
+                        project: caze.project.toString(),
+                        suites: []
                     })
                 });
             })
@@ -87,7 +88,8 @@ describe('Case', function(){
                     id: createdCase._id.toString(),
                     steps: [stepTemplate.toJSON()],
                     project: createdCase.project.toString(),
-                    title: createdCase.title
+                    title: createdCase.title,
+                    suites: []
                 })
             })
         })
@@ -121,7 +123,8 @@ describe('Case', function(){
                     id: expect.any(String),
                     steps: [expect.any(String)],
                     project: project._id.toString(),
-                    title: caseData.title
+                    title: caseData.title,
+                    suites: []
                 })
             })
         })
@@ -192,7 +195,8 @@ describe('Case', function(){
                     id: createdCase.id,
                     project: createdCase.project,
                     steps: [],
-                    title: updateCaseData.title
+                    title: updateCaseData.title,
+                    suites: []
                 })
             })
         })

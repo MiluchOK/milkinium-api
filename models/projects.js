@@ -20,8 +20,8 @@ let ProjectSchema = new Schema({
                 if(ret.hasOwnProperty('cases') && ret.cases == null){
                     ret.cases = []
                 }
-                if(ret.hasOwnProperty('suites') && ret.cases == null){
-                    ret.cases = []
+                if(ret.hasOwnProperty('suites') && ret.suites == null){
+                    ret.suites = []
                 }
                 return ret;
             },
@@ -75,11 +75,11 @@ ProjectSchema.pre('findOne', function() {
     this.populate('suites')
 });
 
-ProjectSchema.post('save', function(doc, next) {
-    doc.populate('user').execPopulate().then(function() {
-      next();
-    });
-  });
+// ProjectSchema.post('save', function(doc, next) {
+//     doc.populate('user').execPopulate().then(function() {
+//       next();
+//     });
+//   });
 
 //Exporting our model
 const ProjectModel = mongoose.model('Project', ProjectSchema);

@@ -71,7 +71,8 @@ describe('Project', function(){
                 expect(response.body).toEqual({
                     id: expect.any(String),
                     cases: [],
-                    name: projectData.name
+                    name: projectData.name,
+                    suites: []
                   })
             })
         })
@@ -124,7 +125,8 @@ describe('Project', function(){
                 expect(returnedProject).toEqual({
                     id: expect.any(String),
                     name: createdProject.name,
-                    cases: []
+                    cases: [],
+                    suites: []
                 })
             })
         })
@@ -187,7 +189,8 @@ describe('Project', function(){
                 expect(proj.toJSON()).toEqual({
                     id: expect.any(String),
                     name: updateInfo.name,
-                    cases: []
+                    cases: [],
+                    suites: []
                 })
             })
         })

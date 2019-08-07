@@ -18,7 +18,15 @@ const SuiteSchema = new Schema({
         required: true
     }]
 }, {
-    toJSON: toJson
+    toJSON: { 
+        virtuals: true,
+        transform: function(doc, ret, options){
+            delete ret._id;
+            delete ret.__v;
+            delete ret.project
+            return ret;
+        },
+    }
 });
 
 module.exports = SuiteSchema;

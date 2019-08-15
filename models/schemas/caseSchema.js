@@ -16,13 +16,7 @@ const CaseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'StepTemplate',
         required: true
-    }],
-    suites: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'SuiteTemplate'
-        }
-    ]
+    }]
 }, {
     toJSON: toJson
 });

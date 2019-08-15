@@ -51,8 +51,7 @@ describe('Case', function(){
                         id: caze.id.toString(),
                         steps: [stepTemplate.id],
                         title: caze.title,
-                        project: caze.project.toString(),
-                        suites: []
+                        project: caze.project.toString()
                     })
                 });
             })
@@ -195,8 +194,7 @@ describe('Case', function(){
                     id: createdCase.id,
                     project: createdCase.project,
                     steps: [],
-                    title: updateCaseData.title,
-                    suites: []
+                    title: updateCaseData.title
                 })
             })
         })

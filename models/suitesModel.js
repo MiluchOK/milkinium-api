@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
 const SuiteSchema = require('./schemas/suiteSchema');
+const Caze = require('./cases');
 
 SuiteSchema.methods.addCases = (caseIds) => {
     caseIds.forEach(cazeId => {

@@ -44,40 +44,24 @@ exports.update = (req, res, next) => {
     const suiteId = req.params.suiteId
     const newData = req.body
 
+    let targetSuite;
+    let updateData;
+
+    logger('debug', "Updating test case with id: " + suiteId)
     return Suite.sureFindById(suiteId)
-    .then(targetSuite => {
-        if ("title" in newData) {
-            targetSuite.title = newData["title"]
-        }
-        if ("cases" in newData) {
-            targetSuite.cases = newData["cases"]
-        }
-        return targetSuite.save()
+    .then(foundSuite => {
+        targetSuite = foundSuite
+        updateData = Object.assign(targetSuite.toJSON(), newData)
+        logger('debug', "Updating Cases references to suite.")
+        return foundSuite.update(updateData)
     })
-    .then(updatedSuite => {
-        logger('debug', "Updated suite: ")
-        logger('debug', updatedSuite)
-        return res.status(200).json({ message: "Updated" })
+    .then((updateStatus) => {
+        logger('debug', updateStatus)
+        res.status(200).json({ message: "Updated" })
     })
     .catch(err => {
         next(err)
     })
-
-    
-
-    // return Suite.updateOne({ _id: suiteId }, newData)
-    // .then(status => {
-    //     logger('debug', "Number of documents matched: " + status.n)
-    //     return Suite.sureFindById(suiteId)
-    // })
-    // .then(suite => {
-    //     logger('debug', "Suite found after new search.")
-    //     logger('debug', suite)
-    //     res.status(200).json({ message: "Updated" })
-    // })
-    // .catch(err => {
-    //     next(err)
-    // })
 };
 
 exports.destroy = (req, res, next) => {

@@ -1,6 +1,7 @@
 const Case = require('../models').case;
 const Project = require('../models').project;
 const StepTemplate = require('../models').stepTemplate;
+const Suite = require('../models').suite;
 const logger = require('../logger')('cases_controller');
 const Promise = require('bluebird');
 
@@ -20,14 +21,22 @@ exports.index = (req, res, next) => {
 // GET a specific case
 exports.show = (req, res, next) => {
     const id = req.params.caseId;
+    let responseData = {}
     return Case.sureFindById(id)
     .then((unpopuilatedCaze) => {
         return unpopuilatedCaze
         .populate('steps')
         .execPopulate()
     })
-    .then((caze) => {
-        res.status(200).json(caze);
+    .then(caze => {
+        responseData = caze.toJSON()
+        return Suite.find({ cases: { $all: [ caze.id ] } }).distinct('_id')
+    })
+    .then(foundCases => {
+        responseData.suites = foundCases
+        logger('debug', "Suits found: ")
+        logger('debug', responseData.suites)
+        res.status(200).json(responseData);
     })
     .catch((err) => {
         next(err);
@@ -36,32 +45,32 @@ exports.show = (req, res, next) => {
 
 
 exports.create = (req, res, next) => {
-    console.log("Creating a project.")
     const projectId = req.params.projectId;
     const data = req.body;
     data.project = projectId;
     let targetProject;
+    let responseData;
 
     return Project.sureFindById(projectId)
     .then(project => {
-        console.log("SureFound by id.")
         targetProject = project
         let allSteps = []
-        console.log("Looping over the steps.")
         data.steps.map(s => {
             allSteps.push(StepTemplate.create(s))
         })
-        console.log("All steps: " + allSteps)
         return Promise.all(allSteps)
     })
     .then(steps => {
-        console.log("Looking up steps to create.")
         data.steps = steps.map(s => s._id)
         return targetProject.createCase(data)
     })
     .then(caze => {
-        console.log("Returning status code and data.")
-        res.status(201).json(caze)
+        responseData = caze.toJSON()
+        return Suite.find({ cases: { $all: [ caze.id ] } }).distinct('_id')
+    })
+    .then(suites => {
+        responseData.suites = suites
+        res.status(201).json(responseData)
     })
     .catch(err => {
         next(err)

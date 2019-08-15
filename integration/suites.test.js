@@ -1,5 +1,6 @@
 const request = require('supertest');
 const Case = require('../models').case;
+// const ObjectId = require('mongodb').ObjectID;
 const Project = require('../models').project;
 const SuiteModel = require('../models').suite;
 jest.mock('../middleware/authenticate');
@@ -33,8 +34,6 @@ describe('Suite', function(){
                 testCase = caze
                 let newSuiteData = suite.toJSON()
                 newSuiteData.cases.push(caze._id)
-                console.log("new data: ")
-                console.log(newSuiteData)
                 return request(app)
                 .put(endpoint(suite._id))
                 .send(newSuiteData)
@@ -45,8 +44,6 @@ describe('Suite', function(){
                 return SuiteModel.findById(suite._id)
             })
             .then((updatedSuite) => {
-                console.log("UPDATED SUITE: ")
-                console.log(updatedSuite)
                 let newSuiteData = suite.toJSON()
                 expect(updatedSuite.toJSON()).toEqual({
                     id: suite.id,

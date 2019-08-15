@@ -33,6 +33,11 @@ CaseSchema.methods.removeStepTemplate = function(stepTemplateId){
     return this.stepTemplates.splice(elementIndex, 1)
 }
 
+CaseSchema.methods.assignNewSuite = function(suiteId){
+    this.suite = suiteId
+    return this.save()
+}
+
 //Exporting our model
 const CaseModel = mongoose.model('Case', CaseSchema);
 module.exports = CaseModel;

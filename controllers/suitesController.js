@@ -5,9 +5,9 @@ const logger = require('../logger')('suites_controller');
 exports.index = (req, res, next) => {
     const projectId = req.params.projectId;
     return Project.sureFindById(projectId)
-    .then((data) => {
-        console.log(data)
-        res.status(200).json({suites: data.suites});
+    .then((project) => {
+        console.log(project)
+        res.status(200).json({suites: project.suites});
     })
     .catch((err) => {
         next(err);
@@ -25,11 +25,9 @@ exports.show = (req, res, next) => {
     })
 };
 
-
 exports.create = (req, res, next) => {
     const projectId = req.params.projectId;
     const suiteData = req.body
-
     return Project.sureFindById(projectId)
     .then(project => {
         return project.addSuite(suiteData)
@@ -43,7 +41,43 @@ exports.create = (req, res, next) => {
 };
 
 exports.update = (req, res, next) => {
+    const suiteId = req.params.suiteId
+    const newData = req.body
 
+    return Suite.sureFindById(suiteId)
+    .then(targetSuite => {
+        if ("title" in newData) {
+            targetSuite.title = newData["title"]
+        }
+        if ("cases" in newData) {
+            targetSuite.cases = newData["cases"]
+        }
+        return targetSuite.save()
+    })
+    .then(updatedSuite => {
+        logger('debug', "Updated suite: ")
+        logger('debug', updatedSuite)
+        return res.status(200).json({ message: "Updated" })
+    })
+    .catch(err => {
+        next(err)
+    })
+
+    
+
+    // return Suite.updateOne({ _id: suiteId }, newData)
+    // .then(status => {
+    //     logger('debug', "Number of documents matched: " + status.n)
+    //     return Suite.sureFindById(suiteId)
+    // })
+    // .then(suite => {
+    //     logger('debug', "Suite found after new search.")
+    //     logger('debug', suite)
+    //     res.status(200).json({ message: "Updated" })
+    // })
+    // .catch(err => {
+    //     next(err)
+    // })
 };
 
 exports.destroy = (req, res, next) => {

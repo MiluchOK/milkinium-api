@@ -1,11 +1,11 @@
 
 
 const nextMock = () => {
-    jest.fn()
-
+    const mockNext = jest.fn()
     mockNext.mockImplementation((error) => {
         throw error
     })
+    return mockNext
 }
 
-export default nextMock()
+module.exports = nextMock()

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const faker = require('faker');
 const SuiteSchema = require('./schemas/suiteSchema');
 
 SuiteSchema.methods.addCases = (caseIds) => {
@@ -20,3 +21,4 @@ SuiteSchema.statics.createRandom = function(args){
 //Exporting our model
 const SuiteModel = mongoose.model('Suite', SuiteSchema);
 module.exports = SuiteModel;
+

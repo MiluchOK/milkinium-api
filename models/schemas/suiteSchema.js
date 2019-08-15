@@ -23,7 +23,7 @@ const SuiteSchema = new Schema({
         transform: function(doc, ret, options){
             delete ret._id;
             delete ret.__v;
-            delete ret.project
+            delete ret.project;
             return ret;
         },
     }

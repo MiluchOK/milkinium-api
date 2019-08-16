@@ -1,6 +1,5 @@
 const request = require('supertest');
 const Case = require('../models').case;
-// const ObjectId = require('mongodb').ObjectID;
 const Project = require('../models').project;
 const SuiteModel = require('../models').suite;
 jest.mock('../middleware/authenticate');
@@ -23,6 +22,28 @@ beforeEach(() => {
 })
 
 describe('Suite', function(){
+    describe('create', function(){
+        const endpoint = () => (`/v1/projects/${project.id}/suites`)
+
+        test('should be creatable', function(){
+            const suiteData = {
+                title: "New Super Suite",
+                cases: [],
+            }
+            return request(app)
+            .post(endpoint(project.id))
+            .send(suiteData)
+            .expect(201)
+            .then(response => {
+                expect(response.body).toEqual({
+                    title: suiteData.title,
+                    cases: suiteData.cases,
+                    id: expect.any(String)
+                })
+            })
+        })
+    })
+
     describe('update', function(){
 
         const endpoint = (suiteId) => (`/v1/suites/${suiteId}`)
@@ -53,4 +74,33 @@ describe('Suite', function(){
             })
         })
     })
+
+    describe('destroy', function(){
+
+        const endpoint = (suiteId) => (`/v1/suites/${suiteId}`)
+        let targetSuite
+
+        beforeEach(() => {
+            return SuiteModel.createRandom({project: project.id})
+            .then(suite => {
+                targetSuite = suite
+            })
+        })
+
+        test('should update a specific suite', function(){
+            return request(app)
+            .delete(endpoint(targetSuite.id))
+            .send()
+            .expect(200)
+            .then(response => {
+                expect(response.body).toEqual({message: 'Deleted'})
+                return SuiteModel.findById(targetSuite.id)
+            })
+            .then(result => {
+                expect(result).toBeNull()
+            })
+        })
+    })
+
+
 })

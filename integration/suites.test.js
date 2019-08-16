@@ -102,5 +102,44 @@ describe('Suite', function(){
         })
     })
 
+    describe('index', function(){
 
+        const endpoint = (projectId) => `/v1/projects/${projectId}/suites`
+
+        test('should return all suites for a project', function(){
+            return request(app)
+            .get(endpoint(project.id))
+            .send()
+            .expect(200)
+            .then(response => {
+                expect(response.body).toEqual({suites: [suite.toJSON()]})
+            })
+        })
+    })
+
+    describe('show', function(){
+
+        const endpoint = (suiteId) => `/v1/suites/${suiteId}`
+
+        test('should return a specific suite by id', function(){
+            return request(app)
+            .get(endpoint(suite.id))
+            .send()
+            .expect(200)
+            .then(response => {
+                expect(response.body).toEqual(suite.toJSON())
+            })
+        })
+
+        test('should return 404 if the requested suite does not exist', function(){
+            return request(app)
+            .get(endpoint('5d565f028730ad805fa84999'))
+            .send()
+            .expect(404)
+            .then(response => {
+                expect(response.body).toEqual({error: "Not Found"})
+            })
+        })
+
+    })
 })

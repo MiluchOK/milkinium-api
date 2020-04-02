@@ -1,4 +1,4 @@
-const faker = require('faker')
+const faker = require('faker');
 
 module.exports = [{
     email: "admin@admin.com",
@@ -7,4 +7,4 @@ module.exports = [{
         first: "Admin",
         last: "Admin"
     }
-}]
+}];

@@ -4,7 +4,7 @@ module.exports = {
     testEnvironment: './setup/mongo-environment.js',
     testMatch: [ "**/?(*.)+(spec|test).js?(x)" ],
     clearMocks: true,
-    setupTestFrameworkScriptFile: "./setup/frameworkSetup.js"
+    setupFilesAfterEnv: ["./setup/frameworkSetup.js"]
     // resetMocks: true,
     // resetModules: true,
     

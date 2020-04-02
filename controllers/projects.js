@@ -37,7 +37,10 @@ exports.create = (req, res, next) => {
 
     return project.save()
     .then(data => {
-        res.status(201).json(data);
+        return Project.sureFindById(data._id)
+    })
+    .then(project => {
+        res.status(201).json(project);
     })
     .catch(err => {
         next(err);

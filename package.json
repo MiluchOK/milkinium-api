@@ -1,7 +1,7 @@
 {
   "name": "milkinium",
   "version": "1.0.0",
-  "node": "8.10.0",
+  "node": "12.16.1",
   "scripts": {
     "dev": "nodemon server.js",
     "test": "yarn unittest && yarn integration",
@@ -10,10 +10,10 @@
     "coverage": "yarn unittest --coverage"
   },
   "engines": {
-    "node": "8.10"
+    "node": "12.16.1"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^4.0.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "dotenv": "^5.0.1",
@@ -25,14 +25,13 @@
     "joi": "^13.1.2",
     "jsonwebtoken": "^8.2.0",
     "log4js": "^2.5.3",
-    "mongoose": "^5.0.9",
+    "mongoose": "^5.9.7",
     "mongoose-autopopulate": "^0.8.0",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "require-yml": "1.3.1",
     "seed-mongoose": "^0.5.0",
-    "sleep": "^5.1.1",
     "swagger-ui-express": "3.0.10",
     "uuid": "^3.2.1",
     "validator": "^10.5.0"
@@ -40,7 +39,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "concurrently": "^3.5.0",
-    "jest": "^22.1.2",
+    "jest": "^25.1.0",
     "mock-express-response": "0.2.2",
     "mockingoose": "2.10.1",
     "mongodb-memory-server": "1.8.0",

@@ -2,5 +2,6 @@ module.exports = {
     testPathIgnorePatterns: ["/integration"],
     testMatch: [ "**/?(*.)+(spec|test).js?(x)" ],
     verbose: true,
-    testURL: 'http://localhost/'
-}
+    testURL: 'http://localhost/',
+    testEnvironment: 'node'
+};

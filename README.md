@@ -1,3 +1,6 @@
+API docs:
+`${base_url}/api-docs`
+
 Config file:
 ```
 {
@@ -20,6 +23,3 @@ Api documentation:
 
 ![Screenshot](data-model.png)
 
-foo
-k
-klkl

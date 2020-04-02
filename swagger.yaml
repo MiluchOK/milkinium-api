@@ -212,7 +212,102 @@ paths:
       responses:
         "200":
           description: A project
-          
+
+
+  /projects/{projectId}/suites:
+
+    get:
+      summary: Get a specific suite
+      description: Get a suite
+      parameters:
+        - in: path
+          name: projectId
+          type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Suite
+      responses:
+        200:
+          description: List of suites
+
+    post:
+      summary: Create a suite for a project
+      description: Create a suite for a project
+      parameters:
+        - name: suite
+          in: body
+          schema:
+            $ref: '#/definitions/Suite'
+        - name: projectId
+          in: path
+          type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Suite
+      responses:
+        201:
+          description: Created suite
+
+  /suites/{suiteId}:
+
+    get:
+      summary: Get a specific suite
+      description: Get a suite
+      parameters:
+        - in: path
+          name: suiteId
+          type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Suite
+      responses:
+        200:
+          description: Suite
+          schema:
+            $ref: '#/definitions/Suite'
+
+    put:
+      summary: Edit a specific suite
+      description: Edit a specific suite
+      parameters:
+        - in: path
+          name: suiteId
+          type: string
+          required: true
+        - $ref: '#/definitions/Suite'
+      security:
+        - apikey: []
+      tags:
+        - Suite
+      responses:
+        200:
+          description: Updated test suite
+          schema:
+            $ref: '#/definitions/Suite'
+
+    delete:
+      summary: Delete a specific  suite
+      description: Delete a specific suite
+      parameters:
+        - in: path
+          name: suiteId
+          type: string
+          required: true
+      security:
+        - apikey: []
+      tags:
+        - Suite
+      responses:
+        200:
+          description: Status message
+
+
   /projects/{projectId}/cases:
   
     get:
@@ -295,6 +390,7 @@ paths:
           name: caseId
           type: string
           required: true
+        - $ref: '#/definitions/Case'
       security: 
         - apikey: []
       tags:
@@ -526,6 +622,12 @@ definitions:
         type: "string"
         
   Case:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+
+  Suite:
     type: "object"
     properties:
       title:

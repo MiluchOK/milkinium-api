@@ -47,13 +47,15 @@ exports.update = (req, res, next) => {
     let targetSuite;
     let updateData;
 
-    logger('debug', "Updating test case with id: " + suiteId)
+    logger('debug', "Updating test suite with id: " + suiteId)
     return Suite.sureFindById(suiteId)
     .then(foundSuite => {
         targetSuite = foundSuite
+        logger('debug', newData)
         updateData = Object.assign(targetSuite.toJSON(), newData)
         logger('debug', "Updating Cases references to suite.")
-        return foundSuite.update(updateData)
+        logger('debug', updateData)
+        return foundSuite.updateOne(updateData)
     })
     .then((updateStatus) => {
         logger('debug', updateStatus)

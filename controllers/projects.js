@@ -7,10 +7,10 @@ exports.index = (req, res, next) => {
     .populate('cases')
     .then((data) => {
         const responseData = data.map(p => {
-            let modified = p.toJSON()
-            modified.cases = modified.cases.map(c => c.id)
+            let modified = p.toJSON();
+            modified.cases = modified.cases.map(c => c.id);
             return modified
-        })
+        });
         res.status(200).json({projects: responseData});
     })
     .catch((err) => {
@@ -20,7 +20,7 @@ exports.index = (req, res, next) => {
 
 // GET a specific project
 exports.show = (req, res, next) => {
-    const projectId = req.params.projectId
+    const projectId = req.params.projectId;
     return Project.sureFindById(projectId)
     .then(data => {
         res.status(200).json(data);
@@ -48,8 +48,8 @@ exports.create = (req, res, next) => {
 };
 
 exports.update = (req, res, next) => {
-    const projectId = req.params.projectId
-    const projectUpdate = req.body
+    const projectId = req.params.projectId;
+    const projectUpdate = req.body;
     return Project.sureFindById(projectId)
     .then(project => {
         return project.update(projectUpdate)
@@ -63,7 +63,7 @@ exports.update = (req, res, next) => {
 };
 
 exports.destroy = (req, res, next) => {
-    const projectId = req.params.projectId
+    const projectId = req.params.projectId;
     return Project.sureFindById(projectId)
     .then(project => {
         return project.remove()

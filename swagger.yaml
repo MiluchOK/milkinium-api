@@ -118,7 +118,10 @@ paths:
           name: userId
           type: string
           required: true
-        - $ref: '#/definitions/User'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/User'
       responses:
         "200":
           description: Updated version of the user
@@ -204,7 +207,10 @@ paths:
           name: projectId
           type: string
           required: true
-        - $ref: '#/definitions/Project'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Project'
       security: 
         - apikey: []
       tags:
@@ -280,7 +286,10 @@ paths:
           name: suiteId
           type: string
           required: true
-        - $ref: '#/definitions/Suite'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Suite'
       security:
         - apikey: []
       tags:
@@ -390,7 +399,10 @@ paths:
           name: caseId
           type: string
           required: true
-        - $ref: '#/definitions/Case'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Case'
       security: 
         - apikey: []
       tags:
@@ -510,7 +522,10 @@ paths:
           name: runId
           required: true
           type: string
-        - $ref: '#/definitions/Run'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Run'
       security:
         - apikey: []
       tags:

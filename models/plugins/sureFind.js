@@ -1,4 +1,4 @@
-const CodedError = require('../../errors').codedError
+const CodedError = require('../../errors').codedError;
 
 module.exports = function sureFindPlugin(schema, options) {
     schema.statics.sureFindById = function(id){
@@ -12,4 +12,4 @@ module.exports = function sureFindPlugin(schema, options) {
             }
         })
     }
-}
+};

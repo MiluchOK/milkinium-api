@@ -11,21 +11,21 @@ let caze;
 let run;
 
 beforeEach(() => {
-    authMock = require('../middleware/authenticate')
+    authMock = require('../middleware/authenticate');
     return Project.create({name: "foo1"})
     .then(p => {
-        project = p
+        project = p;
         return project.createCase({title: "case1"})
     })
     .then((c) => {
-        caze = c
+        caze = c;
         return project.createRun({title: "Run1"})
     })
     .then(r => {
-        run = r
+        run = r;
         return r
     })
-})
+});
 
 
 describe('index', function(){

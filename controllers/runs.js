@@ -3,10 +3,10 @@ const logger = require('../logger')('runs_controller');
 
 // GET list of all runs.
 exports.index = (req, res, next) => {
-    const pid = req.params.projectId
-    return Run.find({project: pid})
-    .then((data) => {
-        res.status(200).json({runs: data});
+    const pid = req.params.projectId;
+    return Run.getRunsByProjectId(pid)
+    .then((fetchedRuns) => {
+        res.status(200).json({runs: fetchedRuns});
     })
     .catch((err) => {
         next(err)
@@ -33,8 +33,11 @@ exports.create = (req, res, next) => {
     const run = new Run(runData);
 
     return run.save()
-    .then((data) => {
-        res.status(201).json(data);
+    .then((savedDoc) => {
+        return Run.findById(savedDoc._id)
+    })
+    .then(result => {
+        res.status(201).json(result);
     })
     .catch((err) => {
         next(err);

@@ -54,7 +54,7 @@ ProjectSchema.methods.createCase = function(caseData){
 };
 
 ProjectSchema.methods.addSuite = function(suiteData){
-    const data = Object.assign(suiteData, {project: this._id})
+    const data = Object.assign(suiteData, {project: this._id});
     return Suite.create(data)
 };
 

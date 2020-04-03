@@ -5,7 +5,6 @@ const Error = require('../errors/codedError');
 const logger = require('../logger')('runs_model');
 const Schema = mongoose.Schema;
 const Case = require('./cases');
-const toJson = require('./toJson')
 
 let RunSchema = new Schema({
     title: {
@@ -18,18 +17,17 @@ let RunSchema = new Schema({
         required: true
     }
 }, {
-        toJSON: { 
+        toJSON: {
             virtuals: true,
+            versionKey: false,
+            minimize: false,
             transform: function(doc, ret, options){ 
                 delete ret._id;
-                delete ret.__v;
-                if(ret.tests == null){
-                    ret.tests = []
-                }
+                console.log(ret.tests);
+                ret.tests = ret.tests.map(test => test.id);
                 return ret;
             },
-        },
-        id: true
+        }
 });
 
 RunSchema.virtual('tests', {
@@ -41,10 +39,14 @@ RunSchema.virtual('tests', {
 RunSchema.statics.createRandom = function(args){
     randomData = {
         title: faker.internet.userName()
-    }
-    randomData = Object.assign(randomData, args)
+    };
+    randomData = Object.assign(randomData, args);
     return RunModel(randomData).save()
-}
+};
+
+RunSchema.statics.getRunsByProjectId = function(projectId){
+    return this.find({project: projectId}).populate({path: 'tests'})
+};
 
 RunSchema.methods.getTests = function(args){
     return this.populate({path: 'tests', select: 'title case'})
@@ -52,7 +54,7 @@ RunSchema.methods.getTests = function(args){
     .then(run => {
         return run.tests || []
     })
-}
+};
 
 RunSchema.methods.addCase = function(caseId){
     return this.getTests()
@@ -65,8 +67,11 @@ RunSchema.methods.addCase = function(caseId){
     .then(caze => {
         return caze.createTest(this._id)
     })
-}
+};
 
+RunSchema.methods.addCases = function(caseIds) {
+    return caseIds.map((caseId => this.addCase(caseId)))
+};
 
 RunSchema.pre('findOne', function() {
     this.populate('tests');

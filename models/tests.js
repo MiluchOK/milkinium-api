@@ -22,8 +22,7 @@ let TestSchema = new Schema({
     },
     results: [resultsSchema]
 }, {
-        toJSON: toJson,
-        id: true
+        toJSON: toJson
 });
 
 TestSchema.methods.addResult = function(result){
@@ -32,11 +31,11 @@ TestSchema.methods.addResult = function(result){
     .then(doc => {
         return result
     })
-}
+};
 
 TestSchema.methods.getResults = function(){
     return this.results;
-}
+};
 
 TestSchema.statics.createRandom = function(args){
     randomData = {
@@ -44,10 +43,10 @@ TestSchema.statics.createRandom = function(args){
         case: args.case,
         run: args.run,
         results: []
-    }
+    };
 
     return TestModel(randomData).save()
-}
+};
 
 //Exporting our model
 const TestModel = mongoose.model('Test', TestSchema);

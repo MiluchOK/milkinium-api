@@ -1,5 +1,5 @@
 const mockingoose = require('mockingoose').default;
-const controller = require('../projects')
+const controller = require('../projects');
 let MockExpressRequest = require('mock-express-request');
 let MockExpressResponse = require('mock-express-response');
 
@@ -29,12 +29,13 @@ describe('Projects', function () {
     describe('create', function(){
         test('should return 201 on succesfull save', function(){
             mockingoose.Project.toReturn(mockReq.body, 'save');
+            mockingoose.Project.toReturn(mockReq.body, 'findOne');
             return controller.create(mockReq, mockRes, mockNext)
             .then(() => {
-                expect(mockRes.statusCode).toBe(201)
+                expect(mockRes.statusCode).toBe(201);
                 expect(mockRes._getJSON()).toHaveProperty('name', project_title)
             })
-        })
+        });
 
         test('should call next if creation failed', function(){
             expectedError = new Error('Some Error')

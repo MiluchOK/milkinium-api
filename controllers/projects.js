@@ -34,7 +34,7 @@ exports.show = (req, res, next) => {
 exports.create = (req, res, next) => {
     const projectData = req.body;
     const project = new Project(projectData);
-
+    logger('debug', "Creating a project");
     return project.save()
     .then(data => {
         return Project.sureFindById(data._id)

@@ -27,7 +27,7 @@ exports.show = (req, res, next) => {
 
 exports.create = (req, res, next) => {
     const projectId = req.params.projectId;
-    const suiteData = req.body
+    const suiteData = req.body;
     return Project.sureFindById(projectId)
     .then(project => {
         return project.addSuite(suiteData)

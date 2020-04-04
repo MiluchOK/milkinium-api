@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:12.16.1
+      - image: circleci/node:12.16.1-browsers
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -38,5 +38,4 @@ jobs:
       # run tests!
       - run:
           name: Unit & Integration tests
-          no_output_timeout: 30m
           command: yarn test

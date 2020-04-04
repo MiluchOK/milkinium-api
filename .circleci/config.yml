@@ -36,4 +36,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: yarn test
+      - run:
+          name: Unit & Integration tests
+          no_output_timeout: 30m
+          command: yarn test

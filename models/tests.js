@@ -37,6 +37,18 @@ TestSchema.methods.getResults = function(){
     return this.results;
 };
 
+TestSchema.methods.getLeadingResult = function(){
+    if(this.results.length > 0){
+        return this.results[this.results.length-1]
+    } else {
+        logger('debug', 'No results')
+        return {
+            status: {
+                label: "pending"
+            }}
+    }
+}
+
 TestSchema.statics.createRandom = function(args){
     randomData = {
         title: "foo",

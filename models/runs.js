@@ -5,6 +5,7 @@ const Error = require('../errors/codedError');
 const logger = require('../logger')('runs_model');
 const Schema = mongoose.Schema;
 const Case = require('./cases');
+const Test = require('./tests');
 
 let RunSchema = new Schema({
     title: {
@@ -28,7 +29,6 @@ let RunSchema = new Schema({
             minimize: false,
             transform: function(doc, ret, options){ 
                 delete ret._id;
-                console.log(ret.tests);
                 ret.tests = ret.tests.map(test => test.id);
                 return ret;
             },
@@ -50,8 +50,25 @@ RunSchema.statics.createRandom = function(args){
     return RunModel(randomData).save()
 };
 
+RunSchema.methods.getCountByStatus = function(){
+    return Test.find({'_id': { $in: this.tests }})
+        .then(tests => {
+            let result = {}
+            tests.forEach(test => {
+                const label = test.getLeadingResult().status.label
+                if ( result[label] ) {
+                    result[label] = result[label] + 1
+                } else {
+                    result[label] = 1
+                }
+            })
+            return result
+        })
+}
+
 RunSchema.statics.getRunsByProjectId = function(projectId){
-    return this.find({project: projectId}).populate({path: 'tests'})
+    return this.find({project: projectId})
+        .populate({path: 'tests'})
 };
 
 RunSchema.methods.getTests = function(args){

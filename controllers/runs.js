@@ -6,7 +6,13 @@ exports.index = (req, res, next) => {
     const pid = req.params.projectId;
     return Run.getRunsByProjectId(pid)
     .then((fetchedRuns) => {
-        res.status(200).json({runs: fetchedRuns});
+        return Promise.all(fetchedRuns.map(r => r.getCountByStatus()))
+        .then(counts => {
+            return fetchedRuns.map((r, index) => ({...r.toJSON(), byStatus: counts[index]}))
+        })
+    })
+    .then(result => {
+        res.status(200).json({runs: result});
     })
     .catch((err) => {
         next(err)

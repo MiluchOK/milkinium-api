@@ -5,6 +5,7 @@ const runsController = require('../controllers/runs');
 
 
 routes.get('/:runId', runsController.show);
+routes.put('/:runId', runsController.update);
 routes.get('/:runId/tests', runsController.listTests);
 routes.post('/:runId/tests', validate(validations.addCase), runsController.addCase, );
 

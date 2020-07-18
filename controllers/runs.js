@@ -44,6 +44,14 @@ exports.create = (req, res, next) => {
     });
 };
 
+exports.update = (req, res, next) => {
+    const runId = req.params.runId
+    return Run.findById(runId)
+    .then(run => run.update(req.body))
+    .then(() => res.status(200).json({message: 'updated'}))
+    .catch(error => next(error))
+}
+
 // List tests
 exports.listTests = (req, res, next) => {
     const runId = req.params.runId

@@ -11,6 +11,11 @@ let RunSchema = new Schema({
         type: String,
         required: true
     },
+    completed: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
     project: {
         type: Schema.Types.ObjectId,
         ref: 'Project',
@@ -38,7 +43,8 @@ RunSchema.virtual('tests', {
 
 RunSchema.statics.createRandom = function(args){
     randomData = {
-        title: faker.internet.userName()
+        title: faker.internet.userName(),
+        completed: false
     };
     randomData = Object.assign(randomData, args);
     return RunModel(randomData).save()

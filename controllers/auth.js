@@ -13,6 +13,10 @@ createToken = (data) => {
     }, secret, {expiresIn: '1h'}));
 };
 
+const userDataFilter = (user) => {
+    return _.pick(user, ['email', 'name', '_id', 'role', 'avatar'])
+}
+
 exports.issueToken = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -30,7 +34,7 @@ exports.issueToken = (req, res, next) => {
                 .then((accepted) => {
                     if (accepted === true) {
                         logger('info', 'Issuing a new token for user ' + user);
-                        const filteredUserData = _.pick(user, ['email', 'name', '_id', 'role', 'avatar']);
+                        const filteredUserData = userDataFilter(user);
                         let token = createToken(filteredUserData);
                         logger('info', `A new token has been issued.`);
                         res.status(200).json({token: token});
@@ -47,9 +51,17 @@ exports.issueToken = (req, res, next) => {
 
 exports.refreshToken = (req, res, next) => {
     logger('info', 'Refreshing a token');
-    const data = req.user;
-    let token = createToken(data);
-    res.status(200).json({token: token});
+    const user_id = req.user.data._id;
+    User.sureFindById(user_id)
+    .then(user => {
+        const filteredData = userDataFilter(user)
+        let token = createToken(filteredData);
+        logger('info', `A new token has been re-issued.`);
+        res.status(200).json({token: token});
+    })
+    .catch((err) => {
+        next(err);
+    });
 };
 
 exports.whoAmI = (req, res) => {

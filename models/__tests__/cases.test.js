@@ -16,10 +16,7 @@ describe('Cases', function () {
     requiredFields.forEach((field) => {
         it(`should not allow to create a project without required '${field}' field`, (done) => {
             let invalidCaseData = Object.assign({}, validCaseData)
-            console.log(invalidCaseData)
             delete invalidCaseData[field]
-            console.log("LKDSNFJLKSDNFLJDSNFLN")
-            console.log(invalidCaseData)
             new Case(invalidCaseData).validate()
             .catch((err) => {
                 expect(err.errors[field]).toBeTruthy()

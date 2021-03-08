@@ -3,6 +3,7 @@ const faker = require('faker');
 const errorMessages = require('../errors').tests;
 const Error = require('../errors/codedError');
 const logger = require('../logger')('runs_model');
+const Promise = require('bluebird');
 const Schema = mongoose.Schema;
 const Case = require('./cases');
 const Test = require('./tests');
@@ -72,7 +73,7 @@ RunSchema.statics.getRunsByProjectId = function(projectId){
 };
 
 RunSchema.methods.getTests = function(args){
-    return this.populate({path: 'tests', select: 'title case'})
+    return this.populate({path: 'tests', select: 'title case results'})
     .execPopulate()
     .then(run => {
         return run.tests || []

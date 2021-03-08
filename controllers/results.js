@@ -1,7 +1,7 @@
 const Test = require('../models').test;
 const logger = require('../logger')('results_controller');
 
-// GET list of all runs.
+// GET list of all results for a test case
 exports.index = (req, res, next) => {
     const testId = req.params.testId
     return Test.findById(testId)

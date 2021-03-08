@@ -25,6 +25,13 @@ let TestSchema = new Schema({
         toJSON: toJson
 });
 
+TestSchema.virtual('lastResult').get(function() {
+    if (this.results && this.results.length > 0){
+        return this.results[0]
+    }
+    return undefined
+})
+
 TestSchema.methods.addResult = function(result){
     this.results.push(result)
     return this.save()

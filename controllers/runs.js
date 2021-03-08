@@ -1,5 +1,12 @@
 const Run = require('../models').run;
+const Test = require('../models').test;
 const logger = require('../logger')('runs_controller');
+
+const removeResults = (testsData) => {
+    const data = testsData.map(test => test.toJSON())
+    data.map(test => delete test.results)
+    return data
+}
 
 // GET list of all runs.
 exports.index = (req, res, next) => {
@@ -66,7 +73,7 @@ exports.listTests = (req, res, next) => {
         return run.getTests()
     })
     .then(testsData => {
-        res.status(200).json({tests: testsData})
+        res.status(200).json({tests: removeResults(testsData)})
     })
     .catch(err => {
         next(err)
@@ -96,7 +103,7 @@ exports.addCase = (req, res, next) => {
         return run.getTests()
     })
     .then((tests) => {
-        res.status(200).json({tests: tests})
+        res.status(200).json({tests: removeResults(tests)})
     })
     .catch(err => {
         next(err)

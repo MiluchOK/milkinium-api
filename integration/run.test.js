@@ -71,6 +71,10 @@ describe('Run', function(){
                 expect(targetRun.tests).toHaveLength(1);
                 expect(res.body.runs[0]).toEqual({
                     id: expect.any(String),
+                    completed: false,
+                    byStatus: {
+                        pending: 1
+                    },
                     project: project._id.toString(),
                     title: createdRun.title,
                     tests: [createdTest._id.toString()]
@@ -93,6 +97,7 @@ describe('Run', function(){
             .then((response) => {
                 expect(response.body).toEqual({
                     id: expect.any(String),
+                    completed: false,
                     project: project._id.toString(),
                     title: createdRun.title,
                     tests: []
@@ -117,6 +122,7 @@ describe('Run', function(){
                 expect(response.body).toEqual({
                     id: expect.any(String),
                     project: project._id.toString(),
+                    completed: false,
                     title: runData.title,
                     tests: []
                   })
